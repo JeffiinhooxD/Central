@@ -1,3 +1,5 @@
+package conexao;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -57,9 +59,13 @@ public class Conexao {
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
     }
     
-    public void iniciaConexao(){        
-        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        Drive service = getService(HTTP_TRANSPORT);
+    public static void iniciaConexao(){
+        
+        try {
+            final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+            Drive service = getService(HTTP_TRANSPORT);
+        } catch (Exception e) {
+        }        
     }
     
     public static Drive getService(NetHttpTransport HTTP_TRANSPORT) throws IOException, GeneralSecurityException{
