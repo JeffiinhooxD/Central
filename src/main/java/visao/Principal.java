@@ -51,12 +51,13 @@ public class Principal extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logotipo - Copia.png"))); // NOI18N
 
+        menuBarraPrincipal.setBackground(new java.awt.Color(1, 1, 1));
         menuBarraPrincipal.setBorder(new javax.swing.border.MatteBorder(null));
         menuBarraPrincipal.setForeground(new java.awt.Color(245, 175, 19));
 
         menuCadastro.setForeground(new java.awt.Color(234, 168, 19));
         menuCadastro.setText("Cadastro");
-        menuCadastro.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
+        menuCadastro.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
 
         menuCadastroCandidato.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         menuCadastroCandidato.setText("Candidato");
@@ -89,7 +90,7 @@ public class Principal extends javax.swing.JFrame {
 
         menuUtilitarios.setForeground(new java.awt.Color(240, 174, 24));
         menuUtilitarios.setText("Utilitários");
-        menuUtilitarios.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
+        menuUtilitarios.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
 
         enviarDrive.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         enviarDrive.setText("Enviar Drive");

@@ -5,6 +5,8 @@
  */
 package visao;
 
+import java.awt.Cursor;
+
 /**
  *
  * @author paulohx
@@ -17,7 +19,7 @@ public class Candidato extends javax.swing.JFrame {
     public Candidato() {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.setExtendedState(MAXIMIZED_BOTH);
+        this.setExtendedState(HIDE_ON_CLOSE);
     }
 
     /**
@@ -29,23 +31,228 @@ public class Candidato extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        texNomeCandidato = new javax.swing.JTextField();
+        texNumeroCandidato = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        texCpfCandidato = new javax.swing.JTextField();
+        try{
+            javax.swing.text.MaskFormatter formataCpf = new javax.swing.text.MaskFormatter("###.###.###-##");
+            texCpfCandidato = new javax.swing.JFormattedTextField(formataCpf);
+        }catch(Exception e){
+
+        }
+        jLabel5 = new javax.swing.JLabel();
+        boxPartido = new javax.swing.JComboBox<>();
+        cancelar = new javax.swing.JButton();
+        limpar = new javax.swing.JButton();
+        confirmar = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(930, 540));
+
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
+        jLabel1.setText("Candidato");
+
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel2.setText("NOME:");
+
+        jLabel3.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel3.setText("NUMERO:");
+
+        texNomeCandidato.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                texNomeCandidatoActionPerformed(evt);
+            }
+        });
+        texNomeCandidato.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                texNomeCandidatoKeyPressed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel4.setText("CPF:");
+
+        jLabel5.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel5.setText("PARTIDO:");
+
+        boxPartido.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nenhum" }));
+
+        cancelar.setText("Cancelar");
+        cancelar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                cancelarMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                cancelarMouseEntered(evt);
+            }
+        });
+        cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarActionPerformed(evt);
+            }
+        });
+
+        limpar.setText("Limpar");
+        limpar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                limparMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                limparMouseEntered(evt);
+            }
+        });
+        limpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limparActionPerformed(evt);
+            }
+        });
+
+        confirmar.setText("Confirmar");
+        confirmar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                confirmarMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                confirmarMouseEntered(evt);
+            }
+        });
+        confirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(373, 373, 373)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(texNumeroCandidato, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(texNomeCandidato)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4))
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(texCpfCandidato)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(boxPartido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
+                                .addComponent(limpar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(256, 256, 256)
+                                .addComponent(confirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(14, 14, 14)))))
+                .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(56, 56, 56)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(texNomeCandidato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(texNumeroCandidato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(texCpfCandidato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(boxPartido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(limpar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(confirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(99, 99, 99))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void texNomeCandidatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texNomeCandidatoActionPerformed
+
+    }//GEN-LAST:event_texNomeCandidatoActionPerformed
+
+    private void texNomeCandidatoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texNomeCandidatoKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_texNomeCandidatoKeyPressed
+
+    private void limparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_limparActionPerformed
+
+    private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_cancelarActionPerformed
+
+    private void confirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_confirmarActionPerformed
+
+    private void cancelarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelarMouseEntered
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_cancelarMouseEntered
+
+    private void limparMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_limparMouseEntered
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_limparMouseEntered
+
+    private void cancelarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelarMouseExited
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_cancelarMouseExited
+
+    private void limparMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_limparMouseExited
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_limparMouseExited
+
+    private void confirmarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmarMouseEntered
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_confirmarMouseEntered
+
+    private void confirmarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmarMouseExited
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_confirmarMouseExited
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> boxPartido;
+    private javax.swing.JButton cancelar;
+    private javax.swing.JButton confirmar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JButton limpar;
+    private javax.swing.JTextField texCpfCandidato;
+    private javax.swing.JTextField texNomeCandidato;
+    private javax.swing.JTextField texNumeroCandidato;
     // End of variables declaration//GEN-END:variables
 }
