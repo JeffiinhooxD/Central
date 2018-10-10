@@ -75,7 +75,7 @@ public class Conexao {
                 .build();
     }
     
-    public static String criPasta(Drive service, String name) throws IOException, GeneralSecurityException{
+    public static String criaPasta(Drive service, String name) throws IOException, GeneralSecurityException{
         
         File fileMetadata = new File();
         fileMetadata.setName(name);

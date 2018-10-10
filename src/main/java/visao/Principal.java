@@ -19,6 +19,7 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
         Conexao.iniciaConexao();
+        this.setExtendedState(MAXIMIZED_BOTH);
     }
 
     /**
@@ -30,26 +31,99 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        menuBarraPrincipal = new javax.swing.JMenuBar();
+        menuCadastro = new javax.swing.JMenu();
+        menuCadastroEleitor = new javax.swing.JMenuItem();
+        menuCadastroCandidato = new javax.swing.JMenuItem();
+        menuCadastroPartido = new javax.swing.JMenuItem();
+        menuUtilitarios = new javax.swing.JMenu();
+        enviarDrive = new javax.swing.JMenuItem();
+        computarVotos = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(164, 153, 142));
+
+        menuCadastro.setText("Cadastro");
+
+        menuCadastroEleitor.setText("Eleitor");
+        menuCadastroEleitor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCadastroEleitorActionPerformed(evt);
+            }
+        });
+        menuCadastro.add(menuCadastroEleitor);
+
+        menuCadastroCandidato.setText("Candidato");
+        menuCadastroCandidato.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCadastroCandidatoActionPerformed(evt);
+            }
+        });
+        menuCadastro.add(menuCadastroCandidato);
+
+        menuCadastroPartido.setText("Partido");
+        menuCadastroPartido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCadastroPartidoActionPerformed(evt);
+            }
+        });
+        menuCadastro.add(menuCadastroPartido);
+
+        menuBarraPrincipal.add(menuCadastro);
+
+        menuUtilitarios.setText("Utilitários");
+
+        enviarDrive.setText("Enviar Drive");
+        menuUtilitarios.add(enviarDrive);
+
+        computarVotos.setText("Computar Votos");
+        menuUtilitarios.add(computarVotos);
+
+        menuBarraPrincipal.add(menuUtilitarios);
+
+        setJMenuBar(menuBarraPrincipal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 723, Short.MAX_VALUE)
+            .addGap(0, 720, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 416, Short.MAX_VALUE)
+            .addGap(0, 339, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void menuCadastroEleitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroEleitorActionPerformed
+       Eleitor telaEleitor = new Eleitor();
+       telaEleitor.setVisible(true);
+       
+    }//GEN-LAST:event_menuCadastroEleitorActionPerformed
+
+    private void menuCadastroPartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroPartidoActionPerformed
+        Partido telaPartido = new Partido();
+        telaPartido.setVisible(true);    }//GEN-LAST:event_menuCadastroPartidoActionPerformed
+
+    private void menuCadastroCandidatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoActionPerformed
+        Candidato telaCandidato = new Candidato();
+        telaCandidato.setVisible(true);
+    }//GEN-LAST:event_menuCadastroCandidatoActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
+        
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Principal().setVisible(true);
+            }
+        });
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -73,14 +147,16 @@ public class Principal extends javax.swing.JFrame {
         }
         //</editor-fold>
         
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Principal().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem computarVotos;
+    private javax.swing.JMenuItem enviarDrive;
+    private javax.swing.JMenuBar menuBarraPrincipal;
+    private javax.swing.JMenu menuCadastro;
+    private javax.swing.JMenuItem menuCadastroCandidato;
+    private javax.swing.JMenuItem menuCadastroEleitor;
+    private javax.swing.JMenuItem menuCadastroPartido;
+    private javax.swing.JMenu menuUtilitarios;
     // End of variables declaration//GEN-END:variables
 }
