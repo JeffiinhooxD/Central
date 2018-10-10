@@ -5,6 +5,7 @@
  */
 package visao;
 import conexao.Conexao;
+import java.awt.Color;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,6 +19,7 @@ public class Principal extends javax.swing.JFrame {
      */
     public Principal() {
         initComponents();
+        this.getContentPane().setBackground(Color.WHITE);
         Conexao.iniciaConexao();
         this.setExtendedState(MAXIMIZED_BOTH);
     }
@@ -31,28 +33,32 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         menuBarraPrincipal = new javax.swing.JMenuBar();
         menuCadastro = new javax.swing.JMenu();
-        menuCadastroEleitor = new javax.swing.JMenuItem();
         menuCadastroCandidato = new javax.swing.JMenuItem();
+        menuCadastroEleitor = new javax.swing.JMenuItem();
         menuCadastroPartido = new javax.swing.JMenuItem();
         menuUtilitarios = new javax.swing.JMenu();
         enviarDrive = new javax.swing.JMenuItem();
         computarVotos = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(164, 153, 142));
+        setTitle("MENU");
+        setBackground(new java.awt.Color(216, 43, 48));
+        setForeground(java.awt.Color.red);
 
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logotipo - Copia.png"))); // NOI18N
+
+        menuBarraPrincipal.setBorder(new javax.swing.border.MatteBorder(null));
+        menuBarraPrincipal.setForeground(new java.awt.Color(245, 175, 19));
+
+        menuCadastro.setForeground(new java.awt.Color(234, 168, 19));
         menuCadastro.setText("Cadastro");
+        menuCadastro.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
 
-        menuCadastroEleitor.setText("Eleitor");
-        menuCadastroEleitor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuCadastroEleitorActionPerformed(evt);
-            }
-        });
-        menuCadastro.add(menuCadastroEleitor);
-
+        menuCadastroCandidato.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         menuCadastroCandidato.setText("Candidato");
         menuCadastroCandidato.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -61,6 +67,16 @@ public class Principal extends javax.swing.JFrame {
         });
         menuCadastro.add(menuCadastroCandidato);
 
+        menuCadastroEleitor.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
+        menuCadastroEleitor.setText("Eleitor");
+        menuCadastroEleitor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCadastroEleitorActionPerformed(evt);
+            }
+        });
+        menuCadastro.add(menuCadastroEleitor);
+
+        menuCadastroPartido.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         menuCadastroPartido.setText("Partido");
         menuCadastroPartido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,11 +87,15 @@ public class Principal extends javax.swing.JFrame {
 
         menuBarraPrincipal.add(menuCadastro);
 
+        menuUtilitarios.setForeground(new java.awt.Color(240, 174, 24));
         menuUtilitarios.setText("Utilitários");
+        menuUtilitarios.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
 
+        enviarDrive.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         enviarDrive.setText("Enviar Drive");
         menuUtilitarios.add(enviarDrive);
 
+        computarVotos.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         computarVotos.setText("Computar Votos");
         menuUtilitarios.add(computarVotos);
 
@@ -87,11 +107,13 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 720, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 339, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 472, Short.MAX_VALUE))
         );
 
         pack();
@@ -100,11 +122,12 @@ public class Principal extends javax.swing.JFrame {
     private void menuCadastroEleitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroEleitorActionPerformed
        Eleitor telaEleitor = new Eleitor();
        telaEleitor.setVisible(true);
-       
     }//GEN-LAST:event_menuCadastroEleitorActionPerformed
 
     private void menuCadastroPartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroPartidoActionPerformed
         Partido telaPartido = new Partido();
+        System.out.println("GRANDE TELA");
+        
         telaPartido.setVisible(true);    }//GEN-LAST:event_menuCadastroPartidoActionPerformed
 
     private void menuCadastroCandidatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoActionPerformed
@@ -152,6 +175,7 @@ public class Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem computarVotos;
     private javax.swing.JMenuItem enviarDrive;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar menuBarraPrincipal;
     private javax.swing.JMenu menuCadastro;
     private javax.swing.JMenuItem menuCadastroCandidato;
