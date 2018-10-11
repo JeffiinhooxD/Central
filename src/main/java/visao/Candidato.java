@@ -51,6 +51,9 @@ public class Candidato extends javax.swing.JFrame {
         confirmar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setAlwaysOnTop(true);
+        setModalExclusionType(java.awt.Dialog.ModalExclusionType.TOOLKIT_EXCLUDE);
+        setUndecorated(true);
         setPreferredSize(new java.awt.Dimension(930, 540));
 
         jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
@@ -80,8 +83,22 @@ public class Candidato extends javax.swing.JFrame {
         jLabel5.setText("PARTIDO:");
 
         boxPartido.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nenhum" }));
+        boxPartido.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                boxPartidoMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                boxPartidoMouseEntered(evt);
+            }
+        });
+        boxPartido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boxPartidoActionPerformed(evt);
+            }
+        });
 
         cancelar.setText("Cancelar");
+        cancelar.setToolTipText("Ir para a tela Principal");
         cancelar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 cancelarMouseExited(evt);
@@ -97,6 +114,7 @@ public class Candidato extends javax.swing.JFrame {
         });
 
         limpar.setText("Limpar");
+        limpar.setToolTipText("Limpar os campos de textos");
         limpar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 limparMouseExited(evt);
@@ -112,6 +130,7 @@ public class Candidato extends javax.swing.JFrame {
         });
 
         confirmar.setText("Confirmar");
+        confirmar.setToolTipText("Confirmar o Cadastro");
         confirmar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 confirmarMouseExited(evt);
@@ -239,6 +258,18 @@ public class Candidato extends javax.swing.JFrame {
     private void confirmarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmarMouseExited
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_confirmarMouseExited
+
+    private void boxPartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxPartidoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_boxPartidoActionPerformed
+
+    private void boxPartidoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_boxPartidoMouseEntered
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_boxPartidoMouseEntered
+
+    private void boxPartidoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_boxPartidoMouseExited
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_boxPartidoMouseExited
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
