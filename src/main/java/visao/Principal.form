@@ -27,6 +27,10 @@
               <Font name="Ubuntu" size="36" style="1"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuCadastroMouseExited"/>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuCadastroMouseEntered"/>
+          </Events>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menuCadastroCandidato">
               <Properties>
@@ -36,6 +40,8 @@
                 <Property name="text" type="java.lang.String" value="Candidato"/>
               </Properties>
               <Events>
+                <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuCadastroCandidatoMouseExited"/>
+                <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuCadastroCandidatoMouseEntered"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuCadastroCandidatoActionPerformed"/>
               </Events>
             </MenuItem>
@@ -47,6 +53,8 @@
                 <Property name="text" type="java.lang.String" value="Eleitor"/>
               </Properties>
               <Events>
+                <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuCadastroEleitorMouseExited"/>
+                <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuCadastroEleitorMouseEntered"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuCadastroEleitorActionPerformed"/>
               </Events>
             </MenuItem>
@@ -58,6 +66,8 @@
                 <Property name="text" type="java.lang.String" value="Partido"/>
               </Properties>
               <Events>
+                <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuCadastroPartidoMouseExited"/>
+                <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuCadastroPartidoMouseEntered"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuCadastroPartidoActionPerformed"/>
               </Events>
             </MenuItem>
@@ -73,6 +83,10 @@
               <Font name="Ubuntu" size="36" style="1"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuUtilitariosMouseExited"/>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuUtilitariosMouseEntered"/>
+          </Events>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="enviarDrive">
               <Properties>
@@ -81,6 +95,10 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Enviar Drive"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="enviarDriveMouseExited"/>
+                <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="enviarDriveMouseEntered"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="computarVotos">
               <Properties>
@@ -89,6 +107,10 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Computar Votos"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="computarVotosMouseExited"/>
+                <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="computarVotosMouseEntered"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

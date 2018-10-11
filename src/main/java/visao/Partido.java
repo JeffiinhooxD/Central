@@ -37,13 +37,15 @@ public class Partido extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         texNomePartido = new javax.swing.JTextField();
         texNumeroPartido = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnLimpar = new javax.swing.JButton();
+        btnConfirmar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        texNomePartido1 = new javax.swing.JTextField();
+        texSiglaPartido = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setAlwaysOnTop(true);
+        setUndecorated(true);
         setPreferredSize(new java.awt.Dimension(930, 540));
 
         jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
@@ -66,65 +68,67 @@ public class Partido extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Cancelar");
-        jButton1.setToolTipText("Ir para a tela Principal");
-        jButton1.setIconTextGap(3);
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnCancelar.setText("Cancelar");
+        btnCancelar.setToolTipText("Ir para a tela Principal");
+        btnCancelar.setIconTextGap(3);
+        btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jButton1MouseExited(evt);
+                btnCancelarMouseExited(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jButton1MouseEntered(evt);
+                btnCancelarMouseEntered(evt);
             }
         });
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Limpar");
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnLimpar.setText("Limpar");
+        btnLimpar.setToolTipText("Limpar os campos de textos");
+        btnLimpar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton2MouseClicked(evt);
+                btnLimparMouseClicked(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jButton2MouseExited(evt);
+                btnLimparMouseExited(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jButton2MouseEntered(evt);
+                btnLimparMouseEntered(evt);
             }
         });
 
-        jButton3.setText("Confirmar");
-        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnConfirmar.setText("Confirmar");
+        btnConfirmar.setToolTipText("Confirmar o Cadastro");
+        btnConfirmar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton3MouseClicked(evt);
+                btnConfirmarMouseClicked(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jButton3MouseExited(evt);
+                btnConfirmarMouseExited(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jButton3MouseEntered(evt);
+                btnConfirmarMouseEntered(evt);
             }
         });
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnConfirmarActionPerformed(evt);
             }
         });
 
         jLabel4.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         jLabel4.setText("SIGLA:");
 
-        texNomePartido1.addActionListener(new java.awt.event.ActionListener() {
+        texSiglaPartido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                texNomePartido1ActionPerformed(evt);
+                texSiglaPartidoActionPerformed(evt);
             }
         });
-        texNomePartido1.addKeyListener(new java.awt.event.KeyAdapter() {
+        texSiglaPartido.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                texNomePartido1KeyPressed(evt);
+                texSiglaPartidoKeyPressed(evt);
             }
         });
 
@@ -140,11 +144,11 @@ public class Partido extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(136, 136, 136)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(208, 208, 208)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 226, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(70, 70, 70))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap()
@@ -155,7 +159,7 @@ public class Partido extends javax.swing.JFrame {
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(texNumeroPartido)
-                            .addComponent(texNomePartido1)
+                            .addComponent(texSiglaPartido)
                             .addComponent(texNomePartido))))
                 .addGap(21, 21, 21))
         );
@@ -171,17 +175,17 @@ public class Partido extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(texNomePartido1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(texSiglaPartido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(texNumeroPartido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(80, 80, 80))
         );
 
@@ -192,70 +196,70 @@ public class Partido extends javax.swing.JFrame {
         
     }//GEN-LAST:event_texNomePartidoActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void texNomePartidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texNomePartidoKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_texNomePartidoKeyPressed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void jButton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseEntered
+    private void btnCancelarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseEntered
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_jButton1MouseEntered
+    }//GEN-LAST:event_btnCancelarMouseEntered
 
-    private void jButton1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseExited
+    private void btnCancelarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseExited
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_jButton1MouseExited
+    }//GEN-LAST:event_btnCancelarMouseExited
 
-    private void jButton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseEntered
+    private void btnLimparMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLimparMouseEntered
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_jButton2MouseEntered
+    }//GEN-LAST:event_btnLimparMouseEntered
 
-    private void jButton2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseExited
+    private void btnLimparMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLimparMouseExited
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_jButton2MouseExited
+    }//GEN-LAST:event_btnLimparMouseExited
 
-    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+    private void btnLimparMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLimparMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2MouseClicked
+    }//GEN-LAST:event_btnLimparMouseClicked
 
-    private void jButton3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseExited
+    private void btnConfirmarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmarMouseExited
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_jButton3MouseExited
+    }//GEN-LAST:event_btnConfirmarMouseExited
 
-    private void jButton3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseEntered
+    private void btnConfirmarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmarMouseEntered
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_jButton3MouseEntered
+    }//GEN-LAST:event_btnConfirmarMouseEntered
 
-    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+    private void btnConfirmarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmarMouseClicked
        JOptionPane.showMessageDialog(rootPane, "Cadastro realizado com sucesso.");
        this.dispose();
-    }//GEN-LAST:event_jButton3MouseClicked
+    }//GEN-LAST:event_btnConfirmarMouseClicked
 
-    private void texNomePartido1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texNomePartido1ActionPerformed
+    private void texSiglaPartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texSiglaPartidoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_texNomePartido1ActionPerformed
+    }//GEN-LAST:event_texSiglaPartidoActionPerformed
 
-    private void texNomePartido1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texNomePartido1KeyPressed
+    private void texSiglaPartidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texSiglaPartidoKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_texNomePartido1KeyPressed
+    }//GEN-LAST:event_texSiglaPartidoKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnConfirmar;
+    private javax.swing.JButton btnLimpar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField texNomePartido;
-    private javax.swing.JTextField texNomePartido1;
     private javax.swing.JTextField texNumeroPartido;
+    private javax.swing.JTextField texSiglaPartido;
     // End of variables declaration//GEN-END:variables
 }

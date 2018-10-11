@@ -46,9 +46,9 @@ public class Candidato extends javax.swing.JFrame {
         }
         jLabel5 = new javax.swing.JLabel();
         boxPartido = new javax.swing.JComboBox<>();
-        cancelar = new javax.swing.JButton();
-        limpar = new javax.swing.JButton();
-        confirmar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnLimpar = new javax.swing.JButton();
+        btnConfirmar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -83,6 +83,7 @@ public class Candidato extends javax.swing.JFrame {
         jLabel5.setText("PARTIDO:");
 
         boxPartido.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nenhum" }));
+        boxPartido.setToolTipText("Selecione de acordo com a sigla do partido");
         boxPartido.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 boxPartidoMouseExited(evt);
@@ -97,51 +98,51 @@ public class Candidato extends javax.swing.JFrame {
             }
         });
 
-        cancelar.setText("Cancelar");
-        cancelar.setToolTipText("Ir para a tela Principal");
-        cancelar.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnCancelar.setText("Cancelar");
+        btnCancelar.setToolTipText("Ir para a tela Principal");
+        btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                cancelarMouseExited(evt);
+                btnCancelarMouseExited(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                cancelarMouseEntered(evt);
+                btnCancelarMouseEntered(evt);
             }
         });
-        cancelar.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelarActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
 
-        limpar.setText("Limpar");
-        limpar.setToolTipText("Limpar os campos de textos");
-        limpar.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnLimpar.setText("Limpar");
+        btnLimpar.setToolTipText("Limpar os campos de textos");
+        btnLimpar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                limparMouseExited(evt);
+                btnLimparMouseExited(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                limparMouseEntered(evt);
+                btnLimparMouseEntered(evt);
             }
         });
-        limpar.addActionListener(new java.awt.event.ActionListener() {
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                limparActionPerformed(evt);
+                btnLimparActionPerformed(evt);
             }
         });
 
-        confirmar.setText("Confirmar");
-        confirmar.setToolTipText("Confirmar o Cadastro");
-        confirmar.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnConfirmar.setText("Confirmar");
+        btnConfirmar.setToolTipText("Confirmar o Cadastro");
+        btnConfirmar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                confirmarMouseExited(evt);
+                btnConfirmarMouseExited(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                confirmarMouseEntered(evt);
+                btnConfirmarMouseEntered(evt);
             }
         });
-        confirmar.addActionListener(new java.awt.event.ActionListener() {
+        btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                confirmarActionPerformed(evt);
+                btnConfirmarActionPerformed(evt);
             }
         });
 
@@ -175,11 +176,11 @@ public class Candidato extends javax.swing.JFrame {
                                 .addComponent(boxPartido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
-                                .addComponent(limpar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(256, 256, 256)
-                                .addComponent(confirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(14, 14, 14)))))
                 .addGap(22, 22, 22))
         );
@@ -206,9 +207,9 @@ public class Candidato extends javax.swing.JFrame {
                     .addComponent(boxPartido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(limpar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(confirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(99, 99, 99))
         );
 
@@ -223,41 +224,41 @@ public class Candidato extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_texNomeCandidatoKeyPressed
 
-    private void limparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparActionPerformed
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_limparActionPerformed
+    }//GEN-LAST:event_btnLimparActionPerformed
 
-    private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
-    }//GEN-LAST:event_cancelarActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void confirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarActionPerformed
+    private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         this.dispose();
-    }//GEN-LAST:event_confirmarActionPerformed
+    }//GEN-LAST:event_btnConfirmarActionPerformed
 
-    private void cancelarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelarMouseEntered
+    private void btnCancelarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseEntered
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_cancelarMouseEntered
+    }//GEN-LAST:event_btnCancelarMouseEntered
 
-    private void limparMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_limparMouseEntered
+    private void btnLimparMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLimparMouseEntered
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_limparMouseEntered
+    }//GEN-LAST:event_btnLimparMouseEntered
 
-    private void cancelarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelarMouseExited
+    private void btnCancelarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseExited
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_cancelarMouseExited
+    }//GEN-LAST:event_btnCancelarMouseExited
 
-    private void limparMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_limparMouseExited
+    private void btnLimparMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLimparMouseExited
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_limparMouseExited
+    }//GEN-LAST:event_btnLimparMouseExited
 
-    private void confirmarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmarMouseEntered
+    private void btnConfirmarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmarMouseEntered
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_confirmarMouseEntered
+    }//GEN-LAST:event_btnConfirmarMouseEntered
 
-    private void confirmarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmarMouseExited
+    private void btnConfirmarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmarMouseExited
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_confirmarMouseExited
+    }//GEN-LAST:event_btnConfirmarMouseExited
 
     private void boxPartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxPartidoActionPerformed
         // TODO add your handling code here:
@@ -274,14 +275,14 @@ public class Candidato extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxPartido;
-    private javax.swing.JButton cancelar;
-    private javax.swing.JButton confirmar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnConfirmar;
+    private javax.swing.JButton btnLimpar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JButton limpar;
     private javax.swing.JTextField texCpfCandidato;
     private javax.swing.JTextField texNomeCandidato;
     private javax.swing.JTextField texNumeroCandidato;

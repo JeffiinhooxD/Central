@@ -6,6 +6,7 @@
 package visao;
 import conexao.Conexao;
 import java.awt.Color;
+import java.awt.Cursor;
 import javax.swing.JOptionPane;
 
 /**
@@ -58,9 +59,25 @@ public class Principal extends javax.swing.JFrame {
         menuCadastro.setForeground(new java.awt.Color(234, 168, 19));
         menuCadastro.setText("Cadastro");
         menuCadastro.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
+        menuCadastro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                menuCadastroMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                menuCadastroMouseEntered(evt);
+            }
+        });
 
         menuCadastroCandidato.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         menuCadastroCandidato.setText("Candidato");
+        menuCadastroCandidato.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                menuCadastroCandidatoMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                menuCadastroCandidatoMouseEntered(evt);
+            }
+        });
         menuCadastroCandidato.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuCadastroCandidatoActionPerformed(evt);
@@ -70,6 +87,14 @@ public class Principal extends javax.swing.JFrame {
 
         menuCadastroEleitor.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         menuCadastroEleitor.setText("Eleitor");
+        menuCadastroEleitor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                menuCadastroEleitorMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                menuCadastroEleitorMouseEntered(evt);
+            }
+        });
         menuCadastroEleitor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuCadastroEleitorActionPerformed(evt);
@@ -79,6 +104,14 @@ public class Principal extends javax.swing.JFrame {
 
         menuCadastroPartido.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         menuCadastroPartido.setText("Partido");
+        menuCadastroPartido.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                menuCadastroPartidoMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                menuCadastroPartidoMouseEntered(evt);
+            }
+        });
         menuCadastroPartido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuCadastroPartidoActionPerformed(evt);
@@ -91,13 +124,37 @@ public class Principal extends javax.swing.JFrame {
         menuUtilitarios.setForeground(new java.awt.Color(240, 174, 24));
         menuUtilitarios.setText("Utilitários");
         menuUtilitarios.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
+        menuUtilitarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                menuUtilitariosMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                menuUtilitariosMouseEntered(evt);
+            }
+        });
 
         enviarDrive.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         enviarDrive.setText("Enviar Drive");
+        enviarDrive.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                enviarDriveMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                enviarDriveMouseEntered(evt);
+            }
+        });
         menuUtilitarios.add(enviarDrive);
 
         computarVotos.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         computarVotos.setText("Computar Votos");
+        computarVotos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                computarVotosMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                computarVotosMouseEntered(evt);
+            }
+        });
         menuUtilitarios.add(computarVotos);
 
         menuBarraPrincipal.add(menuUtilitarios);
@@ -135,6 +192,62 @@ public class Principal extends javax.swing.JFrame {
         Candidato telaCandidato = new Candidato();
         telaCandidato.setVisible(true);
     }//GEN-LAST:event_menuCadastroCandidatoActionPerformed
+
+    private void menuCadastroMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroMouseEntered
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_menuCadastroMouseEntered
+
+    private void menuCadastroMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroMouseExited
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_menuCadastroMouseExited
+
+    private void menuCadastroCandidatoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoMouseEntered
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_menuCadastroCandidatoMouseEntered
+
+    private void menuCadastroEleitorMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroEleitorMouseEntered
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_menuCadastroEleitorMouseEntered
+
+    private void menuCadastroPartidoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroPartidoMouseEntered
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_menuCadastroPartidoMouseEntered
+
+    private void menuCadastroCandidatoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoMouseExited
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_menuCadastroCandidatoMouseExited
+
+    private void menuCadastroEleitorMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroEleitorMouseExited
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_menuCadastroEleitorMouseExited
+
+    private void menuUtilitariosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuUtilitariosMouseExited
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_menuUtilitariosMouseExited
+
+    private void enviarDriveMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_enviarDriveMouseExited
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_enviarDriveMouseExited
+
+    private void computarVotosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_computarVotosMouseExited
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_computarVotosMouseExited
+
+    private void menuUtilitariosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuUtilitariosMouseEntered
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_menuUtilitariosMouseEntered
+
+    private void enviarDriveMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_enviarDriveMouseEntered
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_enviarDriveMouseEntered
+
+    private void computarVotosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_computarVotosMouseEntered
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_computarVotosMouseEntered
+
+    private void menuCadastroPartidoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroPartidoMouseExited
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_menuCadastroPartidoMouseExited
 
     /**
      * @param args the command line arguments
