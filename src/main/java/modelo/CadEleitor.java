@@ -2,16 +2,12 @@ package modelo;
 
 import util.Verifica;
 
-/**
- *
- * @author paulo
- */
 public class CadEleitor {    
-    
-    private String numeroTitulo;
+        
     private String nome;
     private String cpf;
     private String secao;
+    private String numeroTitulo;
     
     public String getNome(){
         return(this.nome);

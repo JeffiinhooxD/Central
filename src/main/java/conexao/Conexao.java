@@ -23,6 +23,7 @@ import java.util.List;
 
 
 import com.google.api.client.http.FileContent;
+import com.google.api.services.drive.model.FileList;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
@@ -31,6 +32,8 @@ public class Conexao {
     private static final String APPLICATION_NAME = "Google Drive API Java Quickstart";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
+    
+    private static Drive service = null;
 
     /**
      * Global instance of the scopes required by this quickstart.
@@ -59,13 +62,22 @@ public class Conexao {
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
     }
     
-    public static void iniciaConexao(){
+    private Conexao(){
         
         try {
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            Drive service = getService(HTTP_TRANSPORT);
+            service = getService(HTTP_TRANSPORT);
         } catch (Exception e) {
+            e.getMessage();
         }        
+    }
+    
+    public static Drive service() {
+        
+        if (service == null) {
+            new Conexao();
+        }
+        return service;
     }
     
     public static Drive getService(NetHttpTransport HTTP_TRANSPORT) throws IOException, GeneralSecurityException{
@@ -87,14 +99,52 @@ public class Conexao {
         
         return file.getId();        
     }
+
+    public static String existePasta(String nome)  throws IOException, GeneralSecurityException {
+        
+        String pageToken = null;
+        do {
+          FileList result = service.files().list()
+              .setQ("mimeType='application/vnd.google-apps.folder'")
+              .setSpaces("drive")
+              .setFields("nextPageToken, files(id, name)")
+              .setPageToken(pageToken)
+              .execute();
+          for (File file : result.getFiles()) {
+              if (file.getName().equals(nome)){
+                  return file.getId();
+              }
+          }
+          pageToken = result.getNextPageToken();
+        } while (pageToken != null);
+        
+        return "";
+    }
     
-    public static String criaArquivo(Drive service, String folderId, String url) throws IOException, GeneralSecurityException{
+    public static void getFolderID() throws IOException, GeneralSecurityException {
+        
+        FileList result = service.files().list()
+                .setPageSize(10)
+                .setFields("nextPageToken, files(id, name)")
+                .execute();
+        List<File> files = result.getFiles();
+        if (files == null || files.isEmpty()) {
+            System.out.println("No files found.");
+        } else {
+            System.out.println("Files:");
+            for (File file : files) {
+                System.out.printf("%s (%s)\n", file.getName(), file.getId());
+            }
+        }
+    }
+    
+    public static String criaArquivo(String folderId, String url) throws IOException, GeneralSecurityException{
 
         File fileMetadata = new File();
         fileMetadata.setName(url);
         fileMetadata.setParents(Collections.singletonList(folderId));
-        java.io.File filePath = new java.io.File("imagens/" + url);
-        FileContent mediaContent = new FileContent("image/txt", filePath);
+        java.io.File filePath = new java.io.File("ArquivosJson/" + url);
+        FileContent mediaContent = new FileContent("ArquivosJson/json", filePath);
         File file = service.files().create(fileMetadata, mediaContent)
             .setFields("id, parents")
             .execute();

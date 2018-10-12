@@ -1,15 +1,17 @@
 package dao;
 
+import modelo.CadEleitor;
+
 public class EleitorDAO {
     
-    private EleitorDAO eleitorDAO[] = new EleitorDAO[50];
+    private CadEleitor eleitores[] = new CadEleitor[50];
 	
     /*Insere o eleitor na primeira posicao vazia que achar do vetor*/
-    public boolean inserir(EleitorDAO eleitorDAO) {
+    public boolean inserir(CadEleitor eleitores) {
 
-        for (int i = 0; i < this.eleitorDAO.length; i++) {			
-            if (this.eleitorDAO[i] == null) {
-                this.eleitorDAO[i] = eleitorDAO;
+        for (int i = 0; i < this.eleitores.length; i++) {			
+            if (this.eleitores[i] == null) {
+                this.eleitores[i] = eleitores;
                 return true;
             }
         }

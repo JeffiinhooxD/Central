@@ -2,10 +2,6 @@ package modelo;
 
 import util.Verifica;
 
-/**
- *
- * @author jeffi
- */
 public class CadCandidato {
     
     private String nome;

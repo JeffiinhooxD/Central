@@ -1,14 +1,28 @@
 package visao;
 import dao.CandidatoDAO;
+import dao.PartidoDAO;
 import java.awt.Cursor;
+import javax.swing.JOptionPane;
 
 public class Candidato extends javax.swing.JFrame {
 
     CandidatoDAO candidatoDAO;
+    PartidoDAO   partidoDAO;
     
-    public Candidato(CandidatoDAO candidatoDAO) {
+    public Candidato(CandidatoDAO candidatoDAO, PartidoDAO partidoDAO) {
         this.candidatoDAO = candidatoDAO;
+        this.partidoDAO   = partidoDAO;
+        
+        /*Verifica se tem partido cadastrado*/
+//        if (!(partidoDAO.existeAlgumPartido())){
+//            JOptionPane.showMessageDialog(null, "Você não pode cadastrar um candidato sem antes ter cadastrado um partido", "Erro", JOptionPane.ERROR_MESSAGE);
+//            this.setVisible(false);
+//            this.dispose();
+//            return;
+//        }
+        
         initComponents();
+        texNomeCandidato.requestFocus();
         this.setTitle("Cadastro de Candidato");
         this.setLocationRelativeTo(null);
         this.setExtendedState(HIDE_ON_CLOSE);

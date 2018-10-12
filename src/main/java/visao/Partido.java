@@ -1,7 +1,10 @@
 package visao;
+
+import conexao.Conexao;
 import dao.PartidoDAO;
 import java.awt.Cursor;
 import javax.swing.JOptionPane;
+import modelo.CadPartido;
 
 public class Partido extends javax.swing.JFrame {
 
@@ -10,9 +13,19 @@ public class Partido extends javax.swing.JFrame {
     public Partido(PartidoDAO partidoDAO) {
         this.partidoDAO = partidoDAO;
         initComponents();
+        texNomePartido.requestFocus();
         this.setTitle("Cadastro de Partido");
         this.setLocationRelativeTo(null);
         this.setExtendedState(HIDE_ON_CLOSE);
+    }
+    
+    public String camposObrigatorios(){
+        
+        if (texNomePartido.getText().equals(""))   return "NOME";
+        if (texSiglaPartido.getText().equals(""))  return "SIGLA";
+        if (texNumeroPartido.getText().equals("")) return "NUMERO";
+        
+        return "";
     }
 
     /**
@@ -36,7 +49,6 @@ public class Partido extends javax.swing.JFrame {
         texSiglaPartido = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setAlwaysOnTop(true);
         setUndecorated(true);
         setPreferredSize(new java.awt.Dimension(930, 540));
 
@@ -194,7 +206,41 @@ public class Partido extends javax.swing.JFrame {
     }//GEN-LAST:event_texNomePartidoActionPerformed
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
-        // TODO add your handling code here:
+        
+        /*Verificando os campos obrigatorios*/
+        String campo = camposObrigatorios();
+        System.out.println(campo);
+        if (!(campo.equals(""))){
+            JOptionPane.showMessageDialog(this, "O campo " + campo + " esta vazio...", "Erro", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+        
+        /*Inserindo numa variavel auxiliar*/
+        CadPartido partido = new CadPartido();
+        partido.setNome(texNomePartido.getText());
+        partido.setSigla(texSiglaPartido.getText());
+        partido.setNumero(Integer.parseInt(texNumeroPartido.getText()));
+        
+        /*Conferindo se ja nao tem partido com essas informacoes*/
+        campo = partidoDAO.igualdadePartido(partido);
+        
+        if (!(campo.equals(""))){
+            JOptionPane.showMessageDialog(this, "Há um partido com o mesmo item do campo " + campo + "...", "Erro", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+        
+        /*Se o partido poder ser cadastrado entao cadastra no dao e no arquivo*/
+        partidoDAO.inserir(partido);
+        partidoDAO.inserirJson(partido);
+        
+//        try {
+//            Conexao.criaArquivo("", "");
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(this, "Houve erro na hora de salvar no arquivo...", "Erro", JOptionPane.ERROR_MESSAGE);
+//            return ;
+//        }
+        
+        JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!", "Confirmação", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void texNomePartidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texNomePartidoKeyPressed
@@ -234,8 +280,7 @@ public class Partido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConfirmarMouseEntered
 
     private void btnConfirmarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmarMouseClicked
-       JOptionPane.showMessageDialog(rootPane, "Cadastro realizado com sucesso.");
-       this.dispose();
+       
     }//GEN-LAST:event_btnConfirmarMouseClicked
 
     private void texSiglaPartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texSiglaPartidoActionPerformed

@@ -7,16 +7,28 @@ import javax.swing.JOptionPane;
 
 public class Principal extends javax.swing.JFrame {
 
-    CandidatoDAO candidatoDAO;
-    EleitorDAO   eleitorDAO;
-    PartidoDAO   partidoDAO;
+    CandidatoDAO candidatoDAO = new CandidatoDAO();
+    EleitorDAO   eleitorDAO   = new EleitorDAO();
+    PartidoDAO   partidoDAO   = new PartidoDAO();
     
     public Principal() {
         initComponents();
-        Conexao.iniciaConexao();
         this.setTitle("Central");
         this.getContentPane().setBackground(Color.WHITE);       
         this.setExtendedState(MAXIMIZED_BOTH);
+        
+        /*Iniciando servico*/
+        Conexao.service();
+        
+        /*Verifica se as pastas no drive existem, caso nao existirem, ira cria-las*/
+        try {            
+            if (Conexao.existePasta("ArquivosJson").equals("")){
+                Conexao.criaPasta(Conexao.service(), "ArquivosJson");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Houve erro ao conectar com o drive...", "Erro", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
     }
 
     /**
@@ -172,11 +184,11 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuCadastroEleitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroEleitorActionPerformed
-       new Eleitor(eleitorDAO).setVisible(true);
+        new Eleitor(eleitorDAO).setVisible(true);
     }//GEN-LAST:event_menuCadastroEleitorActionPerformed
 
     private void menuCadastroCandidatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoActionPerformed
-        new Candidato(candidatoDAO).setVisible(true);
+        new Candidato(candidatoDAO, partidoDAO).setVisible(true);
     }//GEN-LAST:event_menuCadastroCandidatoActionPerformed
 
     private void menuCadastroMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroMouseEntered

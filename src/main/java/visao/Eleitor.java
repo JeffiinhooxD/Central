@@ -12,6 +12,7 @@ public class Eleitor extends javax.swing.JFrame {
     public Eleitor(EleitorDAO eleitorDAO) {
         this.eleitorDAO = eleitorDAO;
         initComponents();
+        texNomeEleitor.requestFocus();
         this.setTitle("Cadastro de Eleitor");
         this.setLocationRelativeTo(null);
         this.setExtendedState(HIDE_ON_CLOSE);

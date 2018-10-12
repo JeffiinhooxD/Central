@@ -1,13 +1,10 @@
 package modelo;
 
-/**
- *
- * @author jeffi
- */
 public class CadPartido {
 
     private String nome;
-    private short numero;
+    private int numero;
+    private String sigla;
     
     public String getNome(){
         return(this.nome);
@@ -17,17 +14,26 @@ public class CadPartido {
         this.nome = nome;
     }
     
-    public short getNumero(){
+    public int getNumero(){
         return(this.numero);
     }
     
-    public void setNumero(short numero){
+    public void setNumero(int numero){
         this.numero = numero;
+    }
+    
+    public String getSigla(){
+        return(this.sigla);
+    }
+    
+    public void setSigla(String sigla){
+        this.sigla = sigla;
     }
 
     @Override
     public String toString() {
         return ("Nome: "   + this.nome   + "\n" +
+                "Sigla: "  + this.sigla  + "\n" +
                 "Numero: " + this.numero + "\n");
     }
 }
