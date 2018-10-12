@@ -1,24 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package visao;
-
+import dao.EleitorDAO;
 import java.awt.Cursor;
+import java.io.File;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author paulohx
- */
 public class Eleitor extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Eleitor
-     */
-    public Eleitor() {
+    EleitorDAO eleitorDAO;
+    
+    public Eleitor(EleitorDAO eleitorDAO) {
+        this.eleitorDAO = eleitorDAO;
         initComponents();
+        this.setTitle("Cadastro de Eleitor");
         this.setLocationRelativeTo(null);
         this.setExtendedState(HIDE_ON_CLOSE);
     }
@@ -61,7 +55,6 @@ public class Eleitor extends javax.swing.JFrame {
         }
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setAlwaysOnTop(true);
         setUndecorated(true);
 
         btnConfirmar.setText("Confirmar");
@@ -147,6 +140,11 @@ public class Eleitor extends javax.swing.JFrame {
                 btnLimparMouseEntered(evt);
             }
         });
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         jLabel5.setText("TíTULO ELEITOR:");
@@ -191,8 +189,7 @@ public class Eleitor extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnLocalizarImagem, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(texImagemEleitor, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(texImagemEleitor))
                             .addComponent(texTituloEleitor)
                             .addComponent(texSecaoEleitor)
                             .addComponent(texNomeEleitor)
@@ -307,7 +304,10 @@ public class Eleitor extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimparMouseEntered
 
     private void btnLocalizarImagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocalizarImagemActionPerformed
-        // TODO add your handling code here:
+        JFileChooser seleciona = new JFileChooser();
+        seleciona.showOpenDialog(null);
+        File arq = seleciona.getSelectedFile();
+        texImagemEleitor.setText(arq.getAbsolutePath());
     }//GEN-LAST:event_btnLocalizarImagemActionPerformed
 
     private void btnLocalizarImagemMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLocalizarImagemMouseEntered
@@ -317,6 +317,22 @@ public class Eleitor extends javax.swing.JFrame {
     private void btnLocalizarImagemMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLocalizarImagemMouseExited
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_btnLocalizarImagemMouseExited
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        
+        /*Limpando todos os campos*/
+        texNomeEleitor.setText("");
+        
+        /*O cpf nao limpa direito (olhar depois)*/
+        texCpfEleitor.setText(null);
+                   
+        texTituloEleitor.setText("");
+        texSecaoEleitor.setText("");
+        texImagemEleitor.setText("");
+        
+        /*Passa o foco para o campo de nome*/
+        texNomeEleitor.requestFocus();
+    }//GEN-LAST:event_btnLimparActionPerformed
 
 
 

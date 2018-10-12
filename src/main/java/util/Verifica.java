@@ -1,4 +1,4 @@
-package validacoes;
+package util;
 
 /**
  *

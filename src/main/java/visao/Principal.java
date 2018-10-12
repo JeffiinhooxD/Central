@@ -1,27 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package visao;
+import dao.*;
 import conexao.Conexao;
 import java.awt.Color;
 import java.awt.Cursor;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author jefferson
- */
 public class Principal extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Principal
-     */
+    CandidatoDAO candidatoDAO;
+    EleitorDAO   eleitorDAO;
+    PartidoDAO   partidoDAO;
+    
     public Principal() {
         initComponents();
-        this.getContentPane().setBackground(Color.WHITE);
         Conexao.iniciaConexao();
+        this.setTitle("Central");
+        this.getContentPane().setBackground(Color.WHITE);       
         this.setExtendedState(MAXIMIZED_BOTH);
     }
 
@@ -178,19 +172,11 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuCadastroEleitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroEleitorActionPerformed
-       Eleitor telaEleitor = new Eleitor();
-       telaEleitor.setVisible(true);
+       new Eleitor(eleitorDAO).setVisible(true);
     }//GEN-LAST:event_menuCadastroEleitorActionPerformed
 
-    private void menuCadastroPartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroPartidoActionPerformed
-        Partido telaPartido = new Partido();
-        System.out.println("GRANDE TELA");
-        
-        telaPartido.setVisible(true);    }//GEN-LAST:event_menuCadastroPartidoActionPerformed
-
     private void menuCadastroCandidatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoActionPerformed
-        Candidato telaCandidato = new Candidato();
-        telaCandidato.setVisible(true);
+        new Candidato(candidatoDAO).setVisible(true);
     }//GEN-LAST:event_menuCadastroCandidatoActionPerformed
 
     private void menuCadastroMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroMouseEntered
@@ -208,10 +194,6 @@ public class Principal extends javax.swing.JFrame {
     private void menuCadastroEleitorMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroEleitorMouseEntered
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_menuCadastroEleitorMouseEntered
-
-    private void menuCadastroPartidoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroPartidoMouseEntered
-        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_menuCadastroPartidoMouseEntered
 
     private void menuCadastroCandidatoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoMouseExited
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -244,6 +226,14 @@ public class Principal extends javax.swing.JFrame {
     private void computarVotosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_computarVotosMouseEntered
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_computarVotosMouseEntered
+
+    private void menuCadastroPartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroPartidoActionPerformed
+        new Partido(partidoDAO).setVisible(true);
+    }//GEN-LAST:event_menuCadastroPartidoActionPerformed
+
+    private void menuCadastroPartidoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroPartidoMouseEntered
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_menuCadastroPartidoMouseEntered
 
     private void menuCadastroPartidoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroPartidoMouseExited
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));

@@ -1,24 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package visao;
-
+import dao.PartidoDAO;
 import java.awt.Cursor;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author paulohx
- */
 public class Partido extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Partido
-     */
-    public Partido() {
+    PartidoDAO partidoDAO;
+    
+    public Partido(PartidoDAO partidoDAO) {
+        this.partidoDAO = partidoDAO;
         initComponents();
+        this.setTitle("Cadastro de Partido");
         this.setLocationRelativeTo(null);
         this.setExtendedState(HIDE_ON_CLOSE);
     }
@@ -96,6 +88,11 @@ public class Partido extends javax.swing.JFrame {
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnLimparMouseEntered(evt);
+            }
+        });
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
             }
         });
 
@@ -248,6 +245,17 @@ public class Partido extends javax.swing.JFrame {
     private void texSiglaPartidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texSiglaPartidoKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_texSiglaPartidoKeyPressed
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        
+        /*Limpando todos os campos*/
+        texNomePartido.setText("");
+        texNumeroPartido.setText("");
+        texSiglaPartido.setText("");
+        
+        /*Passa o foco para o campo de nome*/
+        texNomePartido.requestFocus();
+    }//GEN-LAST:event_btnLimparActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

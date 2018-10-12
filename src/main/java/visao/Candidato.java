@@ -1,23 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package visao;
-
+import dao.CandidatoDAO;
 import java.awt.Cursor;
 
-/**
- *
- * @author paulohx
- */
 public class Candidato extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Candidato
-     */
-    public Candidato() {
+    CandidatoDAO candidatoDAO;
+    
+    public Candidato(CandidatoDAO candidatoDAO) {
+        this.candidatoDAO = candidatoDAO;
         initComponents();
+        this.setTitle("Cadastro de Candidato");
         this.setLocationRelativeTo(null);
         this.setExtendedState(HIDE_ON_CLOSE);
     }
@@ -225,7 +217,19 @@ public class Candidato extends javax.swing.JFrame {
     }//GEN-LAST:event_texNomeCandidatoKeyPressed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
-        // TODO add your handling code here:
+        
+        /*Limpando todos os campos*/
+        texNomeCandidato.setText("");
+        texNumeroCandidato.setText("");
+        
+        /*O cpf nao limpa direito (olhar depois)*/
+        texCpfCandidato.setText(null);
+
+        /*Limpar o combox box partido depois*/
+        //boxPartido.setText("");
+        
+        /*Passa o foco para o campo de nome*/
+        texNomeCandidato.requestFocus();
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

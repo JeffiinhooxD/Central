@@ -4,7 +4,7 @@ package modelo;
  *
  * @author jeffi
  */
-public class Partido {
+public class CadPartido {
 
     private String nome;
     private short numero;

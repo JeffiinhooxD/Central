@@ -1,12 +1,12 @@
 package modelo;
 
-import validacoes.Verifica;
+import util.Verifica;
 
 /**
  *
  * @author paulo
  */
-public class Eleitor {    
+public class CadEleitor {    
     
     private String numeroTitulo;
     private String nome;

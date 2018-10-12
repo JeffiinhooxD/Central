@@ -1,17 +1,17 @@
 package modelo;
 
-import validacoes.Verifica;
+import util.Verifica;
 
 /**
  *
  * @author jeffi
  */
-public class Candidato {
+public class CadCandidato {
     
     private String nome;
     private int numero;
     private String cpf;
-    private Partido partido;
+    private CadPartido partido;
     
     public String getNome(){
         return(this.nome);
@@ -42,11 +42,11 @@ public class Candidato {
         }else{return false;}
     }
     
-    public Partido getPartido(){
+    public CadPartido getPartido(){
         return(this.partido);
     }
     
-    public void setPartido(Partido partido){
+    public void setPartido(CadPartido partido){
         this.partido = partido;
     }
 
