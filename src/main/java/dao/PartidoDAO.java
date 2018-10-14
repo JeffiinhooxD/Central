@@ -107,10 +107,27 @@ public class PartidoDAO {
             Conexao.enviaArquivo(idPas, "Partido.json");
             
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Houve erro ao conectar com o drive para salavar o arquivo..", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Houve erro ao conectar com o drive para salvar o arquivo..", "Erro", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         
         return true;
-    }    
+    }
+    
+    public CadPartido[] getVetorPartido(){
+        return this.partidos;
+    }
+    
+    public CadPartido getPartidoBySigla(String sigla){
+        
+        for (CadPartido p: this.partidos){
+            if (p != null){
+                if (p.getSigla().toUpperCase().equals(sigla.toUpperCase())){
+                    return p;
+                }
+            }            
+        }
+
+        return null;
+    }
 }

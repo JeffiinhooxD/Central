@@ -9,7 +9,7 @@ public class Verifica {
     public boolean Cpf(String cpf){
         
         /*Verfica se nao esta vindo nada em caso de algum erro*/
-        if (cpf == null){
+        if (cpf.equals("   .   .   -  ")){
             return(false);
         }
         

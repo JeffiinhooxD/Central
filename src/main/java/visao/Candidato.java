@@ -3,6 +3,8 @@ import dao.CandidatoDAO;
 import dao.PartidoDAO;
 import java.awt.Cursor;
 import javax.swing.JOptionPane;
+import modelo.CadCandidato;
+import modelo.CadPartido;
 
 public class Candidato extends javax.swing.JFrame {
 
@@ -14,20 +16,45 @@ public class Candidato extends javax.swing.JFrame {
         this.partidoDAO   = partidoDAO;
         
         /*Verifica se tem partido cadastrado*/
-//        if (!(partidoDAO.existeAlgumPartido())){
-//            JOptionPane.showMessageDialog(null, "Você não pode cadastrar um candidato sem antes ter cadastrado um partido", "Erro", JOptionPane.ERROR_MESSAGE);
-//            this.setVisible(false);
-//            this.dispose();
-//            return;
-//        }
+        if (!(partidoDAO.existeAlgumPartido())){
+            JOptionPane.showMessageDialog(null, "Você não pode cadastrar um candidato sem antes ter cadastrado um partido", "Erro", JOptionPane.ERROR_MESSAGE);
+            this.setVisible(false);
+            this.dispose();
+            return ;
+        }
         
-        initComponents();
-        texNomeCandidato.requestFocus();
+        initComponents();        
         this.setTitle("Cadastro de Candidato");
         this.setLocationRelativeTo(null);
         this.setExtendedState(HIDE_ON_CLOSE);
+        
+        /*Preenche os partidos*/
+        preencheBoxPartido();
+        
+        /*Seta o foco no nome*/
+        texNomeCandidato.requestFocus();                
     }
 
+    public void preencheBoxPartido(){
+        
+        CadPartido partidos[] = partidoDAO.getVetorPartido();
+        
+        for (int i = 0; i < partidos.length; i++) {
+            if (partidos[i] != null){
+                boxPartido.addItem(partidos[i].getSigla());
+            }            
+        }
+    }
+    
+    public String camposObrigatorios(){
+        
+        if (texNomeCandidato.getText().equals(""))              return "NOME";
+        if (texCpfCandidato.getText().equals("   .   .   -  ")) return "CPF";
+        if (boxPartido.getSelectedIndex() == 0)                return "PARTIDO";
+        
+        return "";
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -57,7 +84,6 @@ public class Candidato extends javax.swing.JFrame {
         btnConfirmar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setAlwaysOnTop(true);
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.TOOLKIT_EXCLUDE);
         setUndecorated(true);
         setPreferredSize(new java.awt.Dimension(930, 540));
@@ -71,16 +97,7 @@ public class Candidato extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         jLabel3.setText("NUMERO:");
 
-        texNomeCandidato.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                texNomeCandidatoActionPerformed(evt);
-            }
-        });
-        texNomeCandidato.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                texNomeCandidatoKeyPressed(evt);
-            }
-        });
+        texNumeroCandidato.setEnabled(false);
 
         jLabel4.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         jLabel4.setText("CPF:");
@@ -222,14 +239,6 @@ public class Candidato extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void texNomeCandidatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texNomeCandidatoActionPerformed
-
-    }//GEN-LAST:event_texNomeCandidatoActionPerformed
-
-    private void texNomeCandidatoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texNomeCandidatoKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_texNomeCandidatoKeyPressed
-
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         
         /*Limpando todos os campos*/
@@ -238,9 +247,7 @@ public class Candidato extends javax.swing.JFrame {
         
         /*O cpf nao limpa direito (olhar depois)*/
         texCpfCandidato.setText(null);
-
-        /*Limpar o combox box partido depois*/
-        //boxPartido.setText("");
+        boxPartido.setSelectedIndex(0);
         
         /*Passa o foco para o campo de nome*/
         texNomeCandidato.requestFocus();
@@ -251,7 +258,55 @@ public class Candidato extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
-        this.dispose();
+        
+        /*Muda o mouse*/
+        this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+        
+        /*Verificando os campos obrigatorios*/
+        String campo = camposObrigatorios();
+        if (!(campo.equals(""))){
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            JOptionPane.showMessageDialog(this, "O campo " + campo + " esta vazio...", "Erro", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+        
+        /*Inserindo numa variavel auxiliar*/
+        CadCandidato candidato = new CadCandidato();
+        candidato.setNome(texNomeCandidato.getText());
+        
+        if (!(candidato.setCpf(texCpfCandidato.getText()))){
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            JOptionPane.showMessageDialog(this, "Cpf inválido...", "Erro", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+        
+        candidato.setNumero(Integer.parseInt(texNumeroCandidato.getText()));
+        candidato.setPartido(partidoDAO.getPartidoBySigla(boxPartido.getSelectedItem().toString()));
+        
+        /*Conferindo se ja nao tem partido com essas informacoes*/
+        campo = candidatoDAO.igualdadeCandidato(candidato);
+        
+        if (!(campo.equals(""))){
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            JOptionPane.showMessageDialog(this, "Há um candidato com o mesmo item do campo " + campo + "...", "Erro", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+        
+        /*Se o partido poder ser cadastrado entao cadastra no dao e no arquivo e envia pro drive*/
+        if ((candidatoDAO.inserir(candidato)     == false) || 
+            (candidatoDAO.inserirJson(candidato) == false) ||
+            (candidatoDAO.enviaDrive()           == false)){
+            
+            return ;
+        }
+        
+        /*Volta o cursor para padrao*/
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        
+        JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!", "Confirmação", JOptionPane.INFORMATION_MESSAGE);
+        
+        /*Depois de cadastrar, limpa os campos*/
+        btnLimparActionPerformed(evt);
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void btnCancelarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseEntered
@@ -279,7 +334,11 @@ public class Candidato extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConfirmarMouseExited
 
     private void boxPartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxPartidoActionPerformed
-        // TODO add your handling code here:
+        
+        CadPartido p = partidoDAO.getPartidoBySigla(boxPartido.getSelectedItem().toString());
+        if (p != null){
+              texNumeroCandidato.setText(Integer.toString(p.getNumero()));
+        }else{texNumeroCandidato.setText("");}
     }//GEN-LAST:event_boxPartidoActionPerformed
 
     private void boxPartidoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_boxPartidoMouseEntered

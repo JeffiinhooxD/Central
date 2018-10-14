@@ -6,7 +6,7 @@ public class CadEleitor {
         
     private String nome;
     private String cpf;
-    private String secao;
+    private int secao;
     private String numeroTitulo;
     
     public String getNome(){
@@ -30,11 +30,11 @@ public class CadEleitor {
         }else{return false;}
     }
     
-    public String getSecao(){
+    public int getSecao(){
         return(this.secao);
     }
     
-    public void setSecao(String secao){
+    public void setSecao(int secao){
         this.secao = secao;
     }
     

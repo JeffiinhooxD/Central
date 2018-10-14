@@ -136,8 +136,8 @@ public class Partido extends javax.swing.JFrame {
             }
         });
         texSiglaPartido.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                texSiglaPartidoKeyPressed(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                texSiglaPartidoKeyReleased(evt);
             }
         });
 
@@ -206,11 +206,14 @@ public class Partido extends javax.swing.JFrame {
     }//GEN-LAST:event_texNomePartidoActionPerformed
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
+                
+        /*Muda o mouse*/
+        this.setCursor(new Cursor(Cursor.WAIT_CURSOR));              
         
         /*Verificando os campos obrigatorios*/
         String campo = camposObrigatorios();
-        System.out.println(campo);
         if (!(campo.equals(""))){
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(this, "O campo " + campo + " esta vazio...", "Erro", JOptionPane.ERROR_MESSAGE);
             return ;
         }
@@ -225,6 +228,7 @@ public class Partido extends javax.swing.JFrame {
         campo = partidoDAO.igualdadePartido(partido);
         
         if (!(campo.equals(""))){
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(this, "Há um partido com o mesmo item do campo " + campo + "...", "Erro", JOptionPane.ERROR_MESSAGE);
             return ;
         }
@@ -237,7 +241,13 @@ public class Partido extends javax.swing.JFrame {
             return ;
         }
         
+        /*Volta o cursor para padrao*/
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        
         JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!", "Confirmação", JOptionPane.INFORMATION_MESSAGE);
+        
+        /*Depois de cadastrar, limpa os campos*/
+        btnLimparActionPerformed(evt);
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void texNomePartidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texNomePartidoKeyPressed
@@ -281,12 +291,8 @@ public class Partido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConfirmarMouseClicked
 
     private void texSiglaPartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texSiglaPartidoActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_texSiglaPartidoActionPerformed
-
-    private void texSiglaPartidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texSiglaPartidoKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_texSiglaPartidoKeyPressed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         
@@ -298,6 +304,12 @@ public class Partido extends javax.swing.JFrame {
         /*Passa o foco para o campo de nome*/
         texNomePartido.requestFocus();
     }//GEN-LAST:event_btnLimparActionPerformed
+
+    private void texSiglaPartidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texSiglaPartidoKeyReleased
+        String aux = texSiglaPartido.getText().toUpperCase();
+        texSiglaPartido.setText("");
+        texSiglaPartido.setText(aux);
+    }//GEN-LAST:event_texSiglaPartidoKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

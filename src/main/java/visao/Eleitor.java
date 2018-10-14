@@ -4,6 +4,7 @@ import java.awt.Cursor;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import modelo.CadEleitor;
 
 public class Eleitor extends javax.swing.JFrame {
 
@@ -16,6 +17,15 @@ public class Eleitor extends javax.swing.JFrame {
         this.setTitle("Cadastro de Eleitor");
         this.setLocationRelativeTo(null);
         this.setExtendedState(HIDE_ON_CLOSE);
+    }
+    
+    public String camposObrigatorios(){
+        
+        if (texNomeEleitor.getText().equals(""))              return "NOME";
+        if (texCpfEleitor.getText().equals("   .   .   -  ")) return "CPF";
+        if (texTituloEleitor.getText().equals(""))            return "TITULO";
+        
+        return "";
     }
 
     /**
@@ -80,6 +90,8 @@ public class Eleitor extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         jLabel4.setText("CPF:");
 
+        texSecaoEleitor.setText("1");
+        texSecaoEleitor.setEnabled(false);
         texSecaoEleitor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 texSecaoEleitorActionPerformed(evt);
@@ -261,7 +273,55 @@ public class Eleitor extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConfirmarMouseEntered
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
-        // TODO add your handling code here:
+        
+        /*Muda o mouse*/
+        this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+        
+        /*Verificando os campos obrigatorios*/
+        String campo = camposObrigatorios();
+        if (!(campo.equals(""))){
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            JOptionPane.showMessageDialog(this, "O campo " + campo + " esta vazio...", "Erro", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+        
+        /*Inserindo numa variavel auxiliar*/
+        CadEleitor eleitor = new CadEleitor();
+        eleitor.setNome(texNomeEleitor.getText());
+        
+        if (!(eleitor.setCpf(texCpfEleitor.getText()))){
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            JOptionPane.showMessageDialog(this, "Cpf inválido...", "Erro", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+        
+        eleitor.setNumeroTitulo(texTituloEleitor.getText());
+        eleitor.setSecao(Integer.parseInt(texSecaoEleitor.getText()));
+        
+        /*Conferindo se ja nao tem partido com essas informacoes*/
+        campo = eleitorDAO.igualdadeEleitor(eleitor);
+        
+        if (!(campo.equals(""))){
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            JOptionPane.showMessageDialog(this, "Há um eleitor com o mesmo item do campo " + campo + "...", "Erro", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+        
+        /*Se o partido poder ser cadastrado entao cadastra no dao e no arquivo e envia pro drive*/
+        if ((eleitorDAO.inserir(eleitor)     == false) || 
+            (eleitorDAO.inserirJson(eleitor) == false) ||
+            (eleitorDAO.enviaDrive()         == false)){
+            
+            return ;
+        }
+        
+        /*Volta o cursor para padrao*/
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        
+        JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!", "Confirmação", JOptionPane.INFORMATION_MESSAGE);
+        
+        /*Depois de cadastrar, limpa os campos*/
+        btnLimparActionPerformed(evt);
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void texSecaoEleitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texSecaoEleitorActionPerformed
@@ -328,7 +388,6 @@ public class Eleitor extends javax.swing.JFrame {
         texCpfEleitor.setText(null);
                    
         texTituloEleitor.setText("");
-        texSecaoEleitor.setText("");
         texImagemEleitor.setText("");
         
         /*Passa o foco para o campo de nome*/
