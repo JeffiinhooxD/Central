@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 import modelo.CadPartido;
+import conexao.Conexao;
 
 public class PartidoDAO {
     
@@ -62,7 +63,7 @@ public class PartidoDAO {
         return false;
     }
     
-    public void inserirJson(CadPartido partido){
+    public boolean inserirJson(CadPartido partido){
         
         Gson gson = new Gson();
         
@@ -71,6 +72,7 @@ public class PartidoDAO {
             arq = new FileWriter("./ArquivosJson/Partido.json", true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Houve algum erro ao salvar o partido no arquivo json", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         
         PrintWriter escreveArq = new PrintWriter(arq);
@@ -80,6 +82,35 @@ public class PartidoDAO {
             arq.close();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Houve algum erro ao fechar o arquivo json", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
+        
+        return true;
     }
+    
+    public boolean enviaDrive(){
+        
+        try {
+            
+            String idPas = Conexao.existePasta("ArquivosJson");            
+            if (idPas.equals("")){
+                idPas = Conexao.criaPasta(Conexao.service(), "ArquivosJson");    
+            }
+            
+            String idArq = Conexao.existeArquivo("Partido.json");          
+
+            if (idArq.equals("")){                
+                idArq = Conexao.enviaArquivo(idPas, "Partido.json");
+            }
+            
+            Conexao.removeArquivo(idArq);
+            Conexao.enviaArquivo(idPas, "Partido.json");
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Houve erro ao conectar com o drive para salavar o arquivo..", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        return true;
+    }    
 }

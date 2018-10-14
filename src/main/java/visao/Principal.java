@@ -18,17 +18,7 @@ public class Principal extends javax.swing.JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
         
         /*Iniciando servico*/
-        Conexao.service();
-        
-        /*Verifica se as pastas no drive existem, caso nao existirem, ira cria-las*/
-        try {            
-            if (Conexao.existePasta("ArquivosJson").equals("")){
-                Conexao.criaPasta(Conexao.service(), "ArquivosJson");
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Houve erro ao conectar com o drive...", "Erro", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
-        }
+        Conexao.service();        
     }
 
     /**

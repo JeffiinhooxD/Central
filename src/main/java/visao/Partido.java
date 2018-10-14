@@ -229,16 +229,13 @@ public class Partido extends javax.swing.JFrame {
             return ;
         }
         
-        /*Se o partido poder ser cadastrado entao cadastra no dao e no arquivo*/
-        partidoDAO.inserir(partido);
-        partidoDAO.inserirJson(partido);
-        
-//        try {
-//            Conexao.criaArquivo("", "");
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(this, "Houve erro na hora de salvar no arquivo...", "Erro", JOptionPane.ERROR_MESSAGE);
-//            return ;
-//        }
+        /*Se o partido poder ser cadastrado entao cadastra no dao e no arquivo e envia pro drive*/
+        if ((partidoDAO.inserir(partido)     == false) || 
+            (partidoDAO.inserirJson(partido) == false) ||
+            (partidoDAO.enviaDrive()         == false)){
+            
+            return ;
+        }
         
         JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!", "Confirmação", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnConfirmarActionPerformed

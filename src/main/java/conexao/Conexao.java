@@ -87,19 +87,6 @@ public class Conexao {
                 .build();
     }
     
-    public static String criaPasta(Drive service, String name) throws IOException, GeneralSecurityException{
-        
-        File fileMetadata = new File();
-        fileMetadata.setName(name);
-        fileMetadata.setMimeType("application/vnd.google-apps.folder");
-
-        File file = service.files().create(fileMetadata)
-            .setFields("id")
-            .execute();
-        
-        return file.getId();        
-    }
-
     public static String existePasta(String nome)  throws IOException, GeneralSecurityException {
         
         String pageToken = null;
@@ -121,6 +108,46 @@ public class Conexao {
         return "";
     }
     
+    public static String existeArquivo(String nome)  throws IOException, GeneralSecurityException {
+        
+        String pageToken = null;
+        do {
+          FileList result = service.files().list()
+              .setQ("mimeType='arquivosjson/json'")
+              .setSpaces("drive")
+              .setFields("nextPageToken, files(id, name)")
+              .setPageToken(pageToken)
+              .execute();
+          for (File file : result.getFiles()) {
+              if (file.getName().equals(nome)){
+                  return file.getId();
+              }
+          }
+          pageToken = result.getNextPageToken();
+        } while (pageToken != null);
+        
+        return "";
+    }
+    
+    
+    
+    
+    
+    
+    
+    public static String criaPasta(Drive service, String name) throws IOException, GeneralSecurityException{
+        
+        File fileMetadata = new File();
+        fileMetadata.setName(name);
+        fileMetadata.setMimeType("application/vnd.google-apps.folder");
+
+        File file = service.files().create(fileMetadata)
+            .setFields("id")
+            .execute();
+        
+        return file.getId();        
+    }
+    
     public static void getFolderID() throws IOException, GeneralSecurityException {
         
         FileList result = service.files().list()
@@ -138,7 +165,16 @@ public class Conexao {
         }
     }
     
-    public static String criaArquivo(String folderId, String url) throws IOException, GeneralSecurityException{
+    public static void removeArquivo(String fileId) throws IOException, GeneralSecurityException{
+        
+        try {
+          service.files().delete(fileId).execute();
+        } catch (IOException e) {
+          System.out.println("An error occurred: " + e);
+        }
+    }
+    
+    public static String enviaArquivo(String folderId, String url) throws IOException, GeneralSecurityException{
 
         File fileMetadata = new File();
         fileMetadata.setName(url);
@@ -152,13 +188,14 @@ public class Conexao {
         return file.getId();
     }
     
-    private static String printFile(Drive service, String fileId) throws IOException, GeneralSecurityException{
+    public static String printFile(String fileId) throws IOException, GeneralSecurityException{
 
           File file = service.files().get(fileId).execute();
           ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
           service.files().get(fileId).executeMediaAndDownloadTo(outputStream);
           
           return "Título:   " + file.getName() + "\n" +
+                 "Mine type:" + file.getMimeType() + "\n" +
                  "Conteúdo: " + outputStream.toString();
     }
 }
