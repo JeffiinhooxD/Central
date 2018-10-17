@@ -76,7 +76,7 @@ public class PartidoDAO {
         }
         
         PrintWriter escreveArq = new PrintWriter(arq);
-        escreveArq.printf("%s", gson.toJson(partido));
+        escreveArq.printf("%s\n", gson.toJson(partido));
         
         try {
             arq.close();

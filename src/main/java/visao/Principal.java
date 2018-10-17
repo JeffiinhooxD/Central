@@ -1,15 +1,23 @@
 package visao;
+
 import dao.*;
+import modelo.*;
 import conexao.Conexao;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class Principal extends javax.swing.JFrame {
 
     CandidatoDAO candidatoDAO = new CandidatoDAO();
     EleitorDAO   eleitorDAO   = new EleitorDAO();
     PartidoDAO   partidoDAO   = new PartidoDAO();
+    VotoDAO      votoDAO      = new VotoDAO();
+    Urna         urna         = new Urna();
     
     public Principal() {
         initComponents();
@@ -18,7 +26,7 @@ public class Principal extends javax.swing.JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
         
         /*Iniciando servico*/
-        Conexao.service();        
+        Conexao.service();
     }
 
     /**
@@ -37,7 +45,6 @@ public class Principal extends javax.swing.JFrame {
         menuCadastroEleitor = new javax.swing.JMenuItem();
         menuCadastroPartido = new javax.swing.JMenuItem();
         menuUtilitarios = new javax.swing.JMenu();
-        enviarDrive = new javax.swing.JMenuItem();
         computarVotos = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -129,18 +136,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        enviarDrive.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
-        enviarDrive.setText("Enviar Drive");
-        enviarDrive.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                enviarDriveMouseExited(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                enviarDriveMouseEntered(evt);
-            }
-        });
-        menuUtilitarios.add(enviarDrive);
-
         computarVotos.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         computarVotos.setText("Computar Votos");
         computarVotos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -149,6 +144,11 @@ public class Principal extends javax.swing.JFrame {
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 computarVotosMouseEntered(evt);
+            }
+        });
+        computarVotos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computarVotosActionPerformed(evt);
             }
         });
         menuUtilitarios.add(computarVotos);
@@ -209,10 +209,6 @@ public class Principal extends javax.swing.JFrame {
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_menuUtilitariosMouseExited
 
-    private void enviarDriveMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_enviarDriveMouseExited
-        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_enviarDriveMouseExited
-
     private void computarVotosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_computarVotosMouseExited
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_computarVotosMouseExited
@@ -220,10 +216,6 @@ public class Principal extends javax.swing.JFrame {
     private void menuUtilitariosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuUtilitariosMouseEntered
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_menuUtilitariosMouseEntered
-
-    private void enviarDriveMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_enviarDriveMouseEntered
-        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_enviarDriveMouseEntered
 
     private void computarVotosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_computarVotosMouseEntered
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -240,6 +232,104 @@ public class Principal extends javax.swing.JFrame {
     private void menuCadastroPartidoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroPartidoMouseExited
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_menuCadastroPartidoMouseExited
+
+    private void computarVotosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computarVotosActionPerformed
+        new TabelaVotos(candidatoDAO).setVisible(true);
+    }
+    
+    public void Teste(){
+        
+        /*A ideia e criar uma tabela e mostrar o resultado dos votos*/
+        Urna urna = new Urna();
+        VotoDAO votoDAO = new VotoDAO();
+        urna.setVotoDAO(votoDAO);
+        
+        CadPartido partido = new CadPartido();
+        partido.setNome("Partido1");
+        partido.setNumero(14);
+        partido.setSigla("TES");
+        
+        CadCandidato candidato = new CadCandidato();
+        candidato.setNome("Candidato1");
+        candidato.setCpf("137.378.256-02");
+        candidato.setNumero(14);
+        candidato.setPartido(partido);
+        
+        CadEleitor eleitor = new CadEleitor();
+        eleitor.setNome("Eleitor 1");
+        eleitor.setCpf("137.378.256-02");
+        eleitor.setSecao(1);
+        eleitor.setNumeroTitulo("32156 klj");
+        
+        Voto voto = new Voto(urna);
+        voto.setCandidato(candidato);
+        voto.setEleitor(eleitor);
+        
+        votoDAO.inserir(voto);                     
+        
+        System.out.println("AAOPA");
+        //https://stackoverflow.com/questions/2937991/create-tablemodel-and-populate-jtable-dynamically#
+        String nomeColunas [] = {"NOME ELEITOR", "CPF", "NOME CANDIDATO", "CPF", "PARTIDO", "DATA/HORA"};
+        
+        DefaultTableModel modeloTabela = new DefaultTableModel();//nomeColunas);
+                
+//        modeloTabela.addColumn("NOME ELEITOR");
+//        modeloTabela.addColumn("CPF");
+//        modeloTabela.addColumn("NOME CANDIDATO");
+//        modeloTabela.addColumn("CPF");
+//        modeloTabela.addColumn("PARTIDO");
+//        modeloTabela.addColumn("DATA/HORA");
+        System.out.println("AAOPA");
+        
+//        Object []  linhaTabela = (new Object[]{v.getEleitor().getNome(), 
+//                                               v.getEleitor().getCpf(),
+//                                               v.getCandidato().getNome(),
+//                                               v.getCandidato().getCpf(),
+//                                               v.getCandidato().getPartido().getSigla(),
+//                                               v.getData()});
+//            ((default) tabela.getmodel()).addrow(linhatavela);
+
+        JTable tabela = new JTable();
+            
+        //modeloTabela.addRow(urna.getVotoDAO().getVoto());
+//        for (Voto v : urna.getVotoDAO().getVoto()){
+//            if (v != null){
+//                System.out.println("Entrou");
+//                Object []  linhaTabela = (new Object[]{v.getEleitor().getNome(), 
+//                                                       v.getEleitor().getCpf(),
+//                                                       v.getCandidato().getNome(),
+//                                                       v.getCandidato().getCpf(),
+//                                                       v.getCandidato().getPartido().getSigla(),
+//                                                       v.getData()});
+//                ((DefaultTableModel) tabela.getModel()).addRow(linhaTabela);
+//            }
+//        }
+                
+        Object []  linhaTabela = (new Object[]{urna.getVotoDAO().getVoto()});
+        ((DefaultTableModel) tabela.getModel()).addRow(linhaTabela);
+        
+        //tabela.setModel(modeloTabela, new String [] = {"NOME ELEITOR", "CPF", "NOME CANDIDATO", "CPF", "PARTIDO", "DATA/HORA"});
+        //tabela.setVisible(true);
+        JScrollPane painel = new JScrollPane();
+        painel.setViewportView(tabela);
+        
+        System.out.println("AAOPA");
+        
+        //String [] columnNames =     {"ID", "First Name", "Last Name", "Email Address"};
+        //String [][] aux = {votos[0]};
+        
+//        for (int i = 0; i < votos.length ; i++){
+//            if (votos[i] != null){
+//                aux += votos[i];
+//            }
+//        }
+//        
+//        
+//        JTable tabela = new JTable(votos[i], nomeColunas);
+//        for (Voto v: votos){
+//            tabela.add(v);
+//        }
+    }//GEN-LAST:event_computarVotosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -280,7 +370,6 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem computarVotos;
-    private javax.swing.JMenuItem enviarDrive;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar menuBarraPrincipal;
     private javax.swing.JMenu menuCadastro;

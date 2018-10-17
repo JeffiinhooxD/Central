@@ -8,6 +8,19 @@ public class CadCandidato {
     private int numero;
     private String cpf;
     private CadPartido partido;
+    private int qtdeVoto;
+
+    public CadCandidato(){
+        this.qtdeVoto = 0;
+    }
+    
+    public int getQtdeVoto() {
+        return qtdeVoto;
+    }
+
+    public void setQtdeVoto(int qtdeVoto) {
+        this.qtdeVoto = qtdeVoto;
+    }
     
     public String getNome(){
         return(this.nome);

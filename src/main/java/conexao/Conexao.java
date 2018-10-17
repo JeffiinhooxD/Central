@@ -194,8 +194,6 @@ public class Conexao {
           ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
           service.files().get(fileId).executeMediaAndDownloadTo(outputStream);
           
-          return "Título:   " + file.getName() + "\n" +
-                 "Mine type:" + file.getMimeType() + "\n" +
-                 "Conteúdo: " + outputStream.toString();
+          return outputStream.toString();
     }
 }

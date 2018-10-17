@@ -58,7 +58,7 @@ public class EleitorDAO {
         }
         
         PrintWriter escreveArq = new PrintWriter(arq);
-        escreveArq.printf("%s", gson.toJson(eleitor));
+        escreveArq.printf("%s\n", gson.toJson(eleitor));
         
         try {
             arq.close();

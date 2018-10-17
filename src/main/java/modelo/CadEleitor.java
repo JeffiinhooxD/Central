@@ -8,6 +8,11 @@ public class CadEleitor {
     private String cpf;
     private int secao;
     private String numeroTitulo;
+    private boolean votou;
+    
+    public CadEleitor(){
+        this.votou = false;
+    }
     
     public String getNome(){
         return(this.nome);
@@ -44,5 +49,13 @@ public class CadEleitor {
     
     public void setNumeroTitulo(String numeroTitulo){
         this.numeroTitulo = numeroTitulo;
+    }
+    
+    public boolean getVotou() {
+        return(this.votou);
+    }
+
+    public void setVotou(boolean votou) {
+        this.votou = votou;
     }
 }
