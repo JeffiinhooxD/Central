@@ -58,4 +58,13 @@ public class CadEleitor {
     public void setVotou(boolean votou) {
         this.votou = votou;
     }
+    
+    public String toString(){
+             return ("Nome:    " + this.nome                 + "\n" +
+                     "Numero:  " + this.numeroTitulo         + "\n" +
+                     "Cpf:     " + this.cpf                  + "\n" +
+                     "Secao:   " + this.secao                + "\n" +
+                     "Votou:   " + this.votou +                "\n");
+    }
+    
 }

@@ -6,6 +6,11 @@ import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 import modelo.CadPartido;
 import conexao.Conexao;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PartidoDAO {
     
@@ -61,6 +66,42 @@ public class PartidoDAO {
         }
         
         return false;
+    }
+    
+    
+        
+    public void baixarPartidoJson() throws IOException{
+        
+        Gson gson = new Gson();
+        String aux = null;
+            try {
+            String idPas = Conexao.existePasta("ArquivosJson"); 
+            if (idPas.equals("")){
+                System.exit(0);    
+            }
+            
+            String idArq = Conexao.existeArquivo("Partido.json");    
+            aux = Conexao.printFile(idArq);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Houve erro ao conectar com o drive para ler o arquivo..", "Erro", JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
+                
+            }
+        
+        List <CadPartido> partido = new ArrayList();
+        
+        BufferedReader verifica = new BufferedReader(new StringReader(aux));
+        String linha;
+        
+        while((linha = verifica.readLine()) != null){
+            partido.add(gson.fromJson(linha, CadPartido.class)); 
+        }
+        
+        for (int i = 0; i < partido.size(); i++) {
+            if(partidos[i] == null){
+                partidos[i] = partido.get(i);
+            }
+        }
     }
     
     public boolean inserirJson(CadPartido partido){

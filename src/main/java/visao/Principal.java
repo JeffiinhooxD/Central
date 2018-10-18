@@ -5,7 +5,10 @@ import modelo.*;
 import conexao.Conexao;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.io.IOException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -19,7 +22,7 @@ public class Principal extends javax.swing.JFrame {
     VotoDAO      votoDAO      = new VotoDAO();
     Urna         urna         = new Urna();
     
-    public Principal() {
+    public Principal() throws IOException {
         initComponents();
         this.setTitle("Central");
         this.getContentPane().setBackground(Color.WHITE);       
@@ -27,6 +30,9 @@ public class Principal extends javax.swing.JFrame {
         
         /*Iniciando servico*/
         Conexao.service();
+        partidoDAO.baixarPartidoJson();
+        eleitorDAO.baixarEleitorJson();
+        candidatoDAO.baixarCandidatoJson();
     }
 
     /**
@@ -340,7 +346,11 @@ public class Principal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Principal().setVisible(true);
+                try {
+                    new Principal().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         /* Set the Nimbus look and feel */
