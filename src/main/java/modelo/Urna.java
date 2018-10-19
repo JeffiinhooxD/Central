@@ -1,4 +1,4 @@
-package dao;
+package modelo;
 
 import dao.VotoDAO;
 

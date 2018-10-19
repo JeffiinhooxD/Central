@@ -1,6 +1,5 @@
 package modelo;
 
-import dao.Urna;
 import java.util.Date;
 
 public class Voto {

@@ -63,7 +63,7 @@ public class CadCandidato {
     public String toString() {        
         return ("Nome:    " + this.nome                 + "\n" +
                 "Numero:  " + this.numero               + "\n" +
-                "Cpf:     " + this.cpf                  + "\n" +
+                "Cpf:     " + this.cpf                  + "\n" +                
                 "Partido: \n"                           +
                 "\tNome:   " + this.partido.getNome()   + "\n" +
                 "\tNumero: " + this.partido.getNumero() + "\n");

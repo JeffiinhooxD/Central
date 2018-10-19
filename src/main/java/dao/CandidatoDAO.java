@@ -29,6 +29,10 @@ public class CandidatoDAO {
         return false;
     }
     
+    public CadCandidato[] getVetorCandidato(){
+        return this.candidatos;
+    }
+    
     public String igualdadeCandidato(CadCandidato c){
         
         for (int i = 0; i < candidatos.length; i++) {
@@ -53,37 +57,50 @@ public class CandidatoDAO {
         return "";
     }
     
-    
     public void baixarCandidatoJson() throws IOException{
         
         Gson gson = new Gson();
+        
+        /*Auxiliar para pegar o conteudo do arquivo*/
         String aux = null;
-            try {
+        try {
+            
+            /*Verifica se a pasta existe*/
             String idPas = Conexao.existePasta("ArquivosJson"); 
-            if (idPas.equals("")){
-                System.exit(0);    
+            if (!(idPas.equals(""))){
+                
+                /*Verifica se o arquivo existe*/
+                String idArq = Conexao.existeArquivo("Candidato.json");            
+                if (!(idArq.equals(""))){
+                    
+                    /*Se existir o arquivo coloca nessa variavel o conteudo dele*/
+                    aux = Conexao.printFile(idArq);
+                }                
             }
             
-            String idArq = Conexao.existeArquivo("Candidato.json");    
-            aux = Conexao.printFile(idArq);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Houve erro ao conectar com o drive para ler o arquivo..", "Erro", JOptionPane.ERROR_MESSAGE);
-                System.exit(0);
-                
-            }
-        
-        List <CadCandidato> candidato = new ArrayList();
-        
-        BufferedReader verifica = new BufferedReader(new StringReader(aux));
-        String linha;
-        
-        while((linha = verifica.readLine()) != null){
-            candidato.add(gson.fromJson(linha, CadCandidato.class)); 
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Não foi possível baixar os dados dos candidatos, verifique sua conexão com a internet..", "Erro", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
         
-        for (int i = 0; i < candidato.size(); i++) {
-            if(candidatos[i] == null){
-                candidatos[i] = candidato.get(i);
+        /*Caso esta variavel esteja nula e porque nao ha o arquivo para baixar ou ele esta vazio*/
+        if (aux != null){
+        
+            /*Cria um vetor dinamico de candidatos*/
+            List <CadCandidato> candidato = new ArrayList<>();
+
+            /*Transforma cada linha do json em objeto do tipo candidato e adiciona no vetor dinamico*/
+            BufferedReader verifica = new BufferedReader(new StringReader(aux));        
+            String linha;        
+            while((linha = verifica.readLine()) != null){
+                candidato.add(gson.fromJson(linha, CadCandidato.class)); 
+            }
+
+            /*Joga no vetor estatico cada posicao do vetor dinamico*/
+            for (int i = 0; i < candidato.size(); i++) {
+                if(this.candidatos[i] == null){
+                    this.candidatos[i] = candidato.get(i);
+                }
             }
         }
     }

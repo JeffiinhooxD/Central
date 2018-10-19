@@ -68,38 +68,50 @@ public class PartidoDAO {
         return false;
     }
     
-    
-        
     public void baixarPartidoJson() throws IOException{
         
         Gson gson = new Gson();
-        String aux = null;
-            try {
+        
+        /*Auxiliar para pegar o conteudo do arquivo*/
+        String aux = null;        
+        try {
+            
+            /*Verifica se a pasta existe*/
             String idPas = Conexao.existePasta("ArquivosJson"); 
-            if (idPas.equals("")){
-                System.exit(0);    
+            if (!(idPas.equals(""))){
+                
+                /*Verifica se o arquivo existe*/
+                String idArq = Conexao.existeArquivo("Partido.json");            
+                if (!(idArq.equals(""))){
+                    
+                    /*Se existir o arquivo coloca nessa variavel o conteudo dele*/
+                    aux = Conexao.printFile(idArq);
+                }
             }
             
-            String idArq = Conexao.existeArquivo("Partido.json");    
-            aux = Conexao.printFile(idArq);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Houve erro ao conectar com o drive para ler o arquivo..", "Erro", JOptionPane.ERROR_MESSAGE);
-                System.exit(0);
-                
-            }
-        
-        List <CadPartido> partido = new ArrayList();
-        
-        BufferedReader verifica = new BufferedReader(new StringReader(aux));
-        String linha;
-        
-        while((linha = verifica.readLine()) != null){
-            partido.add(gson.fromJson(linha, CadPartido.class)); 
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Não foi possível baixar os dados dos partidos, verifique sua conexão com a internet..", "Erro", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
         
-        for (int i = 0; i < partido.size(); i++) {
-            if(partidos[i] == null){
-                partidos[i] = partido.get(i);
+        /*Caso esta variavel esteja nula e porque nao ha o arquivo para baixar ou ele esta vazio*/
+        if (aux != null){
+        
+            /*Cria um vetor dinamico de partidos*/
+            List <CadPartido> partido = new ArrayList<>();
+
+            /*Transforma cada linha do json em objeto do tipo partido e adiciona no vetor dinamico*/
+            BufferedReader verifica = new BufferedReader(new StringReader(aux));        
+            String linha;        
+            while((linha = verifica.readLine()) != null){
+                partido.add(gson.fromJson(linha, CadPartido.class)); 
+            }
+
+            /*Joga no vetor estatico cada posicao do vetor dinamico*/
+            for (int i = 0; i < partido.size(); i++) {
+                if(this.partidos[i] == null){
+                    this.partidos[i] = partido.get(i);
+                }
             }
         }
     }

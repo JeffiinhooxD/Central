@@ -1,18 +1,16 @@
 package visao;
 
+import modelo.Urna;
 import dao.*;
 import modelo.*;
 import conexao.Conexao;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.io.IOException;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import org.jfree.data.general.PieDataset;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -33,6 +31,7 @@ public class Principal extends javax.swing.JFrame {
         partidoDAO.baixarPartidoJson();
         eleitorDAO.baixarEleitorJson();
         candidatoDAO.baixarCandidatoJson();
+        votoDAO.baixarVotoJson();   
     }
 
     /**
@@ -240,103 +239,29 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuCadastroPartidoMouseExited
 
     private void computarVotosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computarVotosActionPerformed
-        new TabelaVotos(candidatoDAO).setVisible(true);
+        criaGrafico();
+    }//GEN-LAST:event_computarVotosActionPerformed
+    
+    public void criaGrafico(){
+        
+        if (urna.getVotoDAO().verificaAlguemVotou()){
+            
+            PieDataset pizzaDataSet = urna.getVotoDAO().preencheGrafico();
+        
+            GraficoPizza3D grafico = new GraficoPizza3D(
+                    "Apuração dos votos",
+                    "Relação de candidatos",
+                    pizzaDataSet
+            );
+
+            grafico.pack();
+            grafico.setVisible(true);
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "Ainda não ocorreu nenhum voto...", "Resultados inexistentes", JOptionPane.WARNING_MESSAGE);
+        }
     }
     
-    public void Teste(){
-        
-        /*A ideia e criar uma tabela e mostrar o resultado dos votos*/
-        Urna urna = new Urna();
-        VotoDAO votoDAO = new VotoDAO();
-        urna.setVotoDAO(votoDAO);
-        
-        CadPartido partido = new CadPartido();
-        partido.setNome("Partido1");
-        partido.setNumero(14);
-        partido.setSigla("TES");
-        
-        CadCandidato candidato = new CadCandidato();
-        candidato.setNome("Candidato1");
-        candidato.setCpf("137.378.256-02");
-        candidato.setNumero(14);
-        candidato.setPartido(partido);
-        
-        CadEleitor eleitor = new CadEleitor();
-        eleitor.setNome("Eleitor 1");
-        eleitor.setCpf("137.378.256-02");
-        eleitor.setSecao(1);
-        eleitor.setNumeroTitulo("32156 klj");
-        
-        Voto voto = new Voto(urna);
-        voto.setCandidato(candidato);
-        voto.setEleitor(eleitor);
-        
-        votoDAO.inserir(voto);                     
-        
-        System.out.println("AAOPA");
-        //https://stackoverflow.com/questions/2937991/create-tablemodel-and-populate-jtable-dynamically#
-        String nomeColunas [] = {"NOME ELEITOR", "CPF", "NOME CANDIDATO", "CPF", "PARTIDO", "DATA/HORA"};
-        
-        DefaultTableModel modeloTabela = new DefaultTableModel();//nomeColunas);
-                
-//        modeloTabela.addColumn("NOME ELEITOR");
-//        modeloTabela.addColumn("CPF");
-//        modeloTabela.addColumn("NOME CANDIDATO");
-//        modeloTabela.addColumn("CPF");
-//        modeloTabela.addColumn("PARTIDO");
-//        modeloTabela.addColumn("DATA/HORA");
-        System.out.println("AAOPA");
-        
-//        Object []  linhaTabela = (new Object[]{v.getEleitor().getNome(), 
-//                                               v.getEleitor().getCpf(),
-//                                               v.getCandidato().getNome(),
-//                                               v.getCandidato().getCpf(),
-//                                               v.getCandidato().getPartido().getSigla(),
-//                                               v.getData()});
-//            ((default) tabela.getmodel()).addrow(linhatavela);
-
-        JTable tabela = new JTable();
-            
-        //modeloTabela.addRow(urna.getVotoDAO().getVoto());
-//        for (Voto v : urna.getVotoDAO().getVoto()){
-//            if (v != null){
-//                System.out.println("Entrou");
-//                Object []  linhaTabela = (new Object[]{v.getEleitor().getNome(), 
-//                                                       v.getEleitor().getCpf(),
-//                                                       v.getCandidato().getNome(),
-//                                                       v.getCandidato().getCpf(),
-//                                                       v.getCandidato().getPartido().getSigla(),
-//                                                       v.getData()});
-//                ((DefaultTableModel) tabela.getModel()).addRow(linhaTabela);
-//            }
-//        }
-                
-        Object []  linhaTabela = (new Object[]{urna.getVotoDAO().getVoto()});
-        ((DefaultTableModel) tabela.getModel()).addRow(linhaTabela);
-        
-        //tabela.setModel(modeloTabela, new String [] = {"NOME ELEITOR", "CPF", "NOME CANDIDATO", "CPF", "PARTIDO", "DATA/HORA"});
-        //tabela.setVisible(true);
-        JScrollPane painel = new JScrollPane();
-        painel.setViewportView(tabela);
-        
-        System.out.println("AAOPA");
-        
-        //String [] columnNames =     {"ID", "First Name", "Last Name", "Email Address"};
-        //String [][] aux = {votos[0]};
-        
-//        for (int i = 0; i < votos.length ; i++){
-//            if (votos[i] != null){
-//                aux += votos[i];
-//            }
-//        }
-//        
-//        
-//        JTable tabela = new JTable(votos[i], nomeColunas);
-//        for (Voto v: votos){
-//            tabela.add(v);
-//        }
-    }//GEN-LAST:event_computarVotosActionPerformed
-
     /**
      * @param args the command line arguments
      */
