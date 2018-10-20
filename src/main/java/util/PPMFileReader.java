@@ -1,7 +1,11 @@
 package util;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PPMFileReader {
     
@@ -59,5 +63,15 @@ public class PPMFileReader {
         
         /*Retorna o objeto*/
         return image;        
+    }
+    
+    public static void writeImage(String fileName){
+        
+        try {
+            FileOutputStream stream = new FileOutputStream(fileName);
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(PPMFileReader.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

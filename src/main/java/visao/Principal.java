@@ -21,6 +21,7 @@ public class Principal extends javax.swing.JFrame {
     Urna         urna         = new Urna();
     
     public Principal() throws IOException {
+        
         initComponents();
         this.setTitle("Central");
         this.getContentPane().setBackground(Color.WHITE);       
@@ -31,7 +32,8 @@ public class Principal extends javax.swing.JFrame {
         partidoDAO.baixarPartidoJson();
         eleitorDAO.baixarEleitorJson();
         candidatoDAO.baixarCandidatoJson();
-        votoDAO.baixarVotoJson();   
+        votoDAO.baixarVotoJson();  
+        urna.setVotoDAO(votoDAO);
     }
 
     /**

@@ -5,7 +5,6 @@ import java.io.IOException;
 import modelo.Voto;
 import conexao.Conexao;
 import java.io.BufferedReader;
-import java.io.FileWriter;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;

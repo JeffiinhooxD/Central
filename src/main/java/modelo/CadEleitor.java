@@ -10,7 +10,7 @@ public class CadEleitor {
     private int secao;
     private String numeroTitulo;
     private boolean votou;
-    private PPMImage imagem = new PPMImage();
+    //private PPMImage imagem = new PPMImage();
     
     public CadEleitor(){
         this.votou = false;
@@ -61,13 +61,13 @@ public class CadEleitor {
         this.votou = votou;
     }
     
-    public PPMImage getImagem() {
-        return imagem;
-    }
-
-    public void setImagem(PPMImage imagem) {
-        this.imagem = imagem;
-    }
+//    public PPMImage getImagem() {
+//        return imagem;
+//    }
+//
+//    public void setImagem(PPMImage imagem) {
+//        this.imagem = imagem;
+//    }
     
     public String toString(){
              return ("Nome:    " + this.nome                 + "\n" +

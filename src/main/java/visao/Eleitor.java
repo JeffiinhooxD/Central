@@ -1,10 +1,18 @@
 package visao;
 import dao.EleitorDAO;
+import java.awt.BorderLayout;
 import java.awt.Cursor;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.ColorModel;
+import java.awt.image.MemoryImageSource;
 import java.io.File;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import modelo.CadEleitor;
+import util.PGMImage;
 import util.PPMFileReader;
 import util.PPMImage;
 
@@ -300,8 +308,11 @@ public class Eleitor extends javax.swing.JFrame {
         eleitor.setNumeroTitulo(texTituloEleitor.getText());
         eleitor.setSecao(Integer.parseInt(texSecaoEleitor.getText()));
         
-        PPMImage imagem = PPMFileReader.readImage(texImagemEleitor.getText());        
-        eleitor.setImagem(imagem);
+        //PPMImage PPM = PPMFileReader.readImage(texImagemEleitor.getText());        
+        //eleitor.setImagem(PPM);
+        
+        //PGMImage PGM = PPM.convertToPGM();
+        //draw(PGM);
         
         /*Conferindo se ja nao tem partido com essas informacoes*/
         campo = eleitorDAO.igualdadeEleitor(eleitor);
@@ -329,6 +340,22 @@ public class Eleitor extends javax.swing.JFrame {
         btnLimparActionPerformed(evt);
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
+    public void draw (PGMImage imagem){
+        
+        JLabel imageFrame = new JLabel();
+        
+        this.add(imageFrame, BorderLayout.CENTER);
+        imageFrame.setVisible(true);
+        
+        MemoryImageSource source = new MemoryImageSource(imagem.getWidth(), imagem.getHeight(), ColorModel.getRGBdefault(), imagem.toRGBModel(), 0, imagem.getWidth());
+        Image img = Toolkit.getDefaultToolkit().createImage(source);
+        this.remove(imageFrame);
+        imageFrame = new JLabel (new ImageIcon(img));
+        imageFrame.setVisible(true);
+        
+        this.validate();    
+    }
+    
     private void texSecaoEleitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texSecaoEleitorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_texSecaoEleitorActionPerformed
