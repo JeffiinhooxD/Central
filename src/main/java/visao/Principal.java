@@ -6,11 +6,20 @@ import modelo.*;
 import conexao.Conexao;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.FlowLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.ColorModel;
+import java.awt.image.MemoryImageSource;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import org.jfree.data.general.PieDataset;
+import util.PGMImage;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -27,15 +36,44 @@ public class Principal extends javax.swing.JFrame {
         this.getContentPane().setBackground(Color.WHITE);       
         this.setExtendedState(MAXIMIZED_BOTH);
         
-        /*Iniciando servico*/
+        /*Iniciando servico e baixa do drive caso o banco de dados esteja preenchida*/
         Conexao.service();
         partidoDAO.baixarPartidoJson();
         eleitorDAO.baixarEleitorJson();
         candidatoDAO.baixarCandidatoJson();
-        votoDAO.baixarVotoJson();  
-        urna.setVotoDAO(votoDAO);
+        
+        System.out.println("chegou1");
+        CadEleitor eleitores [] = eleitorDAO.getVetorEleitor();
+        System.out.println("chegou2");
+        PGMImage PGM;
+        for (int i = 0; i < eleitores.length; i++){
+            if (eleitores[i] != null){
+                if (eleitores[i].getNome().equals("Paulo Henrique Xavier")){
+                    System.out.println("chegou3");
+                    PGM = eleitores[i].getImagem().convertToPGM();
+                    draw(PGM);
+                    System.out.println("chegou4");
+                    break;
+                }
+            }
+        }
     }
-
+    
+    public void draw (PGMImage imagem){
+        
+        JLabel imageFrame = new JLabel();
+        
+        MemoryImageSource source = new MemoryImageSource(imagem.getWidth(), imagem.getHeight(), ColorModel.getRGBdefault(), imagem.toRGBModel(), 0, imagem.getWidth());
+        Image img =Toolkit.getDefaultToolkit().createImage(source);
+        imageFrame=new JLabel (new ImageIcon(img));
+        
+        JFrame frame = new JFrame();
+        frame.setSize(500,500);
+        frame.setVisible(true);
+        
+        frame.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 1));
+        frame.add(imageFrame);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -245,11 +283,22 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_computarVotosActionPerformed
     
     public void criaGrafico(){
+    
+        /*Baixa do drive a relacao dos votos ate o momento*/
+        try {
+            votoDAO.baixarVotoJson();  
+            urna.setVotoDAO(votoDAO);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Houve um erro na hora de computador os votos...", "Erro", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }        
         
+        /*Se ninguem votou ainda e porque nao tem nada para mostrar aqui*/
         if (urna.getVotoDAO().verificaAlguemVotou()){
             
+            /*Preenche o grafico com os dados dos candidatos*/
             PieDataset pizzaDataSet = urna.getVotoDAO().preencheGrafico();
-        
+            
             GraficoPizza3D grafico = new GraficoPizza3D(
                     "Apuração dos votos",
                     "Relação de candidatos",

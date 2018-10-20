@@ -2,6 +2,7 @@ package visao;
 import dao.EleitorDAO;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.ColorModel;
@@ -9,6 +10,7 @@ import java.awt.image.MemoryImageSource;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import modelo.CadEleitor;
@@ -18,7 +20,7 @@ import util.PPMImage;
 
 public class Eleitor extends javax.swing.JFrame {
 
-    EleitorDAO eleitorDAO;
+    EleitorDAO eleitorDAO;    
     
     public Eleitor(EleitorDAO eleitorDAO) {
         this.eleitorDAO = eleitorDAO;
@@ -308,11 +310,12 @@ public class Eleitor extends javax.swing.JFrame {
         eleitor.setNumeroTitulo(texTituloEleitor.getText());
         eleitor.setSecao(Integer.parseInt(texSecaoEleitor.getText()));
         
-        //PPMImage PPM = PPMFileReader.readImage(texImagemEleitor.getText());        
-        //eleitor.setImagem(PPM);
+        PPMImage PPM = PPMFileReader.readImage(texImagemEleitor.getText());
+        eleitor.setImagem(PPM);
         
-        //PGMImage PGM = PPM.convertToPGM();
-        //draw(PGM);
+        PGMImage PGM = PPM.convertToPGM();
+        if (PGM != null)
+            draw(PGM);
         
         /*Conferindo se ja nao tem partido com essas informacoes*/
         campo = eleitorDAO.igualdadeEleitor(eleitor);
@@ -344,16 +347,36 @@ public class Eleitor extends javax.swing.JFrame {
         
         JLabel imageFrame = new JLabel();
         
-        this.add(imageFrame, BorderLayout.CENTER);
-        imageFrame.setVisible(true);
-        
         MemoryImageSource source = new MemoryImageSource(imagem.getWidth(), imagem.getHeight(), ColorModel.getRGBdefault(), imagem.toRGBModel(), 0, imagem.getWidth());
-        Image img = Toolkit.getDefaultToolkit().createImage(source);
-        this.remove(imageFrame);
-        imageFrame = new JLabel (new ImageIcon(img));
-        imageFrame.setVisible(true);
+        Image img =Toolkit.getDefaultToolkit().createImage(source);
+        imageFrame=new JLabel (new ImageIcon(img));
         
-        this.validate();    
+        JFrame frame = new JFrame();
+        frame.setSize(500,500);
+        frame.setVisible(true);
+        
+        frame.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 1));
+        frame.add(imageFrame);
+        
+//        JLabel imageFrame;
+//        
+//        imageFrame = new JLabel();
+//        jLabel3.add(imageFrame);        
+//        
+//        MemoryImageSource source = new MemoryImageSource(imagem.getWidth(), imagem.getHeight(), ColorModel.getRGBdefault(), imagem.toRGBModel(), 0, imagem.getWidth());
+//        Image img =Toolkit.getDefaultToolkit().createImage(source);
+//        jLabel3.remove(imageFrame);
+//        imageFrame=new JLabel (new ImageIcon(img));
+//        jLabel3.add(imageFrame);
+//        
+//        jLabel3.validate();
+//        
+//        JFrame j = new JFrame();
+//        j.setSize(500,500);
+//        j.setVisible(true);
+//        
+//        j.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 1));
+//        j.add(imageFrame);
     }
     
     private void texSecaoEleitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texSecaoEleitorActionPerformed

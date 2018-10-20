@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Voto {
 
-    private CadEleitor eleitor = new CadEleitor();
+    private String cpfEleitor;
     private CadCandidato candidato = new CadCandidato();
     private int urna;
     private Date data;
@@ -14,12 +14,12 @@ public class Voto {
         this.data = new Date(); 
     }
 
-    public CadEleitor getEleitor() {
-        return eleitor;
+    public String getCpfEleitor() {
+        return cpfEleitor;
     }
 
-    public void setEleitor(CadEleitor eleitor) {
-        this.eleitor = eleitor;
+    public void setCpfEleitor(String cpfEleitor) {
+        this.cpfEleitor = cpfEleitor;
     }
 
     public CadCandidato getCandidato() {
@@ -32,5 +32,9 @@ public class Voto {
 
     public Date getData() {
         return data;
+    }
+    
+    public int getUrna(){
+        return this.urna;
     }
 }

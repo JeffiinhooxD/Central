@@ -28,6 +28,10 @@ public class EleitorDAO {
         return false;
     }
     
+    public CadEleitor [] getVetorEleitor(){
+        return this.eleitores;
+    }
+    
     public String igualdadeEleitor(CadEleitor e){
         
         for (int i = 0; i < eleitores.length; i++) {
