@@ -5,6 +5,7 @@ import java.io.IOException;
 import modelo.Voto;
 import conexao.Conexao;
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +87,7 @@ public class VotoDAO {
         /*Populando o grafico com o nome dos candidatos, partido e a quantida de votos*/
         for (Voto v: votos){
             if (v != null){
-                dataSet.setValue(v.getCandidato().getNome() + " - " + v.getCandidato().getPartido().getSigla(), v.getCandidato().getQtdeVoto() + 10);
+                dataSet.setValue(v.getCandidato().getNome() + " - " + v.getCandidato().getPartido().getSigla(), v.getCandidato().getQtdeVoto());
             }            
         }
         

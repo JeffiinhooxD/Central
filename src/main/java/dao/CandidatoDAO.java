@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 import conexao.Conexao;
-import dao.PartidoDAO;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;

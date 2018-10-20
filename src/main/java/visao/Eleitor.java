@@ -5,6 +5,8 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import modelo.CadEleitor;
+import util.PPMFileReader;
+import util.PPMImage;
 
 public class Eleitor extends javax.swing.JFrame {
 
@@ -297,6 +299,9 @@ public class Eleitor extends javax.swing.JFrame {
         
         eleitor.setNumeroTitulo(texTituloEleitor.getText());
         eleitor.setSecao(Integer.parseInt(texSecaoEleitor.getText()));
+        
+        PPMImage imagem = PPMFileReader.readImage(texImagemEleitor.getText());        
+        eleitor.setImagem(imagem);
         
         /*Conferindo se ja nao tem partido com essas informacoes*/
         campo = eleitorDAO.igualdadeEleitor(eleitor);
