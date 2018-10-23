@@ -80,6 +80,42 @@ public class PPMImage {
         this.type = type;
     }
     
+    public boolean equals(PPMImage ppm) {
+        
+        if(!(this.getType().equals(ppm.getType()))){
+            return(false);
+        }
+        
+        if(!(this.getWidth() == ppm.getWidth())){
+            return(false);
+        }
+        
+        if(!(this.getHeight() == ppm.getHeight())){
+            return(false);
+        }
+                
+        if(!(this.getCoding() == ppm.getCoding())){
+            return(false);
+        }
+        
+        int auxTRed[]   = this.getRedPixels();
+        int auxRed[]    = ppm.getRedPixels();
+        int auxTGreen[] = this.getGreenPixels();
+        int auxGreen[]  = ppm.getGreenPixels();
+        int auxTBlue[]  = this.getBluPixels();
+        int auxBlue[]   = ppm.getBluPixels();
+        
+        for(int i = 0; i< redPixels.length; i++){
+            if((auxTRed[i]   != auxRed[i])  ||
+               (auxTGreen[i] != auxGreen[i])||
+               (auxTBlue[i]  != auxBlue[i])){
+                return(false);
+            }
+        }
+  
+        return(true);
+    }
+    
     public PGMImage convertToPGM (){
         
         PGMImage image= new PGMImage();

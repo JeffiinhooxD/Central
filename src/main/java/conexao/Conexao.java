@@ -13,65 +13,76 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
+import com.google.api.client.http.FileContent;
+import com.google.api.services.drive.model.FileList;
+
+import java.security.GeneralSecurityException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.security.GeneralSecurityException;
+import java.io.ByteArrayOutputStream;
+
 import java.util.Collections;
 import java.util.List;
-
-
-import com.google.api.client.http.FileContent;
-import com.google.api.services.drive.model.FileList;
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class Conexao {
     
-    private static final String APPLICATION_NAME = "Google Drive API Java Quickstart";
-    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+    private static final String APPLICATION_NAME      = "Google Drive API Java Quickstart";
+    private static final JsonFactory JSON_FACTORY     = JacksonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
     
+    /*Variavel global utilizada afim de pegar o servico*/
     private static Drive service = null;
 
-    /**
-     * Global instance of the scopes required by this quickstart.
-     * If modifying these scopes, delete your previously saved tokens/ folder.
-     */
+    /*Instancia global da variavel SCOPES, utilizada dessa forma retorna todas as permissoes possiveis para manipular o drive*/
     private static final List<String> SCOPES = new ArrayList<>(DriveScopes.all());
+    
+    /*Variavel global com o intuito de salvar o caminho de onde estao as credencias do drive*/
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
     /**
-     * Creates an authorized Credential object.
-     * @param HTTP_TRANSPORT The network HTTP Transport.
-     * @return An authorized Credential object.
-     * @throws IOException If the credentials.json file cannot be found.
+     * Construtor da classe - onde se inicia a variavel do servico
      */
-    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
-        // Load client secrets.
-        InputStream in = Conexao.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
-
-        // Build flow and trigger user authorization request.
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-                HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
-                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
-                .setAccessType("offline")
-                .build();
-        return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
-    }
-    
     private Conexao(){
         
         try {
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            service = getService(HTTP_TRANSPORT);
+            service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                          .setApplicationName(APPLICATION_NAME)
+                          .build();
         } catch (Exception e) {
             e.getMessage();
         }        
     }
     
+    /**
+     * Cria um objeto de credencial autorizado.
+     * @param HTTP_TRANSPORT HTTP transporte da rede.
+     * @return Um objeto de credencial autorizado.
+     * @throws IOException se o arquivo de credentials.json não for encontrado.
+     */
+    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
+
+        /*Carrega os "secredos" do cliente*/
+        InputStream in = Conexao.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+
+        /*Constroi o fluxo e uma trigger do pedido do usuario*/
+        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+                HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
+                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
+                .setAccessType("offline")
+                .build();
+        
+        return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
+    }
+    
+    /**
+     * Caso o serviço ainda não esteja instânciado então instância.
+     * @return O servico
+     */
     public static Drive service() {
         
         if (service == null) {
@@ -80,13 +91,13 @@ public class Conexao {
         return service;
     }
     
-    public static Drive getService(NetHttpTransport HTTP_TRANSPORT) throws IOException, GeneralSecurityException{
-        
-        return new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                .setApplicationName(APPLICATION_NAME)
-                .build();
-    }
-    
+    /**
+     * Verifica se existe essa pasta no Google Drive.
+     * @param nome Nome da pasta.
+     * @return Retorna o id dessa pasta ou se ela não existir retorna "".
+     * @throws IOException
+     * @throws GeneralSecurityException 
+     */
     public static String existePasta(String nome)  throws IOException, GeneralSecurityException {
         
         String pageToken = null;
@@ -97,8 +108,14 @@ public class Conexao {
               .setFields("nextPageToken, files(id, name)")
               .setPageToken(pageToken)
               .execute();
+          
+          /*Laco rodando todos os arquivos que estao no drive*/
           for (File file : result.getFiles()) {
+              
+              /*Verifica se o nome do arquivo que esta no drive e igual ao procurado*/
               if (file.getName().equals(nome)){
+                  
+                  /*Se for igual entao retorn o id do arquivo*/
                   return file.getId();
               }
           }
@@ -107,6 +124,12 @@ public class Conexao {
         
         return "";
     }
+    
+    
+    
+    
+    /*FALTA COMENTAR DAQUI PRA BAIXO*/
+    
     
     public static String existeArquivo(String nome)  throws IOException, GeneralSecurityException {
         

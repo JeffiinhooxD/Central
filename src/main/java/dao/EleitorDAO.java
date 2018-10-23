@@ -48,6 +48,11 @@ public class EleitorDAO {
                 if (eleitores[i].getNumeroTitulo().equals(e.getNumeroTitulo())){
                     return "TITULO";
                 }
+                
+                /*Verifica se a imagem e igual*/
+                if (eleitores[i].getImagem().equals(e.getImagem())){
+                    return "IMAGEM";
+                }
             }
         }
         

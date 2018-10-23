@@ -41,38 +41,6 @@ public class Principal extends javax.swing.JFrame {
         partidoDAO.baixarPartidoJson();
         eleitorDAO.baixarEleitorJson();
         candidatoDAO.baixarCandidatoJson();
-        
-        System.out.println("chegou1");
-        CadEleitor eleitores [] = eleitorDAO.getVetorEleitor();
-        System.out.println("chegou2");
-        PGMImage PGM;
-        for (int i = 0; i < eleitores.length; i++){
-            if (eleitores[i] != null){
-                if (eleitores[i].getNome().equals("Paulo Henrique Xavier")){
-                    System.out.println("chegou3");
-                    PGM = eleitores[i].getImagem().convertToPGM();
-                    draw(PGM);
-                    System.out.println("chegou4");
-                    break;
-                }
-            }
-        }
-    }
-    
-    public void draw (PGMImage imagem){
-        
-        JLabel imageFrame = new JLabel();
-        
-        MemoryImageSource source = new MemoryImageSource(imagem.getWidth(), imagem.getHeight(), ColorModel.getRGBdefault(), imagem.toRGBModel(), 0, imagem.getWidth());
-        Image img =Toolkit.getDefaultToolkit().createImage(source);
-        imageFrame=new JLabel (new ImageIcon(img));
-        
-        JFrame frame = new JFrame();
-        frame.setSize(500,500);
-        frame.setVisible(true);
-        
-        frame.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 1));
-        frame.add(imageFrame);
     }
     /**
      * This method is called from within the constructor to initialize the form.

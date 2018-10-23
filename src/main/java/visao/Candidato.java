@@ -19,7 +19,7 @@ public class Candidato extends javax.swing.JFrame {
         if (!(partidoDAO.existeAlgumPartido())){
             JOptionPane.showMessageDialog(null, "Você não pode cadastrar um candidato sem antes ter cadastrado um partido", "Erro", JOptionPane.ERROR_MESSAGE);            
             this.setVisible(false);
-            this.dispose();            
+            this.dispose();
             return ;
         }
         

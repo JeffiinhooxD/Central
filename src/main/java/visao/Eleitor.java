@@ -36,6 +36,7 @@ public class Eleitor extends javax.swing.JFrame {
         if (texNomeEleitor.getText().equals(""))              return "NOME";
         if (texCpfEleitor.getText().equals("   .   .   -  ")) return "CPF";
         if (texTituloEleitor.getText().equals(""))            return "TITULO";
+        if (texImagemEleitor.getText().equals(""))            return "IMAGEM";
         
         return "";
     }
@@ -104,16 +105,6 @@ public class Eleitor extends javax.swing.JFrame {
 
         texSecaoEleitor.setText("1");
         texSecaoEleitor.setEnabled(false);
-        texSecaoEleitor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                texSecaoEleitorActionPerformed(evt);
-            }
-        });
-        texSecaoEleitor.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                texSecaoEleitorKeyPressed(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         jLabel1.setText("NOME:");
@@ -123,17 +114,6 @@ public class Eleitor extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
         jLabel3.setText("ELEITOR");
-
-        texNomeEleitor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                texNomeEleitorActionPerformed(evt);
-            }
-        });
-        texNomeEleitor.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                texNomeEleitorKeyPressed(evt);
-            }
-        });
 
         btnCancelar.setText("Cancelar");
         btnCancelar.setToolTipText("Ir para a tela Principal");
@@ -155,9 +135,6 @@ public class Eleitor extends javax.swing.JFrame {
         btnLimpar.setText("Limpar");
         btnLimpar.setToolTipText("Limpar os campos de textos");
         btnLimpar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnLimparMouseClicked(evt);
-            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnLimparMouseExited(evt);
             }
@@ -308,16 +285,10 @@ public class Eleitor extends javax.swing.JFrame {
         }
         
         eleitor.setNumeroTitulo(texTituloEleitor.getText());
-        eleitor.setSecao(Integer.parseInt(texSecaoEleitor.getText()));
+        eleitor.setSecao(Integer.parseInt(texSecaoEleitor.getText()));       
+        eleitor.setImagem(PPMFileReader.readImage(texImagemEleitor.getText()));
         
-        PPMImage PPM = PPMFileReader.readImage(texImagemEleitor.getText());
-        eleitor.setImagem(PPM);
-        
-        PGMImage PGM = PPM.convertToPGM();
-        if (PGM != null)
-            draw(PGM);
-        
-        /*Conferindo se ja nao tem partido com essas informacoes*/
+        /*Conferindo se ja nao tem eleitor com essas informacoes*/
         campo = eleitorDAO.igualdadeEleitor(eleitor);
         
         if (!(campo.equals(""))){
@@ -326,7 +297,7 @@ public class Eleitor extends javax.swing.JFrame {
             return ;
         }
         
-        /*Se o partido poder ser cadastrado entao cadastra no dao e no arquivo e envia pro drive*/
+        /*Se o eleitor poder ser cadastrado entao cadastra no dao e no arquivo e envia pro drive*/
         if ((eleitorDAO.inserir(eleitor)     == false) || 
             (eleitorDAO.inserirJson(eleitor) == false) ||
             (eleitorDAO.enviaDrive()         == false)){
@@ -342,59 +313,7 @@ public class Eleitor extends javax.swing.JFrame {
         /*Depois de cadastrar, limpa os campos*/
         btnLimparActionPerformed(evt);
     }//GEN-LAST:event_btnConfirmarActionPerformed
-
-    public void draw (PGMImage imagem){
-        
-        JLabel imageFrame = new JLabel();
-        
-        MemoryImageSource source = new MemoryImageSource(imagem.getWidth(), imagem.getHeight(), ColorModel.getRGBdefault(), imagem.toRGBModel(), 0, imagem.getWidth());
-        Image img =Toolkit.getDefaultToolkit().createImage(source);
-        imageFrame=new JLabel (new ImageIcon(img));
-        
-        JFrame frame = new JFrame();
-        frame.setSize(500,500);
-        frame.setVisible(true);
-        
-        frame.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 1));
-        frame.add(imageFrame);
-        
-//        JLabel imageFrame;
-//        
-//        imageFrame = new JLabel();
-//        jLabel3.add(imageFrame);        
-//        
-//        MemoryImageSource source = new MemoryImageSource(imagem.getWidth(), imagem.getHeight(), ColorModel.getRGBdefault(), imagem.toRGBModel(), 0, imagem.getWidth());
-//        Image img =Toolkit.getDefaultToolkit().createImage(source);
-//        jLabel3.remove(imageFrame);
-//        imageFrame=new JLabel (new ImageIcon(img));
-//        jLabel3.add(imageFrame);
-//        
-//        jLabel3.validate();
-//        
-//        JFrame j = new JFrame();
-//        j.setSize(500,500);
-//        j.setVisible(true);
-//        
-//        j.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 1));
-//        j.add(imageFrame);
-    }
     
-    private void texSecaoEleitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texSecaoEleitorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_texSecaoEleitorActionPerformed
-
-    private void texSecaoEleitorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texSecaoEleitorKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_texSecaoEleitorKeyPressed
-
-    private void texNomeEleitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texNomeEleitorActionPerformed
-
-    }//GEN-LAST:event_texNomeEleitorActionPerformed
-
-    private void texNomeEleitorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texNomeEleitorKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_texNomeEleitorKeyPressed
-
     private void btnCancelarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseExited
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_btnCancelarMouseExited
@@ -407,10 +326,6 @@ public class Eleitor extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void btnLimparMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLimparMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnLimparMouseClicked
-
     private void btnLimparMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLimparMouseExited
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_btnLimparMouseExited
@@ -420,10 +335,31 @@ public class Eleitor extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimparMouseEntered
 
     private void btnLocalizarImagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocalizarImagemActionPerformed
+        
+        /* Criando um seletor de arquivos*/
         JFileChooser seleciona = new JFileChooser();
-        seleciona.showOpenDialog(null);
-        File arq = seleciona.getSelectedFile();
-        texImagemEleitor.setText(arq.getAbsolutePath());
+        
+        /*Verifica se o usuario clicou no Abrir*/
+        if (seleciona.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+
+            /* Colocando dentro da variavel arq do tipo FILE, a imagem selecionada*/
+            if (seleciona.getSelectedFile().getAbsolutePath().matches(".+\\.ppm")){
+             
+                /*Pega o caminho do arquivo*/
+                String caminho = seleciona.getSelectedFile().getAbsolutePath();
+            
+                /*Verifica se o caminho nao esta vindo vazio*/
+                if (!caminho.equals("")){
+
+                    /* Colocando no text o endereco da imagem selecionada*/
+                    texImagemEleitor.setText(caminho);
+                }
+                
+            }else{
+                /*Selecionou um arquivo que nao tem extensao .ppm*/
+                JOptionPane.showMessageDialog(this, "Você só pode selecionar arquivos .ppm", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnLocalizarImagemActionPerformed
 
     private void btnLocalizarImagemMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLocalizarImagemMouseEntered
@@ -439,7 +375,7 @@ public class Eleitor extends javax.swing.JFrame {
         /*Limpando todos os campos*/
         texNomeEleitor.setText("");
         
-        /*O cpf nao limpa direito (olhar depois)*/
+        /*O cpf nao limpa direito (nao sabemos o porque)*/
         texCpfEleitor.setText(null);
                    
         texTituloEleitor.setText("");

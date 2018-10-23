@@ -86,7 +86,11 @@ public class VotoDAO {
         /*Populando o grafico com o nome dos candidatos, partido e a quantida de votos*/
         for (Voto v: votos){
             if (v != null){
-                dataSet.setValue(v.getCandidato().getNome() + " - " + v.getCandidato().getPartido().getSigla(), v.getCandidato().getQtdeVoto());
+                
+                /*Verificacao utilizada pois caso o eleitor vote NULO ou BRANCO nao da erro quando chegar aqui*/
+                if (v.getCandidato() != null){
+                    dataSet.setValue(v.getCandidato().getNome() + " - " + v.getCandidato().getPartido().getSigla(), v.getCandidato().getQtdeVoto());
+                }                
             }            
         }
         
@@ -96,11 +100,16 @@ public class VotoDAO {
     public boolean verificaAlguemVotou(){
         
         for (Voto v: votos){
+            
             if (v != null){
 
-                /*Se pelo menos um eleitor ja votou naquele candidato entao retorna*/
-                if (v.getCandidato().getQtdeVoto() > 0){
-                    return true;
+                /*Verificacao utilizada pois caso o eleitor vote NULO ou BRANCO nao da erro quando chegar aqui*/
+                if (v.getCandidato() != null){
+                    
+                    /*Se pelo menos um eleitor ja votou naquele candidato entao retorna*/
+                    if (v.getCandidato().getQtdeVoto() > 0){
+                        return true;
+                    }
                 }
             }            
         }
