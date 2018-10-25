@@ -60,7 +60,7 @@ public class Conexao {
     /**
      * Cria um objeto de credencial autorizado.
      * @param HTTP_TRANSPORT HTTP transporte da rede.
-     * @return Um objeto de credencial autorizado.
+     * @return Credential - Um objeto de credencial autorizado.
      * @throws IOException se o arquivo de credentials.json não for encontrado.
      */
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
@@ -81,7 +81,7 @@ public class Conexao {
     
     /**
      * Caso o serviço ainda não esteja instânciado então instância.
-     * @return O servico
+     * @return Drive - O servico
      */
     public static Drive service() {
         
@@ -94,7 +94,7 @@ public class Conexao {
     /**
      * Verifica se existe essa pasta no Google Drive.
      * @param nome Nome da pasta.
-     * @return Retorna o id dessa pasta ou se ela não existir retorna "".
+     * @return String - Retorna o id dessa pasta ou se ela não existir retorna "".
      * @throws IOException
      * @throws GeneralSecurityException 
      */
@@ -109,13 +109,13 @@ public class Conexao {
               .setPageToken(pageToken)
               .execute();
           
-          /*Laco rodando todos os arquivos que estao no drive*/
+          /*Laco rodando todas as pastas que estao no drive*/
           for (File file : result.getFiles()) {
               
-              /*Verifica se o nome do arquivo que esta no drive e igual ao procurado*/
+              /*Verifica se o nome da pasta que esta no drive e igual ao procurado*/
               if (file.getName().equals(nome)){
                   
-                  /*Se for igual entao retorn o id do arquivo*/
+                  /*Se for igual entao retorna o id da pasta*/
                   return file.getId();
               }
           }
@@ -124,13 +124,14 @@ public class Conexao {
         
         return "";
     }
-    
-    
-    
-    
-    /*FALTA COMENTAR DAQUI PRA BAIXO*/
-    
-    
+
+    /**
+     * Verifica se existe esse arquivo no Google Drive. 
+     * @param nome Nome do arquivo.
+     * @return String - Retorna o id desse arquivo ou se ele não existir retorn "".
+     * @throws IOException
+     * @throws GeneralSecurityException 
+     */
     public static String existeArquivo(String nome)  throws IOException, GeneralSecurityException {
         
         String pageToken = null;
@@ -141,8 +142,14 @@ public class Conexao {
               .setFields("nextPageToken, files(id, name)")
               .setPageToken(pageToken)
               .execute();
+          
+          /*Laco rodando todos os arquivos que estao no drive*/
           for (File file : result.getFiles()) {
+              
+              /*Verifica se o nome do arquivo que esta no drive e igual ao procurado*/
               if (file.getName().equals(nome)){
+                  
+                  /*Se for igual entao retorna o id do arquivo*/
                   return file.getId();
               }
           }
@@ -152,70 +159,66 @@ public class Conexao {
         return "";
     }
     
-    
-    
-    
-    
-    
-    
+    /**
+     * Cria uma pasta no Google Drive.
+     * @param service Serviço instânciado.
+     * @param name Nome da pasta.
+     * @return String - Retorna o id da pasta criada.
+     * @throws IOException
+     * @throws GeneralSecurityException 
+     */
     public static String criaPasta(Drive service, String name) throws IOException, GeneralSecurityException{
         
         File fileMetadata = new File();
         fileMetadata.setName(name);
         fileMetadata.setMimeType("application/vnd.google-apps.folder");
 
-        File file = service.files().create(fileMetadata)
-            .setFields("id")
-            .execute();
+        File file = service.files().create(fileMetadata).setFields("id").execute();
         
         return file.getId();        
     }
-    
-    public static void getFolderID() throws IOException, GeneralSecurityException {
-        
-        FileList result = service.files().list()
-                .setPageSize(10)
-                .setFields("nextPageToken, files(id, name)")
-                .execute();
-        List<File> files = result.getFiles();
-        if (files == null || files.isEmpty()) {
-            System.out.println("No files found.");
-        } else {
-            System.out.println("Files:");
-            for (File file : files) {
-                System.out.printf("%s (%s)\n", file.getName(), file.getId());
-            }
-        }
+    /**
+     * Remove um arquivo do Google Drive.
+     * @param idArquivo Id do arquivo que você quer remover.
+     * @throws IOException
+     * @throws GeneralSecurityException 
+     */
+    public static void removeArquivo(String idArquivo) throws IOException, GeneralSecurityException{        
+        service.files().delete(idArquivo).execute();
     }
     
-    public static void removeArquivo(String fileId) throws IOException, GeneralSecurityException{
-        
-        try {
-          service.files().delete(fileId).execute();
-        } catch (IOException e) {
-          System.out.println("An error occurred: " + e);
-        }
-    }
-    
-    public static String enviaArquivo(String folderId, String url) throws IOException, GeneralSecurityException{
+    /**
+     * Envia um arquivo para o Google Drive.
+     * @param idPasta Id da pasta pra onde quer enviar o arquivo.
+     * @param url Caminho especificando onde está o arquivo que quer enviar para o Google Drive.
+     * @return String - Retorna o id do arquivo que foi enviado.
+     * @throws IOException
+     * @throws GeneralSecurityException 
+     */
+    public static String enviaArquivo(String idPasta, String url) throws IOException, GeneralSecurityException{
 
         File fileMetadata = new File();
         fileMetadata.setName(url);
-        fileMetadata.setParents(Collections.singletonList(folderId));
-        java.io.File filePath = new java.io.File("ArquivosJson/" + url);
+        fileMetadata.setParents(Collections.singletonList(idPasta));
+        java.io.File filePath    = new java.io.File("ArquivosJson/" + url);
         FileContent mediaContent = new FileContent("ArquivosJson/json", filePath);
-        File file = service.files().create(fileMetadata, mediaContent)
-            .setFields("id, parents")
-            .execute();
+        File file = service.files().create(fileMetadata, mediaContent).setFields("id, parents").execute();
         
         return file.getId();
     }
     
-    public static String printFile(String fileId) throws IOException, GeneralSecurityException{
+    /**
+     * Mostra o conteúdo de um arquivo do Google Drive.
+     * @param idArquivo Id do arquivo que queria imprimir.
+     * @return String - Retorna o conteúdo do arquivo em forma de String;
+     * @throws IOException
+     * @throws GeneralSecurityException 
+     */
+    public static String printFile(String idArquivo) throws IOException, GeneralSecurityException{
 
-          File file = service.files().get(fileId).execute();
+          File file = service.files().get(idArquivo).execute();
           ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-          service.files().get(fileId).executeMediaAndDownloadTo(outputStream);
+          service.files().get(idArquivo).executeMediaAndDownloadTo(outputStream);
           
           return outputStream.toString();
     }

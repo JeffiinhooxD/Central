@@ -14,9 +14,14 @@ import modelo.CadCandidato;
 
 public class CandidatoDAO {
 
+    /*Vetor de candidatos*/
     private CadCandidato candidatos[] = new CadCandidato[50];
 	
-    /*Insere o eleitor na primeira posicao vazia que achar do vetor*/
+    /**
+     * Insere o candidato na primeira posição vazia que achar do vetor.
+     * @param candidatos É passado um obejto inteiro de candidato para a inserção.
+     * @return boolean - Se ocorreu tudo certo na inserção então retorna true, caso contrário retorna false.
+     */
     public boolean inserir(CadCandidato candidatos) {
 
         for (int i = 0; i < this.candidatos.length; i++) {			
@@ -28,10 +33,19 @@ public class CandidatoDAO {
         return false;
     }
     
+    /**
+     * Função utilizada com o intúido de retornar o vetor inteiro de candidatos.
+     * @return CadCandidato[] - Retorna o vetor de candidatos.
+     */
     public CadCandidato[] getVetorCandidato(){
         return this.candidatos;
     }
     
+    /**
+     * Verifica se existe no vetor um candidato idêntico ao passado por parâmetro.
+     * @param c O Objeto inteiro do candidato é passado para verificar no vetor se tem algum igual.
+     * @return String - Retorna o campo em que há a igualdade e caso não haver, retorna "".
+     */
     public String igualdadeCandidato(CadCandidato c){
         
         for (int i = 0; i < candidatos.length; i++) {
@@ -56,6 +70,10 @@ public class CandidatoDAO {
         return "";
     }
     
+    /**
+     * Utilizada para baixar o Candidato.json do Google Drive.
+     * @throws IOException 
+     */
     public void baixarCandidatoJson() throws IOException{
         
         Gson gson = new Gson();
@@ -104,6 +122,11 @@ public class CandidatoDAO {
         }
     }
     
+    /**
+     * Insere no arquivo Candidato.json um objeto do tipo candidato.
+     * @param candidato Insere um objeto inteiro do tipo candidato no arquivo json.
+     * @return boolean - Retorna true caso conseguiu realizar a inserção e false caso ocorreu algo de errado.
+     */
     public boolean inserirJson(CadCandidato candidato){
         
         Gson gson = new Gson();
@@ -129,22 +152,34 @@ public class CandidatoDAO {
         return true;
     }
     
+    /**
+     * Envia o Candidato.json local para o Google Drive.
+     * @return boolean - Retorna true caso conseguiu realizar o envio e false caso ocorreu algo de errado.
+     */
     public boolean enviaDrive(){
         
         try {
             
+            /*Verifica se existe essa pasta no Google Drive*/
             String idPas = Conexao.existePasta("ArquivosJson");            
             if (idPas.equals("")){
+                
+                /*Se a pasta nao existir entao cria*/
                 idPas = Conexao.criaPasta(Conexao.service(), "ArquivosJson");    
             }
             
-            String idArq = Conexao.existeArquivo("Candidato.json");          
-
+            /*Verifica se existe esse arquivo no Google Drive*/
+            String idArq = Conexao.existeArquivo("Candidato.json");
             if (idArq.equals("")){                
+                
+                /*Se o arquivo nao existir entao cria*/
                 idArq = Conexao.enviaArquivo(idPas, "Candidato.json");
             }
             
+            /*Remove o arquivo que esta no drive para nao criar varios dele mesmo*/
             Conexao.removeArquivo(idArq);
+            
+            /*Por fim, envia o json local para la*/
             Conexao.enviaArquivo(idPas, "Candidato.json");
             
         } catch (Exception e) {
@@ -153,5 +188,27 @@ public class CandidatoDAO {
         }
         
         return true;
+    }
+    
+    /**
+     * Verifica se existe algum candidato no vetor com aquele número.
+     * @param numero Número do candidato.
+     * @return CadCandidato - Retorna o objeto inteiro do candidato, caso contrário retorna null.
+     */
+    public CadCandidato getCandidatoByNum(int numero){
+        
+        for (CadCandidato c: this.candidatos){
+            
+            /*Evita o null pointer exception*/
+            if (c != null){
+                
+                /*Se o numero do candidato e igual ao do passado por parametro*/
+                if (c.getNumero() == numero){
+                    return c;
+                }
+            }            
+        }
+
+        return null;
     }
 }

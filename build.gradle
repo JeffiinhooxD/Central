@@ -8,6 +8,18 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 version = '1.0'
 
+/*Identifica o main para gerar o .jar*/
+task geraJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',  
+        	   'Implementation-Version': version,
+        	   'Main-Class': 'visao/Principal'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 repositories {
     mavenCentral()
 }
@@ -24,5 +36,4 @@ dependencies {
     
     /*Dependencias para utilizar o grafico afim de mostrar os resultados da eleicao*/
     compile group: 'jfree', name: 'jfreechart', version: '1.0.12' /*https://mvnrepository.com/artifact/jfree/jfreechart/1.0.12*/
-
 }

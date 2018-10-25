@@ -14,9 +14,14 @@ import java.util.List;
 
 public class PartidoDAO {
     
+    /*Vetor de partidos*/
     private CadPartido partidos[] = new CadPartido[50];
 	
-    /*Insere o eleitor na primeira posicao vazia que achar do vetor*/
+    /**
+     * Insere o partido na primeira posição vazia que achar do vetor.
+     * @param partidos É passado um obejto inteiro de aprtido para a inserção.
+     * @return boolean - Se ocorreu tudo certo na inserção então retorna true, caso contrário retorna false.
+     */
     public boolean inserir(CadPartido partidos) {
 
         for (int i = 0; i < this.partidos.length; i++) {			
@@ -28,6 +33,19 @@ public class PartidoDAO {
         return false;
     }
     
+    /**
+     * Função utilizada com o intúido de retornar o vetor inteiro de partidos.
+     * @return CadPartido[] - Retorna o vetor de partidos.
+     */
+    public CadPartido[] getVetorPartido(){
+        return this.partidos;
+    }
+    
+    /**
+     * Verifica se existe no vetor um partido idêntico ao passado por parâmetro.
+     * @param p O Objeto inteiro do partido é passado para verificar no vetor se tem algum igual.
+     * @return String - Retorna o campo em que há a igualdade e caso não haver, retorna "".
+     */
     public String igualdadePartido(CadPartido p){
         
         for (int i = 0; i < partidos.length; i++) {
@@ -55,19 +73,10 @@ public class PartidoDAO {
         return "";
     }
     
-    public boolean existeAlgumPartido(){
-        
-        for (int i = 0; i < partidos.length; i++) {
-            
-            /*Trata o null pointer exception*/
-            if (partidos[i] != null){
-                return true;
-            }            
-        }
-        
-        return false;
-    }
-    
+    /**
+     * Utilizada para baixar o Partido.json do Google Drive.
+     * @throws IOException 
+     */
     public void baixarPartidoJson() throws IOException{
         
         Gson gson = new Gson();
@@ -116,6 +125,11 @@ public class PartidoDAO {
         }
     }
     
+    /**
+     * Insere no arquivo Partido.json um objeto do tipo partido.
+     * @param partido Insere um objeto inteiro do tipo partido no arquivo json.
+     * @return boolean - Retorna true caso conseguiu realizar a inserção e false caso ocorreu algo de errado.
+     */
     public boolean inserirJson(CadPartido partido){
         
         Gson gson = new Gson();
@@ -141,22 +155,34 @@ public class PartidoDAO {
         return true;
     }
     
+    /**
+     * Envia o Partido.json local para o Google Drive.
+     * @return boolean - Retorna true caso conseguiu realizar o envio e false caso ocorreu algo de errado.
+     */
     public boolean enviaDrive(){
         
         try {
             
+            /*Verifica se existe essa pasta no Google Drive*/
             String idPas = Conexao.existePasta("ArquivosJson");            
             if (idPas.equals("")){
+                
+                /*Se a pasta nao existir entao cria*/
                 idPas = Conexao.criaPasta(Conexao.service(), "ArquivosJson");    
             }
             
-            String idArq = Conexao.existeArquivo("Partido.json");          
-
-            if (idArq.equals("")){                
+            /*Verifica se existe esse arquivo no Google Drive*/
+            String idArq = Conexao.existeArquivo("Partido.json");
+            if (idArq.equals("")){
+                
+                /*Se o arquivo nao existir entao cria*/
                 idArq = Conexao.enviaArquivo(idPas, "Partido.json");
             }
             
+            /*Remove o arquivo que esta no drive para nao criar varios dele mesmo*/
             Conexao.removeArquivo(idArq);
+            
+            /*Por fim, envia o json local para la*/
             Conexao.enviaArquivo(idPas, "Partido.json");
             
         } catch (Exception e) {
@@ -167,14 +193,36 @@ public class PartidoDAO {
         return true;
     }
     
-    public CadPartido[] getVetorPartido(){
-        return this.partidos;
+    /**
+     * Verifica se existe algum partido cadastrado.
+     * @return boolean - Retorna true caso achou algum partido inserido no vetor.
+     */    
+    public boolean existeAlgumPartido(){
+        
+        for (int i = 0; i < partidos.length; i++) {
+            
+            /*Trata o null pointer exception*/
+            if (partidos[i] != null){
+                return true;
+            }            
+        }
+        
+        return false;
     }
     
+    /**
+     * Verifica se existe um partido com aquela sigla no vetor.
+     * @param sigla Sigla que irá ser pesquisada no vetor.
+     * @return CadPartido - Se achou um partido com aquela sigla retorna o objeto inteiro do partido, caso contrário retorna null.
+     */
     public CadPartido getPartidoBySigla(String sigla){
         
         for (CadPartido p: this.partidos){
+            
+            /*Evita o null pointer exception*/
             if (p != null){
+                
+                /*Se achou um partido com aquela sigla entao retorn o objeto*/
                 if (p.getSigla().toUpperCase().equals(sigla.toUpperCase())){
                     return p;
                 }

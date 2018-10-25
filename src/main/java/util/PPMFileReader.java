@@ -48,7 +48,7 @@ public class PPMFileReader {
                 bluePixels[i]  = scanner.nextInt();
             }
             
-            /*Joga no obejto os vetores*/
+            /*Joga no objeto os vetores*/
             image.setRedPixels(redPixels);
             image.setGreenPixels(greenPixels);
             image.setBluPixels(bluePixels);
@@ -56,8 +56,7 @@ public class PPMFileReader {
             /*Para a leitura*/
             scanner.close();
             
-        }catch (Exception e) {            
-            System.out.println("Exception during reading the file");
+        }catch (Exception e) {
             e.printStackTrace();
         }
         
@@ -68,8 +67,7 @@ public class PPMFileReader {
     public static void writeImage(String fileName){
         
         try {
-            FileOutputStream stream = new FileOutputStream(fileName);
-            
+            FileOutputStream stream = new FileOutputStream(fileName);            
         } catch (FileNotFoundException ex) {
             Logger.getLogger(PPMFileReader.class.getName()).log(Level.SEVERE, null, ex);
         }
