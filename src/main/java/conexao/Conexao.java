@@ -43,18 +43,26 @@ public class Conexao {
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
     /**
-     * Construtor da classe - onde se inicia a variavel do servico
+     * Construtor da classe - onde se inicia a variável do serviço.
      */
     private Conexao(){
         
         try {
-            final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+            
+            NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
             service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                          .setApplicationName(APPLICATION_NAME)
-                          .build();
-        } catch (Exception e) {
-            e.getMessage();
-        }        
+                    .setApplicationName(APPLICATION_NAME)
+                    .build();
+            
+        } catch (GeneralSecurityException ex) {
+            
+        } catch (IOException ex) {
+            
+        }
+//        NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+//            service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+//                          .setApplicationName(APPLICATION_NAME)
+//                          .build();
     }
     
     /**
@@ -63,7 +71,7 @@ public class Conexao {
      * @return Credential - Um objeto de credencial autorizado.
      * @throws IOException se o arquivo de credentials.json não for encontrado.
      */
-    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
+    private static Credential getCredentials(NetHttpTransport HTTP_TRANSPORT) throws IOException {
 
         /*Carrega os "secredos" do cliente*/
         InputStream in = Conexao.class.getResourceAsStream(CREDENTIALS_FILE_PATH);

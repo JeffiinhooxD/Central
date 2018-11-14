@@ -4,72 +4,73 @@ import com.google.gson.Gson;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import javax.swing.JOptionPane;
-import modelo.CadEleitor;
+import modelo.Eleitor;
 import conexao.Conexao;
+import excecoes.IgualdadeDeObjetosException;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.List;
 
 public class EleitorDAO {
     
     /*Vetor de eleitores*/
-    private CadEleitor eleitores[] = new CadEleitor[50];
+    private ArrayList<Eleitor> eleitores;
 
+    public EleitorDAO() {
+        eleitores = new ArrayList();
+    }
+    
     /** Insere o eleitor na primeira posição vazia que achar do vetor.
      * @param eleitores É passado um obejto inteiro de eleitor para a inserção.
-     * @return boolean - Se ocorreu tudo certo na inserção então retorna true, caso contrário retorna false.
      */
-    public boolean inserir(CadEleitor eleitores) {
-
-        for (int i = 0; i < this.eleitores.length; i++) {			
-            if (this.eleitores[i] == null) {
-                this.eleitores[i] = eleitores;
-                return true;
-            }
-        }
-        return false;
+    public void inserir(Eleitor eleitores) {
+        this.eleitores.add(eleitores);
     }
     
     /**
      * Função utilizada com o intúido de retornar o vetor inteiro de eleitores.
-     * @return CadEleitor[] - Retorna o vetor de eleitores.
+     * @return Eleitor[] - Retorna o vetor de eleitores.
      */
-    public CadEleitor [] getVetorEleitor(){
+    public ArrayList<Eleitor> getVetorEleitor(){
         return this.eleitores;
     }
     
     /**
      * Verifica se existe no vetor um eleitor idêntico ao passado por parâmetro.
      * @param e O Objeto inteiro do eleitor é passado para verificar no vetor se tem algum igual.
-     * @return String - Retorna o campo em que há a igualdade e caso não haver, retorna "".
+     * @throws IgualdadeDeObjetosException - Caso há um cadastro com o mesmo item de determinado campo.
      */
-    public String igualdadeEleitor(CadEleitor e){
+    public void igualdadeEleitor(Eleitor e) throws IgualdadeDeObjetosException {
         
-        for (int i = 0; i < eleitores.length; i++) {
+        String campo = "";
+        
+        for (Eleitor eleitor : this.eleitores) {
             
             /*Trata o null pointer exception*/
-            if (eleitores[i] != null){
+            if (eleitor != null){
                 
-                /*Verifica se o cpf e igual*/
-                if (eleitores[i].getCpf().equals(e.getCpf())){
-                    return "CPF";
+                /*Verifica se a imagem e igual*/
+                if (eleitor.getImagem().equals(e.getImagem())){
+                    campo = "IMAGEM";
                 }
                 
                 /*Verifica se o titulo e igual*/
-                if (eleitores[i].getNumeroTitulo().equals(e.getNumeroTitulo())){
-                    return "TITULO";
+                if (eleitor.getNumeroTitulo().equals(e.getNumeroTitulo())){
+                    campo = "TITULO";
                 }
                 
-                /*Verifica se a imagem e igual*/
-                if (eleitores[i].getImagem().equals(e.getImagem())){
-                    return "IMAGEM";
+                /*Verifica se o cpf e igual*/
+                if (eleitor.getCpf().equals(e.getCpf())){
+                    campo = "CPF";
                 }
             }
         }
         
-        return "";
+        if (!campo.equals("")){
+            throw new IgualdadeDeObjetosException("Há um cadastro com o mesmo item do campo " + campo + "...");            
+        }
     }
     
     /**
@@ -104,22 +105,17 @@ public class EleitorDAO {
         
         /*Caso esta variavel esteja nula e porque nao ha o arquivo para baixar ou ele esta vazio*/
         if (aux != null){
-        
-            /*Cria um vetor dinamico de eleitores*/
-            List <CadEleitor> eleitor = new ArrayList<>();
 
+            /*Exclui o .json que estava local*/
+            File arq = new File("./ArquivosJson/Eleitor.json");
+            arq.delete();
+            
             /*Transforma cada linha do json em objeto do tipo eleitor e adiciona no vetor dinamico*/
             BufferedReader verifica = new BufferedReader(new StringReader(aux));        
             String linha;        
             while((linha = verifica.readLine()) != null){
-                eleitor.add(gson.fromJson(linha, CadEleitor.class)); 
-            }
-
-            /*Joga no vetor estatico cada posicao do vetor dinamico*/
-            for (int i = 0; i < eleitor.size(); i++) {
-                if(this.eleitores[i] == null){
-                    this.eleitores[i] = eleitor.get(i);
-                }
+                eleitores.add(gson.fromJson(linha, Eleitor.class)); 
+                inserirJson(gson.fromJson(linha, Eleitor.class));
             }
         }
     }
@@ -129,7 +125,13 @@ public class EleitorDAO {
      * @param eleitor Insere um objeto inteiro do tipo eleitor no arquivo json.
      * @return boolean - Retorna true caso conseguiu realizar a inserção e false caso ocorreu algo de errado.
      */
-    public boolean inserirJson(CadEleitor eleitor){
+    public boolean inserirJson(Eleitor eleitor){
+        
+        /*Verifica se a pasta local esta criada*/
+        File dir = new File("ArquivosJson");
+        
+        /*Caso nao estiver entao cria*/
+        dir.mkdirs();
         
         Gson gson = new Gson();
         

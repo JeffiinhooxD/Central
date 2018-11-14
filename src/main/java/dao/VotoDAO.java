@@ -9,36 +9,31 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JOptionPane;
 import org.jfree.data.general.DefaultPieDataset;
 
 public class VotoDAO {
     
     /*Vetor de votos*/
-    private Voto votos [] = new Voto[50];
+    private ArrayList<Voto> votos;
+
+    public VotoDAO() {
+        votos = new ArrayList();
+    }
     
     /**
      * Insere o voto na primeira posição vazia que achar do vetor.
      * @param votos É passado um obejto inteiro de voto para a inserção.
-     * @return Se ocorreu tudo certo na inserção então retorna true, caso contrário retorna false.
      */
-    public boolean inserir(Voto votos) {
-
-        for (int i = 0; i < this.votos.length; i++) {			
-            if (this.votos[i] == null) {
-                this.votos[i] = votos;
-                return true;
-            }
-        }
-        return false;
+    public void inserir(Voto votos) {
+        this.votos.add(votos);
     }
     
     /**
      * Função utilizada com o intúido de retornar o vetor inteiro de votos.
      * @return Retorna o vetor de votos.
      */
-    public Voto [] getVetorVoto(){
+    public ArrayList<Voto> getVetorVoto(){
         return this.votos;
     }
     
@@ -74,22 +69,12 @@ public class VotoDAO {
         
         /*Caso esta variavel esteja nula e porque nao ha o arquivo para baixar ou ele esta vazio*/
         if (aux != null){
-            
-            /*Cria um vetor dinamico de votos*/
-            List <Voto> voto = new ArrayList<>();
 
             /*Transforma cada linha do json em objeto do tipo voto e adiciona no vetor dinamico*/
             BufferedReader verifica = new BufferedReader(new StringReader(aux));        
             String linha;        
             while((linha = verifica.readLine()) != null){
-                voto.add(gson.fromJson(linha, Voto.class)); 
-            }
-
-            /*Joga no vetor estatico cada posicao do vetor dinamico*/
-            for (int i = 0; i < voto.size(); i++) {
-                if(this.votos[i] == null){
-                    this.votos[i] = voto.get(i);
-                }
+                votos.add(gson.fromJson(linha, Voto.class)); 
             }
         }
     }

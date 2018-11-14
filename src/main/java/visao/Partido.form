@@ -123,6 +123,12 @@
     <Component class="javax.swing.JTextField" name="texNomePartido">
     </Component>
     <Component class="javax.swing.JTextField" name="texNumeroPartido">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="texNumeroPartidoKeyReleased"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="try{&#xa;    javax.swing.text.MaskFormatter formataNumero = new javax.swing.text.MaskFormatter(&quot;##&quot;);&#xa;    texNumeroPartido = new javax.swing.JFormattedTextField(formataNumero);&#xa;}catch(Exception e){&#xa;}"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="btnCancelar">
       <Properties>

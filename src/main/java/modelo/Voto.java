@@ -5,7 +5,7 @@ import java.util.Date;
 public class Voto {
 
     private String cpfEleitor;
-    private CadCandidato candidato = new CadCandidato();
+    private Candidato candidato;
     private int urna;
     private Date data;
     
@@ -36,9 +36,9 @@ public class Voto {
 
     /**
      * Pega o candidato em que o eleitor votou.
-     * @return CadCandidato - O objeto inteiro.
+     * @return Candidato - O objeto inteiro.
      */
-    public CadCandidato getCandidato() {
+    public Candidato getCandidato() {
         return candidato;
     }
 
@@ -46,7 +46,7 @@ public class Voto {
      * Seta o candidato em que o eleitor votou.
      * @param candidato O candidato a ser setado.
      */
-    public void setCandidato(CadCandidato candidato) {
+    public void setCandidato(Candidato candidato) {
         this.candidato = candidato;
     }
 

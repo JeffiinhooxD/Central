@@ -9,65 +9,69 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.List;
-import modelo.CadCandidato;
+import modelo.Candidato;
+import excecoes.IgualdadeDeObjetosException;
+import java.io.File;
 
 public class CandidatoDAO {
 
     /*Vetor de candidatos*/
-    private CadCandidato candidatos[] = new CadCandidato[50];
+    private ArrayList<Candidato> candidatos;
+
+    /**
+     * Construtor sem parâmetro - Instância o array list.
+     */
+    public CandidatoDAO() {
+        candidatos = new ArrayList();
+    }
 	
     /**
-     * Insere o candidato na primeira posição vazia que achar do vetor.
-     * @param candidatos É passado um obejto inteiro de candidato para a inserção.
-     * @return boolean - Se ocorreu tudo certo na inserção então retorna true, caso contrário retorna false.
+     * Insere o candidato no vetor.
+     * @param candidato É passado um objeto inteiro de candidato para a inserção.
      */
-    public boolean inserir(CadCandidato candidatos) {
-
-        for (int i = 0; i < this.candidatos.length; i++) {			
-            if (this.candidatos[i] == null) {
-                this.candidatos[i] = candidatos;
-                return true;
-            }
-        }
-        return false;
+    public void inserir(Candidato candidato) {
+        this.candidatos.add(candidato);
     }
     
     /**
      * Função utilizada com o intúido de retornar o vetor inteiro de candidatos.
-     * @return CadCandidato[] - Retorna o vetor de candidatos.
+     * @return Candidato[] - Retorna o vetor de candidatos.
      */
-    public CadCandidato[] getVetorCandidato(){
+    public ArrayList<Candidato> getVetorCandidato(){
         return this.candidatos;
     }
-    
+
     /**
      * Verifica se existe no vetor um candidato idêntico ao passado por parâmetro.
      * @param c O Objeto inteiro do candidato é passado para verificar no vetor se tem algum igual.
-     * @return String - Retorna o campo em que há a igualdade e caso não haver, retorna "".
+     * @throws IgualdadeDeObjetosException - Caso há um cadastro com o mesmo item de determinado campo.
      */
-    public String igualdadeCandidato(CadCandidato c){
+    public void igualdadeCandidato(Candidato c) throws IgualdadeDeObjetosException {
         
-        for (int i = 0; i < candidatos.length; i++) {
+        String campo = "";
+        
+        for (Candidato candidato : this.candidatos) {
             
             /*Trata o null pointer exception*/
-            if (candidatos[i] != null){
-                
-                /*Verifica se o cpf e igual*/
-                if (candidatos[i].getCpf().equals(c.getCpf())){
-                    return "CPF";
-                }
+            if (candidato != null){
                 
                 /*Verifica se o partido e igual*/
-                if ((candidatos[i].getPartido().getNome().equals(c.getPartido().getNome())) ||
-                    (candidatos[i].getPartido().getNumero() == c.getPartido().getNumero())  ||
-                    (candidatos[i].getPartido().getSigla().equals(c.getPartido().getSigla()))){
-                    return "PARTIDO";
+                if ((candidato.getPartido().getNome().equals(c.getPartido().getNome())) ||
+                    (candidato.getPartido().getNumero() == c.getPartido().getNumero())  ||
+                    (candidato.getPartido().getSigla().equals(c.getPartido().getSigla()))){
+                    campo =  "PARTIDO";
+                }
+                
+                /*Verifica se o cpf e igual*/
+                if (candidato.getCpf().equals(c.getCpf())){
+                    campo = "CPF";
                 }
             }
         }
         
-        return "";
+        if (!campo.equals("")){
+            throw new IgualdadeDeObjetosException("Há um cadastro com o mesmo item do campo " + campo + "...");            
+        }
     }
     
     /**
@@ -101,23 +105,18 @@ public class CandidatoDAO {
         }
         
         /*Caso esta variavel esteja nula e porque nao ha o arquivo para baixar ou ele esta vazio*/
-        if (aux != null){
-        
-            /*Cria um vetor dinamico de candidatos*/
-            List <CadCandidato> candidato = new ArrayList<>();
+        if (aux != null){       
 
+            /*Exclui o .json que estava local*/
+            File arq = new File("./ArquivosJson/Candidato.json");
+            arq.delete();
+            
             /*Transforma cada linha do json em objeto do tipo candidato e adiciona no vetor dinamico*/
             BufferedReader verifica = new BufferedReader(new StringReader(aux));        
             String linha;        
             while((linha = verifica.readLine()) != null){
-                candidato.add(gson.fromJson(linha, CadCandidato.class)); 
-            }
-
-            /*Joga no vetor estatico cada posicao do vetor dinamico*/
-            for (int i = 0; i < candidato.size(); i++) {
-                if(this.candidatos[i] == null){
-                    this.candidatos[i] = candidato.get(i);
-                }
+                candidatos.add(gson.fromJson(linha, Candidato.class)); 
+                inserirJson(gson.fromJson(linha, Candidato.class));
             }
         }
     }
@@ -127,10 +126,16 @@ public class CandidatoDAO {
      * @param candidato Insere um objeto inteiro do tipo candidato no arquivo json.
      * @return boolean - Retorna true caso conseguiu realizar a inserção e false caso ocorreu algo de errado.
      */
-    public boolean inserirJson(CadCandidato candidato){
+    public boolean inserirJson(Candidato candidato){
+        
+        /*Verifica se a pasta local esta criada*/
+        File dir = new File("ArquivosJson");
+        
+        /*Caso nao estiver entao cria*/
+        dir.mkdirs();
         
         Gson gson = new Gson();
-        
+
         FileWriter arq = null;
         try {
             arq = new FileWriter("./ArquivosJson/Candidato.json", true);
@@ -193,11 +198,11 @@ public class CandidatoDAO {
     /**
      * Verifica se existe algum candidato no vetor com aquele número.
      * @param numero Número do candidato.
-     * @return CadCandidato - Retorna o objeto inteiro do candidato, caso contrário retorna null.
+     * @return Candidato - Retorna o objeto inteiro do candidato, caso contrário retorna null.
      */
-    public CadCandidato getCandidatoByNum(int numero){
+    public Candidato getCandidatoByNum(int numero){
         
-        for (CadCandidato c: this.candidatos){
+        for (Candidato c: this.candidatos){
             
             /*Evita o null pointer exception*/
             if (c != null){

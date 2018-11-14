@@ -1,11 +1,14 @@
 package visao;
 
 import dao.EleitorDAO;
+import excecoes.CpfException;
 import java.awt.Cursor;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import modelo.CadEleitor;
 import util.PPMFileReader;
+import excecoes.CampoObrigatorioException;
+import excecoes.IgualdadeDeObjetosException;
+import modelo.Estado;
 
 public class Eleitor extends javax.swing.JFrame {
 
@@ -25,22 +28,41 @@ public class Eleitor extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setExtendedState(HIDE_ON_CLOSE);
         
+        /*Preenche os estados*/
+        preencheBoxEstado();
+        
         /*Seta o foco no nome*/
         texNomeEleitor.requestFocus();
     }
     
     /**
      * Verifica se os campos com preenchimento obrigatórios estão sendo devidamente preenchidos.
-     * @return String - O nome do campo que ainda não está preenchido.
+     * @throws CampoObrigatorioException - Caso algum campo não esteje preenchido.
      */
-    public String camposObrigatorios(){
+    public void camposObrigatorios() throws CampoObrigatorioException {
         
-        if (texNomeEleitor.getText().equals(""))              return "NOME";
-        if (texCpfEleitor.getText().equals("   .   .   -  ")) return "CPF";
-        if (texTituloEleitor.getText().equals(""))            return "TITULO";
-        if (texImagemEleitor.getText().equals(""))            return "IMAGEM";
+        String campo = "";
         
-        return "";
+        if (texImagemEleitor.getText().equals(""))            campo = "IMAGEM";
+        if (texTituloEleitor.getText().equals(""))            campo = "TITULO";
+        if (texCpfEleitor.getText().equals("   .   .   -  ")) campo = "CPF";
+        if (texNomeEleitor.getText().equals(""))              campo = "NOME";
+        
+        if (!campo.equals("")){
+            throw new CampoObrigatorioException("O campo " + campo + " esta vazio...");
+        }
+    }
+    
+    /**
+     * Preenche o combo box do estado com as siglas dos estados.
+     */
+    public void preencheBoxEstado(){
+        
+        for (Estado e : Estado.values()) {
+                
+            /*Adiciona no box as siglas*/
+            boxEstado.addItem(e.toString());
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -74,6 +96,8 @@ public class Eleitor extends javax.swing.JFrame {
         }catch(Exception e){
 
         }
+        boxEstado = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -169,30 +193,26 @@ public class Eleitor extends javax.swing.JFrame {
 
         texImagemEleitor.setEnabled(false);
 
+        boxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nenhum" }));
+        boxEstado.setToolTipText("Selecione de acordo com a sigla do partido");
+        boxEstado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                boxEstadoMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                boxEstadoMouseEntered(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel7.setText("ESTADO:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6))
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnLocalizarImagem, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(texImagemEleitor))
-                            .addComponent(texTituloEleitor)
-                            .addComponent(texSecaoEleitor)
-                            .addComponent(texNomeEleitor)
-                            .addComponent(texCpfEleitor, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(225, 369, Short.MAX_VALUE)
                         .addComponent(jLabel3)
@@ -204,7 +224,29 @@ public class Eleitor extends javax.swing.JFrame {
                         .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(70, 70, 70)))
+                        .addGap(70, 70, 70))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(boxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnLocalizarImagem, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(texImagemEleitor))
+                            .addComponent(texTituloEleitor)
+                            .addComponent(texSecaoEleitor)
+                            .addComponent(texNomeEleitor)
+                            .addComponent(texCpfEleitor, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
@@ -228,12 +270,16 @@ public class Eleitor extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(texSecaoEleitor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addGap(44, 44, 44)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(boxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(texImagemEleitor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLocalizarImagem))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -260,55 +306,48 @@ public class Eleitor extends javax.swing.JFrame {
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         
-        /*Muda o mouse*/
-        this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        
-        /*Verificando os campos obrigatorios*/
-        String campo = camposObrigatorios();
-        if (!(campo.equals(""))){
-            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            JOptionPane.showMessageDialog(this, "O campo " + campo + " esta vazio...", "Erro", JOptionPane.ERROR_MESSAGE);
-            return ;
-        }
-        
-        /*Inserindo numa variavel auxiliar*/
-        CadEleitor eleitor = new CadEleitor();
-        eleitor.setNome(texNomeEleitor.getText());
-        
-        if (!(eleitor.setCpf(texCpfEleitor.getText()))){
-            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            JOptionPane.showMessageDialog(this, "Cpf inválido...", "Erro", JOptionPane.ERROR_MESSAGE);
-            return ;
-        }
-        
-        eleitor.setNumeroTitulo(texTituloEleitor.getText());
-        eleitor.setSecao(Integer.parseInt(texSecaoEleitor.getText()));       
-        eleitor.setImagem(PPMFileReader.readImage(texImagemEleitor.getText()));
-        
-        /*Conferindo se ja nao tem eleitor com essas informacoes*/
-        campo = eleitorDAO.igualdadeEleitor(eleitor);
-        
-        if (!(campo.equals(""))){
-            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            JOptionPane.showMessageDialog(this, "Há um eleitor com o mesmo item do campo " + campo + "...", "Erro", JOptionPane.ERROR_MESSAGE);
-            return ;
-        }
-        
-        /*Se o eleitor poder ser cadastrado entao cadastra no dao e no arquivo e envia pro drive*/
-        if ((eleitorDAO.inserir(eleitor)     == false) || 
-            (eleitorDAO.inserirJson(eleitor) == false) ||
-            (eleitorDAO.enviaDrive()         == false)){
+        try {
             
-            return ;
+            /*Muda o mouse*/
+            this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+            
+            /*Verificando os campos obrigatorios*/
+            camposObrigatorios();
+
+            /*Inserindo numa variavel auxiliar*/
+            modelo.Eleitor eleitor = 
+                    new modelo.Eleitor(texNomeEleitor.getText(),
+                                       texCpfEleitor.getText(),
+                                       Integer.parseInt(texSecaoEleitor.getText()),
+                                       texTituloEleitor.getText(),
+                                       PPMFileReader.readImage(texImagemEleitor.getText()),
+                                       Estado.valueOf(boxEstado.getSelectedItem().toString()));
+            
+            /*Conferindo se ja nao tem um eleitor com essas informacoes*/
+            eleitorDAO.igualdadeEleitor(eleitor);
+
+            /*Se o eleitor pode ser cadastrado entao cadastra no dao, no arquivo e envia pro drive*/
+            eleitorDAO.inserir(eleitor);
+            if ((eleitorDAO.inserirJson(eleitor) == false) ||
+                (eleitorDAO.enviaDrive()         == false)) {
+
+                return ;
+            }
+
+            /*Se chegou aqui o cadastro foi efetuado com sucesso*/
+            JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!", "Confirmação", JOptionPane.INFORMATION_MESSAGE);
+
+            /*Depois de cadastrar, limpa os campos*/
+            btnLimparActionPerformed(evt);
+            
+        } catch (IgualdadeDeObjetosException | CpfException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (CampoObrigatorioException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+        } finally {
+            /*Volta o cursor para seu estado normal*/
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         }
-        
-        /*Volta o cursor para padrao*/
-        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        
-        JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!", "Confirmação", JOptionPane.INFORMATION_MESSAGE);
-        
-        /*Depois de cadastrar, limpa os campos*/
-        btnLimparActionPerformed(evt);
     }//GEN-LAST:event_btnConfirmarActionPerformed
     
     private void btnCancelarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseExited
@@ -377,14 +416,24 @@ public class Eleitor extends javax.swing.JFrame {
                    
         texTituloEleitor.setText("");
         texImagemEleitor.setText("");
+        boxEstado.setSelectedIndex(0);
         
         /*Passa o foco para o campo de nome*/
         texNomeEleitor.requestFocus();
     }//GEN-LAST:event_btnLimparActionPerformed
 
+    private void boxEstadoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_boxEstadoMouseExited
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_boxEstadoMouseExited
+
+    private void boxEstadoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_boxEstadoMouseEntered
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_boxEstadoMouseEntered
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> boxEstado;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConfirmar;
     private javax.swing.JButton btnLimpar;
@@ -395,6 +444,7 @@ public class Eleitor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JTextField texCpfEleitor;
     private javax.swing.JTextField texImagemEleitor;
     private javax.swing.JTextField texNomeEleitor;

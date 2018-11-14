@@ -1,9 +1,10 @@
 package visao;
 
 import dao.PartidoDAO;
+import excecoes.CampoObrigatorioException;
+import excecoes.IgualdadeDeObjetosException;
 import java.awt.Cursor;
 import javax.swing.JOptionPane;
-import modelo.CadPartido;
 
 public class Partido extends javax.swing.JFrame {
 
@@ -29,15 +30,19 @@ public class Partido extends javax.swing.JFrame {
     
     /**
      * Verifica se os campos com preenchimento obrigatórios estão sendo devidamente preenchidos.
-     * @return String - O nome do campo que ainda não está preenchido.
+     * @throws CampoObrigatorioException - Caso algum campo não esteje preenchido.
      */
-    public String camposObrigatorios(){
+    public void camposObrigatorios() throws CampoObrigatorioException {
         
-        if (texNomePartido.getText().equals(""))   return "NOME";
-        if (texSiglaPartido.getText().equals(""))  return "SIGLA";
-        if (texNumeroPartido.getText().equals("")) return "NUMERO";
+        String campo = "";
+
+        if (texNumeroPartido.getText().equals("")) campo = "NUMERO";
+        if (texSiglaPartido.getText().equals(""))  campo = "SIGLA";
+        if (texNomePartido.getText().equals(""))   campo = "NOME";
         
-        return "";
+        if (!campo.equals("")){
+            throw new CampoObrigatorioException("O campo " + campo + " esta vazio...");
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -49,6 +54,11 @@ public class Partido extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         texNomePartido = new javax.swing.JTextField();
         texNumeroPartido = new javax.swing.JTextField();
+        try{
+            javax.swing.text.MaskFormatter formataNumero = new javax.swing.text.MaskFormatter("##");
+            texNumeroPartido = new javax.swing.JFormattedTextField(formataNumero);
+        }catch(Exception e){
+        }
         btnCancelar = new javax.swing.JButton();
         btnLimpar = new javax.swing.JButton();
         btnConfirmar = new javax.swing.JButton();
@@ -67,6 +77,12 @@ public class Partido extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
         jLabel3.setText("PARTIDO");
+
+        texNumeroPartido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                texNumeroPartidoKeyReleased(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
         btnCancelar.setToolTipText("Ir para a tela Principal");
@@ -187,48 +203,46 @@ public class Partido extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
-                
-        /*Muda o mouse*/
-        this.setCursor(new Cursor(Cursor.WAIT_CURSOR));              
         
-        /*Verificando os campos obrigatorios*/
-        String campo = camposObrigatorios();
-        if (!(campo.equals(""))){
-            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            JOptionPane.showMessageDialog(this, "O campo " + campo + " esta vazio...", "Erro", JOptionPane.ERROR_MESSAGE);
-            return ;
-        }
-        
-        /*Inserindo numa variavel auxiliar*/
-        CadPartido partido = new CadPartido();
-        partido.setNome(texNomePartido.getText());
-        partido.setSigla(texSiglaPartido.getText());
-        partido.setNumero(Integer.parseInt(texNumeroPartido.getText()));
-        
-        /*Conferindo se ja nao tem partido com essas informacoes*/
-        campo = partidoDAO.igualdadePartido(partido);
-        
-        if (!(campo.equals(""))){
-            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            JOptionPane.showMessageDialog(this, "Há um partido com o mesmo item do campo " + campo + "...", "Erro", JOptionPane.ERROR_MESSAGE);
-            return ;
-        }
-        
-        /*Se o partido poder ser cadastrado entao cadastra no dao e no arquivo e envia pro drive*/
-        if ((partidoDAO.inserir(partido)     == false) || 
-            (partidoDAO.inserirJson(partido) == false) ||
-            (partidoDAO.enviaDrive()         == false)){
+        try {
             
-            return ;
+            /*Muda o mouse*/
+            this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+            
+            /*Verificando os campos obrigatorios*/
+            camposObrigatorios();
+
+            /*Inserindo numa variavel auxiliar*/
+            modelo.Partido partido = 
+                    new modelo.Partido(texNomePartido.getText(),
+                                       texSiglaPartido.getText(),
+                                       Integer.parseInt(texNumeroPartido.getText()));
+            
+            /*Conferindo se ja nao tem um partido com essas informacoes*/
+            partidoDAO.igualdadePartido(partido);
+
+            /*Se o partido pode ser cadastrado entao cadastra no dao, no arquivo e envia pro drive*/
+            partidoDAO.inserir(partido);
+            if ((partidoDAO.inserirJson(partido) == false) ||
+                (partidoDAO.enviaDrive()         == false)) {
+
+                return ;
+            }
+
+            /*Se chegou aqui o cadastro foi efetuado com sucesso*/
+            JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!", "Confirmação", JOptionPane.INFORMATION_MESSAGE);
+
+            /*Depois de cadastrar, limpa os campos*/
+            btnLimparActionPerformed(evt);
+            
+        } catch (IgualdadeDeObjetosException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (CampoObrigatorioException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+        } finally {
+            /*Volta o cursor para seu estado normal*/
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         }
-        
-        /*Volta o cursor para padrao*/
-        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        
-        JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!", "Confirmação", JOptionPane.INFORMATION_MESSAGE);
-        
-        /*Depois de cadastrar, limpa os campos*/
-        btnLimparActionPerformed(evt);
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -277,6 +291,10 @@ public class Partido extends javax.swing.JFrame {
         texSiglaPartido.setText("");
         texSiglaPartido.setText(aux);
     }//GEN-LAST:event_texSiglaPartidoKeyReleased
+
+    private void texNumeroPartidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texNumeroPartidoKeyReleased
+        texNumeroPartido.setText(texNumeroPartido.getText().replaceAll("[^0-9]", ""));
+    }//GEN-LAST:event_texNumeroPartidoKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
