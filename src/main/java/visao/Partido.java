@@ -1,5 +1,6 @@
 package visao;
 
+import conexao.Conexao;
 import dao.PartidoDAO;
 import excecoes.CampoObrigatorioException;
 import excecoes.IgualdadeDeObjetosException;
@@ -84,15 +85,16 @@ public class Partido extends javax.swing.JFrame {
             }
         });
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconCancelar.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.setToolTipText("Ir para a tela Principal");
         btnCancelar.setIconTextGap(3);
         btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnCancelarMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnCancelarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnCancelarMouseExited(evt);
             }
         });
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -101,6 +103,7 @@ public class Partido extends javax.swing.JFrame {
             }
         });
 
+        btnLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconLimpar.png"))); // NOI18N
         btnLimpar.setText("Limpar");
         btnLimpar.setToolTipText("Limpar os campos de textos");
         btnLimpar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -117,14 +120,15 @@ public class Partido extends javax.swing.JFrame {
             }
         });
 
+        btnConfirmar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconConfirma.png"))); // NOI18N
         btnConfirmar.setText("Confirmar");
         btnConfirmar.setToolTipText("Confirmar o Cadastro");
         btnConfirmar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnConfirmarMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnConfirmarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnConfirmarMouseExited(evt);
             }
         });
         btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
@@ -147,30 +151,26 @@ public class Partido extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(359, Short.MAX_VALUE)
+                .addContainerGap(361, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(409, 409, 409))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel2))
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(136, 136, 136)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(208, 208, 208)
-                        .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 226, Short.MAX_VALUE)
-                        .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(70, 70, 70))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel2))
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(texNumeroPartido)
-                            .addComponent(texSiglaPartido)
-                            .addComponent(texNomePartido))))
+                        .addComponent(btnCancelar)
+                        .addGap(227, 227, 227)
+                        .addComponent(btnLimpar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnConfirmar))
+                    .addComponent(texNumeroPartido, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(texSiglaPartido, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(texNomePartido, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
@@ -220,12 +220,27 @@ public class Partido extends javax.swing.JFrame {
             
             /*Conferindo se ja nao tem um partido com essas informacoes*/
             partidoDAO.igualdadePartido(partido);
-
+            
             /*Se o partido pode ser cadastrado entao cadastra no dao, no arquivo e envia pro drive*/
             partidoDAO.inserir(partido);
-            if ((partidoDAO.inserirJson(partido) == false) ||
-                (partidoDAO.enviaDrive()         == false)) {
-
+            
+            try {
+                partidoDAO.inserirJson(partido);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Houve algum erro ao salvar o partido no arquivo json.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return ;
+            }
+            
+            /*Antes de fazer algo usando a conexao verifica primeiro se tem internet*/
+            if (!Conexao.getInternet()){
+                JOptionPane.showMessageDialog(this, "Sem acesso a internet.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return ;
+            }
+            
+            try {
+                partidoDAO.enviaDrive();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Houve erro ao enviar o arquivo para o drive.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return ;
             }
 

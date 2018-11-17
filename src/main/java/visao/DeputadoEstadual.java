@@ -1,5 +1,6 @@
 package visao;
 
+import conexao.Conexao;
 import dao.CandidatoDAO;
 import dao.PartidoDAO;
 import excecoes.CpfException;
@@ -11,6 +12,8 @@ import modelo.Estado;
 import modelo.Partido;
 import excecoes.CampoObrigatorioException;
 import excecoes.IgualdadeDeObjetosException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DeputadoEstadual extends javax.swing.JFrame {
 
@@ -146,6 +149,7 @@ public class DeputadoEstadual extends javax.swing.JFrame {
             }
         });
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconCancelar.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.setToolTipText("Ir para a tela Principal");
         btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -162,6 +166,7 @@ public class DeputadoEstadual extends javax.swing.JFrame {
             }
         });
 
+        btnLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconLimpar.png"))); // NOI18N
         btnLimpar.setText("Limpar");
         btnLimpar.setToolTipText("Limpar os campos de textos");
         btnLimpar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -178,14 +183,15 @@ public class DeputadoEstadual extends javax.swing.JFrame {
             }
         });
 
+        btnConfirmar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconConfirma.png"))); // NOI18N
         btnConfirmar.setText("Confirmar");
         btnConfirmar.setToolTipText("Confirmar o Cadastro");
         btnConfirmar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnConfirmarMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnConfirmarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnConfirmarMouseExited(evt);
             }
         });
         btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
@@ -237,12 +243,11 @@ public class DeputadoEstadual extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(texCpfDeputadoEstadual)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
-                                        .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(256, 256, 256)
-                                        .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(14, 14, 14))
+                                        .addComponent(btnCancelar)
+                                        .addGap(222, 222, 222)
+                                        .addComponent(btnLimpar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnConfirmar))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(boxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -328,12 +333,27 @@ public class DeputadoEstadual extends javax.swing.JFrame {
             
             /*Conferindo se ja nao tem um deputado com essas informacoes*/
             candidatoDAO.igualdadeCandidato(deputadoEstadual);
-
+            
             /*Se o deputado estadual pode ser cadastrado entao cadastra no dao, no arquivo e envia pro drive*/
             candidatoDAO.inserir(deputadoEstadual);
-            if ((candidatoDAO.inserirJson(deputadoEstadual) == false) ||
-                (candidatoDAO.enviaDrive()                  == false)) {
-
+            
+            try {
+                candidatoDAO.inserirJson(deputadoEstadual);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Houve algum erro ao salvar o deputado estadual no arquivo json.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return ;
+            }
+            
+            /*Antes de fazer algo usando a conexao verifica primeiro se tem internet*/
+            if (!Conexao.getInternet()){
+                JOptionPane.showMessageDialog(this, "Sem acesso a internet.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return ;
+            }
+            
+            try {
+                candidatoDAO.enviaDrive();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Houve erro ao enviar o arquivo para o drive.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return ;
             }
 

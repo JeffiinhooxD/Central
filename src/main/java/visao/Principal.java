@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.io.File;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -21,6 +22,7 @@ public class Principal extends javax.swing.JFrame {
     PartidoDAO   partidoDAO   = new PartidoDAO();
     VotoDAO      votoDAO      = new VotoDAO();
     Urna         urna         = new Urna();
+    String       mensagem     = "";
     
     Runtime r = Runtime.getRuntime();
     
@@ -41,9 +43,26 @@ public class Principal extends javax.swing.JFrame {
         
         /*Caso nao estiver entao cria*/
         dir.mkdirs();
+
+        /*Antes de fazer algo usando a conexao verifica primeiro se tem internet*/
+        if (!Conexao.getInternet()){
+            JOptionPane.showMessageDialog(this, "Sem acesso a internet.", "Erro", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
         
-        /*Iniciando servico e baixa do drive caso o banco de dados esteja preenchida*/
-        Conexao.service();
+        /*Iniciando o servico do drive*/
+        try {
+            Conexao.service();
+        } catch (GeneralSecurityException ex) {
+            JOptionPane.showMessageDialog(this, "Houve algum erro de segurança ao tentar conectar no drive.", "Erro", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Houve algum erro de entrada e saída.", "Erro", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        } catch (NullPointerException ex) {
+            JOptionPane.showMessageDialog(this, "Credenciais não encontradas.", "Erro", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
         
         /*Baixa os arquivos .json do drive e coloca na pasta ArquivosJson, sao usadas Threads para ficar mais rapido o processo*/
         Thread p = new Thread(){
@@ -51,8 +70,8 @@ public class Principal extends javax.swing.JFrame {
             public void run() {
                 try {
                     partidoDAO.baixarPartidoJson();
-                }catch(IOException e){
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                }catch(Exception e) {
+                    mensagem = "Houve um erro ao baixar os partidos do drive.";
                 }
             }            
         };
@@ -62,8 +81,8 @@ public class Principal extends javax.swing.JFrame {
             public void run() {
                 try {
                     eleitorDAO.baixarEleitorJson();
-                }catch(IOException e){
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                }catch(Exception e) {
+                    mensagem = "Houve um erro ao baixar os eleitores do drive.";
                 }
             }            
         };
@@ -73,28 +92,35 @@ public class Principal extends javax.swing.JFrame {
             public void run() {
                 try {
                     candidatoDAO.baixarCandidatoJson();
-                }catch(IOException e){
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                }catch(Exception e) {
+                    mensagem = "Houve um erro ao baixar os candidatos do drive.";
                 }
             }            
         };
-            
+        
+        /*Inicia a execucao das threads*/
         p.start();
         e.start();
         c.start();
         
+        /*Espera cada Thread ser finalizada para prosseguir*/
         try {
             
-            /*Espera cada Thread ser finalizada para prosseguir*/
             p.join();
             p.interrupt();
             e.join();
             e.interrupt();
             c.join();
             c.interrupt();
+            
+            if (!mensagem.equals("")){
+                JOptionPane.showMessageDialog(this, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
+            }
 
         } catch (InterruptedException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Houve algum erro ao baixar os arquivos .json do drive.", "Erro", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
     }
     
@@ -159,6 +185,7 @@ public class Principal extends javax.swing.JFrame {
         menuBarraPrincipal.setForeground(new java.awt.Color(245, 175, 19));
 
         menuCadastro.setForeground(new java.awt.Color(234, 168, 19));
+        menuCadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconCadastro.png"))); // NOI18N
         menuCadastro.setText("Cadastro");
         menuCadastro.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
         menuCadastro.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -170,18 +197,20 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        menuCadastroCandidato.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconCandidato.png"))); // NOI18N
         menuCadastroCandidato.setText("Candidato");
         menuCadastroCandidato.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         menuCadastroCandidato.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                menuCadastroCandidatoMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 menuCadastroCandidatoMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                menuCadastroCandidatoMouseExited(evt);
             }
         });
 
         menuCadastroCandidatoPresidente.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
+        menuCadastroCandidatoPresidente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconPresidente.png"))); // NOI18N
         menuCadastroCandidatoPresidente.setText("Presidente");
         menuCadastroCandidatoPresidente.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
@@ -199,13 +228,14 @@ public class Principal extends javax.swing.JFrame {
         menuCadastroCandidato.add(menuCadastroCandidatoPresidente);
 
         menuCadastroCandidatoDeputadoEstadual.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
+        menuCadastroCandidatoDeputadoEstadual.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconDeputado.png"))); // NOI18N
         menuCadastroCandidatoDeputadoEstadual.setText("Deputado Estadual");
         menuCadastroCandidatoDeputadoEstadual.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                menuCadastroCandidatoDeputadoEstadualMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 menuCadastroCandidatoDeputadoEstadualMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                menuCadastroCandidatoDeputadoEstadualMouseExited(evt);
             }
         });
         menuCadastroCandidatoDeputadoEstadual.addActionListener(new java.awt.event.ActionListener() {
@@ -218,13 +248,14 @@ public class Principal extends javax.swing.JFrame {
         menuCadastro.add(menuCadastroCandidato);
 
         menuCadastroEleitor.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
+        menuCadastroEleitor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconEleitor.png"))); // NOI18N
         menuCadastroEleitor.setText("Eleitor");
         menuCadastroEleitor.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                menuCadastroEleitorMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 menuCadastroEleitorMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                menuCadastroEleitorMouseExited(evt);
             }
         });
         menuCadastroEleitor.addActionListener(new java.awt.event.ActionListener() {
@@ -235,13 +266,14 @@ public class Principal extends javax.swing.JFrame {
         menuCadastro.add(menuCadastroEleitor);
 
         menuCadastroPartido.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
+        menuCadastroPartido.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconPartido.png"))); // NOI18N
         menuCadastroPartido.setText("Partido");
         menuCadastroPartido.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                menuCadastroPartidoMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 menuCadastroPartidoMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                menuCadastroPartidoMouseExited(evt);
             }
         });
         menuCadastroPartido.addActionListener(new java.awt.event.ActionListener() {
@@ -254,18 +286,20 @@ public class Principal extends javax.swing.JFrame {
         menuBarraPrincipal.add(menuCadastro);
 
         menuUtilitarios.setForeground(new java.awt.Color(240, 174, 24));
+        menuUtilitarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconUtil.png"))); // NOI18N
         menuUtilitarios.setText("Utilitários");
         menuUtilitarios.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
         menuUtilitarios.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                menuUtilitariosMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 menuUtilitariosMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                menuUtilitariosMouseExited(evt);
             }
         });
 
         computarVotos.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
+        computarVotos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconGrafico.png"))); // NOI18N
         computarVotos.setText("Computar Votos");
         computarVotos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
@@ -296,15 +330,19 @@ public class Principal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 472, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 890, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuCadastroEleitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroEleitorActionPerformed
-        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        new Eleitor(eleitorDAO).setVisible(true);
+        
+        try {
+            new Eleitor(eleitorDAO).setVisible(true);
+        } finally {
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        }
     }//GEN-LAST:event_menuCadastroEleitorActionPerformed
 
     private void menuCadastroMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroMouseEntered
@@ -340,8 +378,12 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_computarVotosMouseEntered
 
     private void menuCadastroPartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroPartidoActionPerformed
-        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        new Partido(partidoDAO).setVisible(true);
+        
+        try {
+            new Partido(partidoDAO).setVisible(true);
+        } finally {
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        }
     }//GEN-LAST:event_menuCadastroPartidoActionPerformed
 
     private void menuCadastroPartidoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroPartidoMouseEntered
@@ -381,55 +423,69 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuCadastroCandidatoDeputadoEstadualMouseExited
 
     private void menuCadastroCandidatoPresidenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoPresidenteActionPerformed
+
+        try {
         
-        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        
-        /*Verifica se tem partido cadastrado*/
-        try {            
-            partidoDAO.existeAlgumPartido();
-        } catch (PartidoException e) {            
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);            
-            return ;
+            /*Verifica se tem partido cadastrado*/
+            try {            
+                partidoDAO.existeAlgumPartido();
+            } catch (PartidoException e) {            
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);            
+                return ;
+            }
+
+            new Presidente(candidatoDAO, partidoDAO).setVisible(true);
+            
+        } finally {
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         }
-        
-        new Presidente(candidatoDAO, partidoDAO).setVisible(true);
     }//GEN-LAST:event_menuCadastroCandidatoPresidenteActionPerformed
 
     private void menuCadastroCandidatoDeputadoEstadualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoDeputadoEstadualActionPerformed
         
-        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        try {
         
-        /*Verifica se tem partido cadastrado*/
-        try {            
-            partidoDAO.existeAlgumPartido();
-        } catch (PartidoException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            return ;
+            /*Verifica se tem partido cadastrado*/
+            try {            
+                partidoDAO.existeAlgumPartido();
+            } catch (PartidoException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                return ;
+            }
+
+            new DeputadoEstadual(candidatoDAO, partidoDAO).setVisible(true);
+        
+        } finally {
+            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         }
-        
-        new DeputadoEstadual(candidatoDAO, partidoDAO).setVisible(true);
     }//GEN-LAST:event_menuCadastroCandidatoDeputadoEstadualActionPerformed
     
     /**
      * Cria uma tela que mostrará o gráfico da relação de quantidade de votos que os candidatos já obtiveram.
      */
     public void criaGrafico(){
-    
+
+        /*Antes de fazer algo usando a conexao verifica primeiro se tem internet*/
+        if (!Conexao.getInternet()){
+            JOptionPane.showMessageDialog(this, "Sem acesso a internet.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+
         /*Baixa do drive a relacao dos votos ate o momento*/
         try {
             votoDAO.baixarVotoJson();  
             urna.setVotoDAO(votoDAO);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Houve um erro na hora de computador os votos...", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Houve um erro na hora de computador os votos...", "Erro", JOptionPane.ERROR_MESSAGE);
             return ;
         }        
-        
+
         /*Se ninguem votou ainda e porque nao tem nada para mostrar aqui*/
         if (urna.getVotoDAO().verificaAlguemVotou()){
-            
+
             /*Preenche o grafico com os dados dos candidatos*/
             PieDataset pizzaDataSet = urna.getVotoDAO().preencheGrafico();
-            
+
             GraficoPizza3D grafico = new GraficoPizza3D(
                     "Apuração dos votos",
                     "Relação de candidatos",
@@ -438,9 +494,9 @@ public class Principal extends javax.swing.JFrame {
 
             grafico.pack();
             grafico.setVisible(true);
-            
+
         }else{
-            JOptionPane.showMessageDialog(null, "Ainda não ocorreu nenhum voto...", "Resultados inexistentes", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ainda não ocorreu nenhum voto...", "Resultados inexistentes", JOptionPane.WARNING_MESSAGE);
         }
     }
     

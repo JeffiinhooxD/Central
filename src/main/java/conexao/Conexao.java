@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ByteArrayOutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,25 +46,28 @@ public class Conexao {
 
     /**
      * Construtor da classe - onde se inicia a variável do serviço.
+     * @throws IOException
+     * @throws GeneralSecurityException
+     * @throws NullPointerException 
      */
-    private Conexao(){
+    private Conexao() throws IOException, GeneralSecurityException, NullPointerException {
+            
+        NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                .setApplicationName(APPLICATION_NAME)
+                .build();
+    }
+    
+    public static boolean getInternet() {
         
         try {
-            
-            NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                    .setApplicationName(APPLICATION_NAME)
-                    .build();
-            
-        } catch (GeneralSecurityException ex) {
-            
+            URL url = new URL("https://www.google.com/");
+            URLConnection connection = url.openConnection();
+            connection.connect();
+            return true;
         } catch (IOException ex) {
-            
-        }
-//        NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-//            service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-//                          .setApplicationName(APPLICATION_NAME)
-//                          .build();
+            return false;
+        }   
     }
     
     /**
@@ -91,7 +96,7 @@ public class Conexao {
      * Caso o serviço ainda não esteja instânciado então instância.
      * @return Drive - O servico
      */
-    public static Drive service() {
+    public static Drive service() throws IOException, GeneralSecurityException, NullPointerException {
         
         if (service == null) {
             new Conexao();
@@ -185,6 +190,7 @@ public class Conexao {
         
         return file.getId();        
     }
+    
     /**
      * Remove um arquivo do Google Drive.
      * @param idArquivo Id do arquivo que você quer remover.

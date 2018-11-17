@@ -77,13 +77,13 @@ public class EleitorDAO {
      * Utilizada para baixar o Eleitor.json do Google Drive.
      * @throws IOException 
      */
-    public void baixarEleitorJson() throws IOException{
+    public void baixarEleitorJson() throws Exception {
         
         Gson gson = new Gson();
         
         /*Auxiliar para pegar o conteudo do arquivo*/
         String aux = null;        
-        try {
+//        try {
             
             /*Verifica se a pasta existe*/
             String idPas = Conexao.existePasta("ArquivosJson"); 
@@ -98,10 +98,10 @@ public class EleitorDAO {
                 }
             }
             
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Não foi possível baixar os dados dos eleitores, verifique sua conexão com a internet..", "Erro", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
-        }
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, "Não foi possível baixar os dados dos eleitores, verifique sua conexão com a internet..", "Erro", JOptionPane.ERROR_MESSAGE);
+//            System.exit(0);
+//        }
         
         /*Caso esta variavel esteja nula e porque nao ha o arquivo para baixar ou ele esta vazio*/
         if (aux != null){
@@ -123,9 +123,9 @@ public class EleitorDAO {
     /**
      * Insere no arquivo Eleitor.json um objeto do tipo eleitor.
      * @param eleitor Insere um objeto inteiro do tipo eleitor no arquivo json.
-     * @return boolean - Retorna true caso conseguiu realizar a inserção e false caso ocorreu algo de errado.
+     * @throws Exception 
      */
-    public boolean inserirJson(Eleitor eleitor){
+    public void inserirJson(Eleitor eleitor) throws Exception {
         
         /*Verifica se a pasta local esta criada*/
         File dir = new File("ArquivosJson");
@@ -135,62 +135,40 @@ public class EleitorDAO {
         
         Gson gson = new Gson();
         
-        FileWriter arq = null;
-        try {
-            arq = new FileWriter("./ArquivosJson/Eleitor.json", true);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Houve algum erro ao salvar o eleitor no arquivo json", "Erro", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
+        FileWriter arq = new FileWriter("./ArquivosJson/Eleitor.json", true);
         
         PrintWriter escreveArq = new PrintWriter(arq);
         escreveArq.printf("%s\n", gson.toJson(eleitor));
         
-        try {
-            arq.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Houve algum erro ao fechar o arquivo json", "Erro", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        
-        return true;
+        arq.close();
     }
     
     /**
      * Envia o Eleitor.json local para o Google Drive.
-     * @return boolean - Retorna true caso conseguiu realizar o envio e false caso ocorreu algo de errado.
+     * @throws Exception 
      */
-    public boolean enviaDrive(){
-        
-        try {
+    public void enviaDrive() throws Exception {
             
-            /*Verifica se existe essa pasta no Google Drive*/
-            String idPas = Conexao.existePasta("ArquivosJson");            
-            if (idPas.equals("")){
-                
-                /*Se a pasta nao existir entao cria*/
-                idPas = Conexao.criaPasta(Conexao.service(), "ArquivosJson");    
-            }
-            
-            /*Verifica se existe esse arquivo no Google Drive*/
-            String idArq = Conexao.existeArquivo("Eleitor.json");
-            if (idArq.equals("")){                
-                
-                /*Se o arquivo nao existir entao cria*/
-                idArq = Conexao.enviaArquivo(idPas, "Eleitor.json");
-            }
-            
-            /*Remove o arquivo que esta no drive para nao criar varios dele mesmo*/
-            Conexao.removeArquivo(idArq);
-            
-            /*Por fim, envia o json local para la*/
-            Conexao.enviaArquivo(idPas, "Eleitor.json");
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Houve erro ao conectar com o drive para salvar o arquivo..", "Erro", JOptionPane.ERROR_MESSAGE);
-            return false;
+        /*Verifica se existe essa pasta no Google Drive*/
+        String idPas = Conexao.existePasta("ArquivosJson");            
+        if (idPas.equals("")){
+
+            /*Se a pasta nao existir entao cria*/
+            idPas = Conexao.criaPasta(Conexao.service(), "ArquivosJson");    
         }
-        
-        return true;
+
+        /*Verifica se existe esse arquivo no Google Drive*/
+        String idArq = Conexao.existeArquivo("Eleitor.json");
+        if (idArq.equals("")){                
+
+            /*Se o arquivo nao existir entao cria*/
+            idArq = Conexao.enviaArquivo(idPas, "Eleitor.json");
+        }
+
+        /*Remove o arquivo que esta no drive para nao criar varios dele mesmo*/
+        Conexao.removeArquivo(idArq);
+
+        /*Por fim, envia o json local para la*/
+        Conexao.enviaArquivo(idPas, "Eleitor.json");
     }
 }
