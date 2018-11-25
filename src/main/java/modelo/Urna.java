@@ -5,10 +5,14 @@ import dao.VotoDAO;
 public class Urna {
 
     private int codigo;
-    private VotoDAO votoDAO = new VotoDAO();
+    private VotoDAO votoDAO;
 
+    /**
+     * Construtor sem parâmetro - Inicia as variáveis.
+     */
     public Urna(){
         this.codigo = 1; /*Esta sendo utilizada somente UMA urna*/
+        votoDAO = new VotoDAO();
     }
     
     /**

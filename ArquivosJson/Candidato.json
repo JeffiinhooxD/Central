@@ -1,5 +1,4 @@
-{"numero":17,"partido":{"nome":"Partido Social Liberal","sigla":"PSL","numero":17},"qtdeVoto":0,"nome":"Jair Bolsonaro","cpf":"278.341.170-92"}
-{"numero":13,"partido":{"nome":"Partido dos Trabalhadores","sigla":"PT","numero":13},"qtdeVoto":0,"nome":"Fernando Haddad","cpf":"290.635.570-43"}
-{"estado":"AC","numero":32132,"partido":{"nome":"Partido dos Trabalhadores","sigla":"PT","numero":13},"qtdeVoto":0,"nome":"João Damascedo","cpf":"611.016.460-71"}
-{"estado":"DF","numero":14562,"partido":{"nome":"Partido dos Trabalhadores","sigla":"PT","numero":13},"qtdeVoto":0,"nome":"Martinho Campos","cpf":"026.470.010-49"}
-{"estado":"MG","numero":89754,"partido":{"nome":"Partido Social Liberal","sigla":"PSL","numero":17},"qtdeVoto":0,"nome":"Toledo da Silva","cpf":"882.859.280-04"}
+{"numero":17,"partido":{"nome":"Partido Social Liberal","sigla":"PSL","numero":17},"qtdeVoto":1,"nome":"Jair Bolsonaro","cpf":"934.307.890-01"}
+{"numero":13,"partido":{"nome":"Partido dos Trabalhadores","sigla":"PT","numero":13},"qtdeVoto":1,"nome":"Fernando Haddad","cpf":"779.396.240-08"}
+{"estado":"AM","numero":1234,"partido":{"nome":"Partido dos Trabalhadores","sigla":"PT","numero":13},"qtdeVoto":1,"nome":"Deputado1","cpf":"555.650.860-78"}
+{"estado":"AC","numero":4321,"partido":{"nome":"Partido Social Liberal","sigla":"PSL","numero":17},"qtdeVoto":0,"nome":"Deputado2","cpf":"664.827.140-05"}

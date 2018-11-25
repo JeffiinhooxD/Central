@@ -308,6 +308,7 @@ public class Partido extends javax.swing.JFrame {
     }//GEN-LAST:event_texSiglaPartidoKeyReleased
 
     private void texNumeroPartidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texNumeroPartidoKeyReleased
+        /*No campo de numero so pode ser inserido numeros*/
         texNumeroPartido.setText(texNumeroPartido.getText().replaceAll("[^0-9]", ""));
     }//GEN-LAST:event_texNumeroPartidoKeyReleased
 

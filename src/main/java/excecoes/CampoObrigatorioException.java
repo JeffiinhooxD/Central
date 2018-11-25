@@ -1,7 +1,7 @@
 package excecoes;
 
 /**
- * 
+ * Exceção realizada quando algum campo obrigatório não foi preenchido.
  */
 public class CampoObrigatorioException extends Exception {
     

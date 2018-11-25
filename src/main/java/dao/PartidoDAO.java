@@ -3,7 +3,6 @@ package dao;
 import com.google.gson.Gson;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import javax.swing.JOptionPane;
 import modelo.Partido;
 import conexao.Conexao;
 import excecoes.IgualdadeDeObjetosException;
@@ -13,29 +12,33 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PartidoDAO {
     
     /*Vetor de partidos*/
-    private ArrayList<Partido> partidos;
+    private List<Partido> partidos;
 
+    /**
+     * Construtor sem parâmetro - Instancia o vetor.
+     */
     public PartidoDAO() {
         partidos = new ArrayList();
     }
     
     /**
-     * Insere o partido na primeira posição vazia que achar do vetor.
-     * @param partidos É passado um obejto inteiro de partido para a inserção.
+     * Insere o partido no vetor.
+     * @param partido É passado um objeto inteiro de partido para a inserção.
      */
-    public void inserir(Partido partidos) {
-        this.partidos.add(partidos);
+    public void inserir(Partido partido) {
+        this.partidos.add(partido);
     }
     
     /**
      * Função utilizada com o intúido de retornar o vetor inteiro de partidos.
-     * @return Partido[] - Retorna o vetor de partidos.
+     * @return List (Partido) - Retorna o vetor de partidos.
      */
-    public ArrayList<Partido> getVetorPartido(){
+    public List<Partido> getVetorPartido(){
         return this.partidos;
     }
     
@@ -177,7 +180,7 @@ public class PartidoDAO {
         for (Partido p : this.partidos) {
             
             /*Trata o null pointer exception*/
-            if (p != null){
+            if (p != null) {
                 return ;
             }            
         }
@@ -192,13 +195,13 @@ public class PartidoDAO {
      */
     public Partido getPartidoBySigla(String sigla){
         
-        for (Partido p: this.partidos){
+        for (Partido p: this.partidos) {
             
             /*Evita o null pointer exception*/
-            if (p != null){
+            if (p != null) {
                 
                 /*Se achou um partido com aquela sigla entao retorn o objeto*/
-                if (p.getSigla().toUpperCase().equals(sigla.toUpperCase())){
+                if (p.getSigla().toUpperCase().equals(sigla.toUpperCase())) {
                     return p;
                 }
             }            

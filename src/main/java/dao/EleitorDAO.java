@@ -3,7 +3,6 @@ package dao;
 import com.google.gson.Gson;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import javax.swing.JOptionPane;
 import modelo.Eleitor;
 import conexao.Conexao;
 import excecoes.IgualdadeDeObjetosException;
@@ -12,28 +11,33 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.List;
 
 public class EleitorDAO {
     
     /*Vetor de eleitores*/
-    private ArrayList<Eleitor> eleitores;
+    private List<Eleitor> eleitores;
 
+    /**
+     * Construtor sem parâmetro - Instancia o vetor.
+     */
     public EleitorDAO() {
         eleitores = new ArrayList();
     }
     
-    /** Insere o eleitor na primeira posição vazia que achar do vetor.
-     * @param eleitores É passado um obejto inteiro de eleitor para a inserção.
+    /**
+     * Insere o eleitor no vetor.
+     * @param eleitor É passado um objeto inteiro de eleitor para a inserção.
      */
-    public void inserir(Eleitor eleitores) {
-        this.eleitores.add(eleitores);
+    public void inserir(Eleitor eleitor) {
+        this.eleitores.add(eleitor);
     }
     
     /**
      * Função utilizada com o intúido de retornar o vetor inteiro de eleitores.
-     * @return Eleitor[] - Retorna o vetor de eleitores.
+     * @return List (Eleitor) - Retorna o vetor de eleitores.
      */
-    public ArrayList<Eleitor> getVetorEleitor(){
+    public List<Eleitor> getVetorEleitor(){
         return this.eleitores;
     }
     
@@ -82,26 +86,20 @@ public class EleitorDAO {
         Gson gson = new Gson();
         
         /*Auxiliar para pegar o conteudo do arquivo*/
-        String aux = null;        
-//        try {
+        String aux = null;
             
-            /*Verifica se a pasta existe*/
-            String idPas = Conexao.existePasta("ArquivosJson"); 
-            if (!(idPas.equals(""))){
-                
-                /*Verifica se o arquivo existe*/
-                String idArq = Conexao.existeArquivo("Eleitor.json");            
-                if (!(idArq.equals(""))){
+        /*Verifica se a pasta existe*/
+        String idPas = Conexao.existePasta("ArquivosJson"); 
+        if (!(idPas.equals(""))){
 
-                    /*Se existir o arquivo coloca nessa variavel o conteudo dele*/
-                    aux = Conexao.printFile(idArq);
-                }
+            /*Verifica se o arquivo existe*/
+            String idArq = Conexao.existeArquivo("Eleitor.json");            
+            if (!(idArq.equals(""))){
+
+                /*Se existir o arquivo coloca nessa variavel o conteudo dele*/
+                aux = Conexao.printFile(idArq);
             }
-            
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, "Não foi possível baixar os dados dos eleitores, verifique sua conexão com a internet..", "Erro", JOptionPane.ERROR_MESSAGE);
-//            System.exit(0);
-//        }
+        }
         
         /*Caso esta variavel esteja nula e porque nao ha o arquivo para baixar ou ele esta vazio*/
         if (aux != null){

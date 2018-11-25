@@ -11,31 +11,36 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
+import java.util.List;
+import modelo.DeputadoFederal;
+import modelo.Estado;
 import org.jfree.data.general.DefaultPieDataset;
 
 public class VotoDAO {
     
     /*Vetor de votos*/
-    private ArrayList<Voto> votos;
+    private List<Voto> votos;
 
+    /**
+     * Construtor sem parâmetro - Instancia o vetor.
+     */
     public VotoDAO() {
         votos = new ArrayList();
     }
     
     /**
-     * Insere o voto na primeira posição vazia que achar do vetor.
-     * @param votos É passado um obejto inteiro de voto para a inserção.
+     * Insere o voto no vetor.
+     * @param voto É passado um objeto inteiro de voto para a inserção.
      */
-    public void inserir(Voto votos) {
-        this.votos.add(votos);
+    public void inserir(Voto voto) {
+        this.votos.add(voto);
     }
     
     /**
      * Função utilizada com o intúido de retornar o vetor inteiro de votos.
-     * @return Retorna o vetor de votos.
+     * @return List (Voto) - Retorna o vetor de votos.
      */
-    public ArrayList<Voto> getVetorVoto(){
+    public List<Voto> getVetorVoto(){
         return this.votos;
     }
     
@@ -128,22 +133,22 @@ public class VotoDAO {
     }
     
     /**
-     * Utilizada para popularizar o gráfico do resultado da eleição.
-     * @return O objeto do tipo DefaultPieDataset devidamente preenchido com os dados do candidato.
+     * Utilizada para popularizar o gráfico do resultado da eleição da presidência.
+     * @return O objeto do tipo DefaultPieDataset devidamente preenchido com os dados do presidente.
      */
-    public DefaultPieDataset preencheGrafico(){
+    public DefaultPieDataset preencheGraficoPresidente(){
         
         DefaultPieDataset dataSet = new DefaultPieDataset();
         
-        /*Populando o grafico com o nome dos candidatos, partido e a quantida de votos*/
+        /*Populando o grafico com o nome dos presidentes, partido e a quantida de votos*/
         for (Voto v: votos){
             
             /*Evita o null pointer exception*/
             if (v != null){
                 
                 /*Verificacao utilizada pois caso o eleitor vote NULO ou BRANCO nao da erro quando chegar aqui*/
-                if (v.getCandidato() != null){
-                    dataSet.setValue(v.getCandidato().getNome() + " - " + v.getCandidato().getPartido().getSigla(), v.getCandidato().getQtdeVoto());
+                if (v.getPresidente() != null){
+                    dataSet.setValue(v.getPresidente().getNome() + " - " + v.getPresidente().getPartido().getSigla(), v.getPresidente().getQtdeVoto());
                 }                
             }            
         }
@@ -152,22 +157,76 @@ public class VotoDAO {
     }
     
     /**
-     * Verifica se houve algum voto computado no sistema.
-     * @return Retorna true caso achou algum voto, caso contrário retorna false
+     * Verifica se votaram em algum presidente.
+     * @return Retorna true caso achou algum voto, caso contrário retorna false.
      */
-    public boolean verificaAlguemVotou(){
+    public boolean verificaAlguemVotouPresidente(){
         
         for (Voto v: votos){
             
             /*Evita o null pointer exception*/
             if (v != null){
-
+                
                 /*Verificacao utilizada pois caso o eleitor vote NULO ou BRANCO nao da erro quando chegar aqui*/
-                if (v.getCandidato() != null){
+                if (v.getPresidente()!= null){
                     
                     /*Se pelo menos um eleitor ja votou naquele candidato entao retorna*/
-                    if (v.getCandidato().getQtdeVoto() > 0){
+                    if (v.getPresidente().getQtdeVoto() > 0){
                         return true;
+                    }
+                }
+            }            
+        }
+        
+        /*Nenhum eleitor votou*/
+        return false;
+    }
+    
+    /**
+     * Utilizada para popularizar o gráfico do resultado da eleição dos deputados federais.
+     * @return O objeto do tipo DefaultPieDataset devidamente preenchido com os dados do deputado federal.
+     */
+    public DefaultPieDataset preencheGraficoDeputadoFederal(){
+        
+        DefaultPieDataset dataSet = new DefaultPieDataset();
+        
+        /*Populando o grafico com o nome dos deputados federais, partido e a quantida de votos*/
+        for (Voto v: votos){
+            
+            /*Evita o null pointer exception*/
+            if (v != null){
+                
+                /*Verificacao utilizada pois caso o eleitor vote NULO ou BRANCO nao da erro quando chegar aqui*/
+                if (v.getDeputadoFederal() != null){
+                    dataSet.setValue(v.getDeputadoFederal().getNome() + " - " + v.getDeputadoFederal().getPartido().getSigla(), v.getDeputadoFederal().getQtdeVoto());
+                }                
+            }            
+        }
+        
+        return dataSet;
+    }
+    
+    /**
+     * Verifica se votaram em algum deputado federal.
+     * @param estado O estado escolhido para verificar.
+     * @return Retorna true caso achou algum voto, caso contrário retorna false.
+     */
+    public boolean verificaAlguemVotouDeputadoFederal(Estado estado){
+        
+        for (Voto v: votos) {
+            
+            /*Evita o null pointer exception*/
+            if (v != null) {
+
+                /*Verificacao utilizada pois caso o eleitor vote NULO ou BRANCO nao da erro quando chegar aqui*/
+                if (v.getDeputadoFederal() != null) {
+                    
+                    /*Verifica se o deputado e do estado desejado.*/
+                    if (((DeputadoFederal)v.getDeputadoFederal()).getEstado().equals(estado)) {
+                        /*Se pelo menos um eleitor ja votou naquele candidato entao retorna*/
+                        if (v.getDeputadoFederal().getQtdeVoto() > 0) {
+                            return true;
+                        }
                     }
                 }
             }            

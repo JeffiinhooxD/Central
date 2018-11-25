@@ -16,6 +16,11 @@ public class Presidente extends javax.swing.JFrame {
     CandidatoDAO candidatoDAO;
     PartidoDAO   partidoDAO;
     
+    /**
+     * Construtor com parâmetros da classe.
+     * @param candidatoDAO O objeto dao do candidato.
+     * @param partidoDAO O objeto dao do partido.
+     */
     public Presidente(CandidatoDAO candidatoDAO, PartidoDAO partidoDAO) {
         
         this.candidatoDAO = candidatoDAO;
@@ -55,7 +60,7 @@ public class Presidente extends javax.swing.JFrame {
      */
     public void preencheBoxPartido() {
         
-        ArrayList<Partido> partidos = partidoDAO.getVetorPartido();
+        ArrayList<Partido> partidos = (ArrayList<Partido>) partidoDAO.getVetorPartido();
         
         for (Partido p : partidos) {
             
@@ -351,6 +356,7 @@ public class Presidente extends javax.swing.JFrame {
 
     private void boxPartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxPartidoActionPerformed
         
+        /*O numero do presidente tem que ser o mesmo numero do seu partido*/
         Partido p = partidoDAO.getPartidoBySigla(boxPartido.getSelectedItem().toString());
         if (p != null){
               texNumeroPresidente.setText(Integer.toString(p.getNumero()));

@@ -1,5 +1,8 @@
 package excecoes;
 
+/**
+ * Exceção realizada quando algum partido não existe.
+ */
 public class PartidoException extends Exception {
     
     /**

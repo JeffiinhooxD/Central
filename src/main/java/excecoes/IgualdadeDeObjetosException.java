@@ -1,7 +1,7 @@
 package excecoes;
 
 /**
- * 
+ * Exceção realizada quando dois objetos são iguais.
  */
 public class IgualdadeDeObjetosException extends Exception {
     

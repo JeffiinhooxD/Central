@@ -5,7 +5,8 @@ import java.util.Date;
 public class Voto {
 
     private String cpfEleitor;
-    private Candidato candidato;
+    private Presidente presidente;
+    private DeputadoFederal deputadoFederal;
     private int urna;
     private Date data;
     
@@ -33,21 +34,37 @@ public class Voto {
     public void setCpfEleitor(String cpfEleitor) {
         this.cpfEleitor = cpfEleitor;
     }
-
+    
     /**
-     * Pega o candidato em que o eleitor votou.
-     * @return Candidato - O objeto inteiro.
+     * Pega o presidente em que o eleitor votou.
+     * @return Presidente - O objeto inteiro.
      */
-    public Candidato getCandidato() {
-        return candidato;
+    public Presidente getPresidente() {
+        return presidente;
     }
 
     /**
-     * Seta o candidato em que o eleitor votou.
-     * @param candidato O candidato a ser setado.
+     * Seta o presidente em que o eleitor votou.
+     * @param presidente O Presidente a ser setado.
      */
-    public void setCandidato(Candidato candidato) {
-        this.candidato = candidato;
+    public void setPresidente(Presidente presidente) {
+        this.presidente = presidente;
+    }
+
+    /**
+     * Pega o deputado federal em que o eleitor votou.
+     * @return DeputadoFederal - O objeto inteiro.
+     */
+    public DeputadoFederal getDeputadoFederal() {
+        return deputadoFederal;
+    }
+
+    /**
+     * Seta o deputado federal em que o eleitor votou.
+     * @param deputadoFederal O Deputado federal a ser setado.
+     */
+    public void setDeputadoFederal(DeputadoFederal deputadoFederal) {
+        this.deputadoFederal = deputadoFederal;
     }
 
     /**

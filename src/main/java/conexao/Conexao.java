@@ -58,6 +58,10 @@ public class Conexao {
                 .build();
     }
     
+    /**
+     * Verifica se o pc tem internet, verifica a conexão com o servidor do Google que é raro ficar fora do ar.
+     * @return boolean - Retorna verdadeiro se conseguiu conexão com a internet, caso contrário retorna falso.
+     */
     public static boolean getInternet() {
         
         try {
@@ -94,18 +98,22 @@ public class Conexao {
     
     /**
      * Caso o serviço ainda não esteja instânciado então instância.
-     * @return Drive - O servico
+     * @return Drive - O serviço.
+     * @throws IOException
+     * @throws GeneralSecurityException
+     * @throws NullPointerException 
      */
     public static Drive service() throws IOException, GeneralSecurityException, NullPointerException {
         
+        /*Se o servico estiver nulo, cria um novo servico*/
         if (service == null) {
-            new Conexao();
+            Conexao conexao = new Conexao();
         }
         return service;
     }
     
     /**
-     * Verifica se existe essa pasta no Google Drive.
+     * Verifica se existe determinada pasta no Google Drive.
      * @param nome Nome da pasta.
      * @return String - Retorna o id dessa pasta ou se ela não existir retorna "".
      * @throws IOException
@@ -224,9 +232,9 @@ public class Conexao {
     /**
      * Mostra o conteúdo de um arquivo do Google Drive.
      * @param idArquivo Id do arquivo que queria imprimir.
-     * @return String - Retorna o conteúdo do arquivo em forma de String;
+     * @return String - Retorna o conteúdo do arquivo em forma de String.
      * @throws IOException
-     * @throws GeneralSecurityException 
+     * @throws GeneralSecurityException
      */
     public static String printFile(String idArquivo) throws IOException, GeneralSecurityException{
 

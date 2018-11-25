@@ -24,8 +24,6 @@ public class Principal extends javax.swing.JFrame {
     Urna         urna         = new Urna();
     String       mensagem     = "";
     
-    Runtime r = Runtime.getRuntime();
-    
     /**
      * Construtor da classe sem parâmetros.
      * @throws IOException 
@@ -124,39 +122,6 @@ public class Principal extends javax.swing.JFrame {
         }
     }
     
-    private void teste(){
-            
-        Thread t2 = new Thread() {
-            
-            @Override
-            public void run() {
-
-                try {
-
-                    String myScript = "xcowsay Easter egg encontrado com sucesso!";
-                    String[] cmdArray = {"xterm", "-e", myScript};
-                    r.exec(cmdArray).waitFor();
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-
-            }
-        };
-
-        t2.start();
-
-        try {
-
-            t2.join();
-            t2.interrupt();
-
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -166,11 +131,13 @@ public class Principal extends javax.swing.JFrame {
         menuCadastro = new javax.swing.JMenu();
         menuCadastroCandidato = new javax.swing.JMenu();
         menuCadastroCandidatoPresidente = new javax.swing.JMenuItem();
-        menuCadastroCandidatoDeputadoEstadual = new javax.swing.JMenuItem();
+        menuCadastroCandidatoDeputadoFederal = new javax.swing.JMenuItem();
         menuCadastroEleitor = new javax.swing.JMenuItem();
         menuCadastroPartido = new javax.swing.JMenuItem();
         menuUtilitarios = new javax.swing.JMenu();
-        computarVotos = new javax.swing.JMenuItem();
+        menuComputarVoto = new javax.swing.JMenu();
+        menuComputarVotoPresidente = new javax.swing.JMenuItem();
+        menuComputarVotoDeputadoFederal = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MENU");
@@ -201,11 +168,11 @@ public class Principal extends javax.swing.JFrame {
         menuCadastroCandidato.setText("Candidato");
         menuCadastroCandidato.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         menuCadastroCandidato.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                menuCadastroCandidatoMouseEntered(evt);
-            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 menuCadastroCandidatoMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                menuCadastroCandidatoMouseEntered(evt);
             }
         });
 
@@ -227,23 +194,24 @@ public class Principal extends javax.swing.JFrame {
         });
         menuCadastroCandidato.add(menuCadastroCandidatoPresidente);
 
-        menuCadastroCandidatoDeputadoEstadual.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
-        menuCadastroCandidatoDeputadoEstadual.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconDeputado.png"))); // NOI18N
-        menuCadastroCandidatoDeputadoEstadual.setText("Deputado Estadual");
-        menuCadastroCandidatoDeputadoEstadual.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                menuCadastroCandidatoDeputadoEstadualMouseEntered(evt);
-            }
+        menuCadastroCandidatoDeputadoFederal.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
+        menuCadastroCandidatoDeputadoFederal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconDeputado.png"))); // NOI18N
+        menuCadastroCandidatoDeputadoFederal.setText("Deputado Federal");
+        menuCadastroCandidatoDeputadoFederal.setActionCommand("Deputado Federal");
+        menuCadastroCandidatoDeputadoFederal.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                menuCadastroCandidatoDeputadoEstadualMouseExited(evt);
+                menuCadastroCandidatoDeputadoFederalMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                menuCadastroCandidatoDeputadoFederalMouseEntered(evt);
             }
         });
-        menuCadastroCandidatoDeputadoEstadual.addActionListener(new java.awt.event.ActionListener() {
+        menuCadastroCandidatoDeputadoFederal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuCadastroCandidatoDeputadoEstadualActionPerformed(evt);
+                menuCadastroCandidatoDeputadoFederalActionPerformed(evt);
             }
         });
-        menuCadastroCandidato.add(menuCadastroCandidatoDeputadoEstadual);
+        menuCadastroCandidato.add(menuCadastroCandidatoDeputadoFederal);
 
         menuCadastro.add(menuCadastroCandidato);
 
@@ -290,31 +258,63 @@ public class Principal extends javax.swing.JFrame {
         menuUtilitarios.setText("Utilitários");
         menuUtilitarios.setFont(new java.awt.Font("Ubuntu", 1, 36)); // NOI18N
         menuUtilitarios.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                menuUtilitariosMouseEntered(evt);
-            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 menuUtilitariosMouseExited(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                menuUtilitariosMouseEntered(evt);
+            }
         });
 
-        computarVotos.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
-        computarVotos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconGrafico.png"))); // NOI18N
-        computarVotos.setText("Computar Votos");
-        computarVotos.addMouseListener(new java.awt.event.MouseAdapter() {
+        menuComputarVoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconGrafico.png"))); // NOI18N
+        menuComputarVoto.setText("Computar Votos");
+        menuComputarVoto.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
+        menuComputarVoto.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                computarVotosMouseExited(evt);
+                menuComputarVotoMouseExited(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                computarVotosMouseEntered(evt);
+                menuComputarVotoMouseEntered(evt);
             }
         });
-        computarVotos.addActionListener(new java.awt.event.ActionListener() {
+
+        menuComputarVotoPresidente.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
+        menuComputarVotoPresidente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconPresidente.png"))); // NOI18N
+        menuComputarVotoPresidente.setText("Presidente");
+        menuComputarVotoPresidente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                menuComputarVotoPresidenteMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                menuComputarVotoPresidenteMouseEntered(evt);
+            }
+        });
+        menuComputarVotoPresidente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                computarVotosActionPerformed(evt);
+                menuComputarVotoPresidenteActionPerformed(evt);
             }
         });
-        menuUtilitarios.add(computarVotos);
+        menuComputarVoto.add(menuComputarVotoPresidente);
+
+        menuComputarVotoDeputadoFederal.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
+        menuComputarVotoDeputadoFederal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconDeputado.png"))); // NOI18N
+        menuComputarVotoDeputadoFederal.setText("Deputado Federal");
+        menuComputarVotoDeputadoFederal.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                menuComputarVotoDeputadoFederalMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                menuComputarVotoDeputadoFederalMouseEntered(evt);
+            }
+        });
+        menuComputarVotoDeputadoFederal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuComputarVotoDeputadoFederalActionPerformed(evt);
+            }
+        });
+        menuComputarVoto.add(menuComputarVotoDeputadoFederal);
+
+        menuUtilitarios.add(menuComputarVoto);
 
         menuBarraPrincipal.add(menuUtilitarios);
 
@@ -338,6 +338,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void menuCadastroEleitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroEleitorActionPerformed
         
+        /*Abre a tela de cadastro do eleitor*/
         try {
             new Eleitor(eleitorDAO).setVisible(true);
         } finally {
@@ -365,20 +366,13 @@ public class Principal extends javax.swing.JFrame {
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_menuUtilitariosMouseExited
 
-    private void computarVotosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_computarVotosMouseExited
-        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_computarVotosMouseExited
-
     private void menuUtilitariosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuUtilitariosMouseEntered
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_menuUtilitariosMouseEntered
 
-    private void computarVotosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_computarVotosMouseEntered
-        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_computarVotosMouseEntered
-
     private void menuCadastroPartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroPartidoActionPerformed
         
+        /*Abre a tela de cadastro do partido*/
         try {
             new Partido(partidoDAO).setVisible(true);
         } finally {
@@ -394,10 +388,6 @@ public class Principal extends javax.swing.JFrame {
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_menuCadastroPartidoMouseExited
 
-    private void computarVotosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computarVotosActionPerformed
-        criaGrafico();
-    }//GEN-LAST:event_computarVotosActionPerformed
-
     private void menuCadastroCandidatoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoMouseEntered
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_menuCadastroCandidatoMouseEntered
@@ -406,9 +396,9 @@ public class Principal extends javax.swing.JFrame {
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_menuCadastroCandidatoPresidenteMouseEntered
 
-    private void menuCadastroCandidatoDeputadoEstadualMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoDeputadoEstadualMouseEntered
+    private void menuCadastroCandidatoDeputadoFederalMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoDeputadoFederalMouseEntered
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_menuCadastroCandidatoDeputadoEstadualMouseEntered
+    }//GEN-LAST:event_menuCadastroCandidatoDeputadoFederalMouseEntered
 
     private void menuCadastroCandidatoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoMouseExited
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -418,12 +408,13 @@ public class Principal extends javax.swing.JFrame {
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_menuCadastroCandidatoPresidenteMouseExited
 
-    private void menuCadastroCandidatoDeputadoEstadualMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoDeputadoEstadualMouseExited
+    private void menuCadastroCandidatoDeputadoFederalMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoDeputadoFederalMouseExited
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_menuCadastroCandidatoDeputadoEstadualMouseExited
+    }//GEN-LAST:event_menuCadastroCandidatoDeputadoFederalMouseExited
 
     private void menuCadastroCandidatoPresidenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoPresidenteActionPerformed
-
+        
+        /*Abre a tela de cadastro do presidente*/
         try {
         
             /*Verifica se tem partido cadastrado*/
@@ -441,8 +432,9 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_menuCadastroCandidatoPresidenteActionPerformed
 
-    private void menuCadastroCandidatoDeputadoEstadualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoDeputadoEstadualActionPerformed
+    private void menuCadastroCandidatoDeputadoFederalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroCandidatoDeputadoFederalActionPerformed
         
+        /*Abre a tela de cadastro do deputado federal*/
         try {
         
             /*Verifica se tem partido cadastrado*/
@@ -453,17 +445,83 @@ public class Principal extends javax.swing.JFrame {
                 return ;
             }
 
-            new DeputadoEstadual(candidatoDAO, partidoDAO).setVisible(true);
+            new DeputadoFederal(candidatoDAO, partidoDAO).setVisible(true);
         
         } finally {
             this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         }
-    }//GEN-LAST:event_menuCadastroCandidatoDeputadoEstadualActionPerformed
+    }//GEN-LAST:event_menuCadastroCandidatoDeputadoFederalActionPerformed
+
+    private void menuComputarVotoPresidenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuComputarVotoPresidenteActionPerformed
+        criaGraficoPresidente();
+    }//GEN-LAST:event_menuComputarVotoPresidenteActionPerformed
+
+    private void menuComputarVotoDeputadoFederalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuComputarVotoDeputadoFederalActionPerformed
+
+        boolean entrou = false;
+        String aux = null;
+        
+        try {
+                        
+            aux = JOptionPane.showInputDialog("Informe a uf do estado válida (Ex: Minas Gerais -> MG): ");
+            
+            /*Se estiver nulo o usuario nao inseriu nenhuma informacao*/
+            if (aux != null) {
+                
+                /*A sigla tem no minimo e maximo 2 caracteres*/
+                if (aux.length() == 2) {
+
+                    Estado estados[] = Estado.values();                    
+                    for (Estado e : estados) {
+                        
+                        /*Verifica em todos o uf se o uf inserido existe*/
+                        if (e.equals(Estado.valueOf(aux.toUpperCase()))) {
+                            entrou = true;
+                            
+                            /*Se o uf existe entao entra na funcao para criar o grafico*/
+                            criaGraficoDeputadoFederal(Estado.valueOf(aux.toUpperCase()));
+                            return;
+                        }
+                    }
+                }
+            }else{return;}
+
+        /*Se o uf inserido nao existir ira dar esse runtime exception que nao precisa ser tratado*/
+        } catch (IllegalArgumentException ex) {return ;}
+        
+        /*Se esta variavel estiver nula quer dizer que o uf inserido nao existe*/
+        if (!entrou)
+            JOptionPane.showMessageDialog(this, "Não existe este estado..", "Atenção", JOptionPane.WARNING_MESSAGE);
+    }//GEN-LAST:event_menuComputarVotoDeputadoFederalActionPerformed
+
+    private void menuComputarVotoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuComputarVotoMouseEntered
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_menuComputarVotoMouseEntered
+
+    private void menuComputarVotoPresidenteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuComputarVotoPresidenteMouseEntered
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_menuComputarVotoPresidenteMouseEntered
+
+    private void menuComputarVotoDeputadoFederalMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuComputarVotoDeputadoFederalMouseEntered
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_menuComputarVotoDeputadoFederalMouseEntered
+
+    private void menuComputarVotoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuComputarVotoMouseExited
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_menuComputarVotoMouseExited
+
+    private void menuComputarVotoPresidenteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuComputarVotoPresidenteMouseExited
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_menuComputarVotoPresidenteMouseExited
+
+    private void menuComputarVotoDeputadoFederalMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuComputarVotoDeputadoFederalMouseExited
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_menuComputarVotoDeputadoFederalMouseExited
     
     /**
-     * Cria uma tela que mostrará o gráfico da relação de quantidade de votos que os candidatos já obtiveram.
+     * Cria uma tela que mostrará o gráfico da relação de quantidade de votos que os presidentes já obtiveram.
      */
-    public void criaGrafico(){
+    public void criaGraficoPresidente() {
 
         /*Antes de fazer algo usando a conexao verifica primeiro se tem internet*/
         if (!Conexao.getInternet()){
@@ -481,14 +539,14 @@ public class Principal extends javax.swing.JFrame {
         }        
 
         /*Se ninguem votou ainda e porque nao tem nada para mostrar aqui*/
-        if (urna.getVotoDAO().verificaAlguemVotou()){
+        if (urna.getVotoDAO().verificaAlguemVotouPresidente()) {
 
             /*Preenche o grafico com os dados dos candidatos*/
-            PieDataset pizzaDataSet = urna.getVotoDAO().preencheGrafico();
+            PieDataset pizzaDataSet = urna.getVotoDAO().preencheGraficoPresidente();
 
             GraficoPizza3D grafico = new GraficoPizza3D(
                     "Apuração dos votos",
-                    "Relação de candidatos",
+                    "Relação de candidatos a presidência",
                     pizzaDataSet
             );
 
@@ -496,7 +554,47 @@ public class Principal extends javax.swing.JFrame {
             grafico.setVisible(true);
 
         }else{
-            JOptionPane.showMessageDialog(this, "Ainda não ocorreu nenhum voto...", "Resultados inexistentes", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ainda não ocorreu nenhum voto a presidência...", "Resultados inexistentes", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    
+    /**
+     * Cria uma tela que mostrará o gráfico da relação de quantidade de votos que os deputados federais já obtiveram.
+     */
+    public void criaGraficoDeputadoFederal(Estado estado) {
+
+        /*Antes de fazer algo usando a conexao verifica primeiro se tem internet*/
+        if (!Conexao.getInternet()){
+            JOptionPane.showMessageDialog(this, "Sem acesso a internet.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+
+        /*Baixa do drive a relacao dos votos ate o momento*/
+        try {
+            votoDAO.baixarVotoJson();  
+            urna.setVotoDAO(votoDAO);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Houve um erro na hora de computador os votos...", "Erro", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+        
+        /*Se ninguem votou ainda e porque nao tem nada para mostrar aqui*/
+        if (urna.getVotoDAO().verificaAlguemVotouDeputadoFederal(estado)) {
+
+            /*Preenche o grafico com os dados dos candidatos*/
+            PieDataset pizzaDataSet = urna.getVotoDAO().preencheGraficoDeputadoFederal();
+
+            GraficoPizza3D grafico = new GraficoPizza3D(
+                    "Apuração dos votos",
+                    "Relação de deputados federais votados em [" + estado + "]",
+                    pizzaDataSet
+            );
+
+            grafico.pack();
+            grafico.setVisible(true);
+
+        }else{
+            JOptionPane.showMessageDialog(this, "Não houve votos em deputados federais do estado de [" + estado + "].", "Resultados inexistentes", JOptionPane.WARNING_MESSAGE);
         }
     }
     
@@ -536,15 +634,17 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem computarVotos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar menuBarraPrincipal;
     private javax.swing.JMenu menuCadastro;
     private javax.swing.JMenu menuCadastroCandidato;
-    private javax.swing.JMenuItem menuCadastroCandidatoDeputadoEstadual;
+    private javax.swing.JMenuItem menuCadastroCandidatoDeputadoFederal;
     private javax.swing.JMenuItem menuCadastroCandidatoPresidente;
     private javax.swing.JMenuItem menuCadastroEleitor;
     private javax.swing.JMenuItem menuCadastroPartido;
+    private javax.swing.JMenu menuComputarVoto;
+    private javax.swing.JMenuItem menuComputarVotoDeputadoFederal;
+    private javax.swing.JMenuItem menuComputarVotoPresidente;
     private javax.swing.JMenu menuUtilitarios;
     // End of variables declaration//GEN-END:variables
 }

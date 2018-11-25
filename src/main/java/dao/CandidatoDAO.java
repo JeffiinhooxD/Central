@@ -10,14 +10,17 @@ import java.util.ArrayList;
 import modelo.Candidato;
 import excecoes.IgualdadeDeObjetosException;
 import java.io.File;
+import java.util.List;
+import modelo.DeputadoFederal;
+import modelo.Presidente;
 
 public class CandidatoDAO {
 
     /*Vetor de candidatos*/
-    private ArrayList<Candidato> candidatos;
+    private List<Candidato> candidatos;
 
     /**
-     * Construtor sem parâmetro - Instância o array list.
+     * Construtor sem parâmetro - Instancia o vetor.
      */
     public CandidatoDAO() {
         candidatos = new ArrayList();
@@ -33,9 +36,9 @@ public class CandidatoDAO {
     
     /**
      * Função utilizada com o intúido de retornar o vetor inteiro de candidatos.
-     * @return Candidato[] - Retorna o vetor de candidatos.
+     * @return List (Candidato) - Retorna o vetor de candidatos.
      */
-    public ArrayList<Candidato> getVetorCandidato(){
+    public List<Candidato> getVetorCandidato(){
         return this.candidatos;
     }
 
@@ -54,12 +57,20 @@ public class CandidatoDAO {
             if (candidato != null) {
                 
                 /*Verifica se o partido e igual, SE SOMENTE SE O candidato for presidente*/
-                if (c instanceof modelo.Presidente) {
+                if (c instanceof Presidente) {
                     
-                    if ((candidato.getPartido().getNome().equals(((modelo.Presidente)c).getPartido().getNome())) ||
-                        (candidato.getPartido().getNumero() == ((modelo.Presidente)c).getPartido().getNumero())  ||
-                        (candidato.getPartido().getSigla().equals(((modelo.Presidente)c).getPartido().getSigla()))) {
+                    if ((candidato.getPartido().getNome().equals(((Presidente)c).getPartido().getNome())) ||
+                        (candidato.getPartido().getNumero() == ((Presidente)c).getPartido().getNumero())  ||
+                        (candidato.getPartido().getSigla().equals(((Presidente)c).getPartido().getSigla()))) {
                         campo =  "PARTIDO";
+                    }
+                }
+                
+                /*Não pode haver deputado com o mesmo numero*/
+                if (c instanceof DeputadoFederal) {
+                    
+                    if (candidato.getNumero() == c.getNumero()) {
+                        campo = "NUMERO";
                     }
                 }
                 
@@ -110,8 +121,8 @@ public class CandidatoDAO {
             BufferedReader verifica = new BufferedReader(new StringReader(aux));        
             String linha;        
             while((linha = verifica.readLine()) != null){
-                candidatos.add(gson.fromJson(linha, Candidato.class)); 
-                inserirJson(gson.fromJson(linha, Candidato.class));
+                candidatos.add(gson.fromJson(linha, DeputadoFederal.class)); 
+                inserirJson(gson.fromJson(linha, DeputadoFederal.class));
             }
         }
     }
@@ -133,7 +144,7 @@ public class CandidatoDAO {
 
         FileWriter arq = new FileWriter("./ArquivosJson/Candidato.json", true);
         
-        PrintWriter escreveArq = new PrintWriter(arq);
+        PrintWriter escreveArq = new PrintWriter(arq);        
         escreveArq.printf("%s\n", gson.toJson(candidato));
         
         arq.close();
@@ -166,27 +177,5 @@ public class CandidatoDAO {
 
         /*Por fim, envia o json local para la*/
         Conexao.enviaArquivo(idPas, "Candidato.json");
-    }
-    
-    /**
-     * Verifica se existe algum candidato no vetor com aquele número.
-     * @param numero Número do candidato.
-     * @return Candidato - Retorna o objeto inteiro do candidato, caso contrário retorna null.
-     */
-    public Candidato getCandidatoByNum(int numero){
-        
-        for (Candidato c: this.candidatos){
-            
-            /*Evita o null pointer exception*/
-            if (c != null){
-                
-                /*Se o numero do candidato e igual ao do passado por parametro*/
-                if (c.getNumero() == numero){
-                    return c;
-                }
-            }            
-        }
-
-        return null;
     }
 }

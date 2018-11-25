@@ -1,7 +1,7 @@
 package excecoes;
 
 /**
- * 
+ * Exceção realizada quando algum cpf não foi preenchido corretamente.
  */
 public class CpfException extends Exception {
     
